@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titulo %}Escribe sin perder el hilo{% endblock %}
+{% block contenido %}
+<section class="portada">
+  <h1>Escribe tu novela sin perderte en tus notas ni cometer errores de continuidad</h1>
+  <p>PlotNode une tu manuscrito y las fichas de tus personajes en una sola pantalla, y te avisa cuando tu historia se contradice. Tu historia la escribes tú.</p>
+  <div class="acciones" style="justify-content:center">
+    <a class="boton" href="{% url 'registro' %}">Probar gratis</a>
+    <a class="boton boton-secundario" href="{% url 'login' %}">Ya tengo cuenta</a>
+  </div>
+</section>
+<section class="ventajas">
+  <div class="tarjeta"><h3>Todo en un lugar</h3><p>Tu texto y tus notas de personajes, lado a lado. Sin libretas ni pestañas extra.</p></div>
+  <div class="tarjeta"><h3>Fichas al instante</h3><p>Selecciona un nombre y su ficha aparece en el panel lateral.</p></div>
+  <div class="tarjeta"><h3>Auditor de coherencia</h3><p>Te avisa si un párrafo contradice lo que ya definiste. No escribe por ti.</p></div>
+</section>
+{% endblock %}
