@@ -1,8 +1,12 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_http_methods
+from django.utils import timezone
+from django.views.decorators.http import require_http_methods, require_POST
 
 from .forms import ProyectoForm, RegistroForm
 from .models import Capitulo, Proyecto
@@ -72,3 +76,53 @@ def proyecto_eliminar(request, pk):
         messages.success(request, f"Proyecto «{titulo}» eliminado.")
         return redirect("proyectos")
     return render(request, "core/proyecto_eliminar.html", {"proyecto": proyecto})
+
+
+# --- Editor (HU-06) ----------------------------------------------------------
+
+MAX_CONTENIDO = 2_000_000  # ~2 MB de HTML por capítulo
+
+
+def _capitulo_del_usuario(request, pk):
+    return get_object_or_404(Capitulo.objects.select_related("proyecto"), pk=pk, proyecto__dueno=request.user)
+
+
+@login_required
+def proyecto_abrir(request, pk):
+    """Abre el proyecto en su primer capítulo (lo crea si no hay ninguno)."""
+    proyecto = _proyecto_del_usuario(request, pk)
+    capitulo = proyecto.capitulos.first()
+    if capitulo is None:
+        capitulo = Capitulo.objects.create(proyecto=proyecto, titulo="Capítulo 1", orden=1)
+    return redirect(capitulo)
+
+
+@login_required
+def editor(request, pk):
+    capitulo = _capitulo_del_usuario(request, pk)
+    return render(request, "core/editor.html", {
+        "capitulo": capitulo,
+        "proyecto": capitulo.proyecto,
+        "capitulos": capitulo.proyecto.capitulos.all(),
+    })
+
+
+@login_required
+@require_POST
+def guardar_capitulo(request, pk):
+    """Autoguardado: recibe JSON {"contenido": "<p>...</p>"} y responde con las palabras."""
+    capitulo = _capitulo_del_usuario(request, pk)
+    try:
+        datos = json.loads(request.body or b"{}")
+    except json.JSONDecodeError:
+        return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
+    contenido = datos.get("contenido")
+    if not isinstance(contenido, str):
+        return JsonResponse({"ok": False, "error": "Falta el contenido"}, status=400)
+    if len(contenido) > MAX_CONTENIDO:
+        return JsonResponse({"ok": False, "error": "El capítulo es demasiado largo"}, status=413)
+    capitulo.contenido = contenido
+    capitulo.save()
+    Proyecto.objects.filter(pk=capitulo.proyecto_id).update(actualizado=timezone.now())
+    return JsonResponse({"ok": True, "palabras": capitulo.palabras,
+                         "guardado": timezone.localtime(capitulo.actualizado).strftime("%H:%M")})

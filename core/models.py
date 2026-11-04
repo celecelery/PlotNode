@@ -1,3 +1,5 @@
+import html
+
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
@@ -76,7 +78,7 @@ class Capitulo(models.Model):
         return reverse("editor", args=[self.pk])
 
     def save(self, *args, **kwargs):
-        self.palabras = contar_palabras(strip_tags(self.contenido))
+        self.palabras = contar_palabras(html.unescape(strip_tags(self.contenido)))
         super().save(*args, **kwargs)
 
 

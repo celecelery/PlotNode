@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}{{ capitulo.titulo }} · {{ proyecto.titulo }}{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'core/vendor/quill/quill.snow.css' %}">
+  <link rel="stylesheet" href="{% static 'core/css/editor.css' %}">
+{% endblock %}
+{% block body_class %}pagina-editor{% endblock %}
+{% block main_class %}espacio{% endblock %}
+{% block contenido %}
+<aside class="capitulos" aria-label="Capítulos">
+  <a class="volver pequeno" href="{% url 'proyectos' %}">← Mis proyectos</a>
+  <h2 class="proyecto-titulo">{{ proyecto.titulo }}</h2>
+  <ol class="lista-capitulos">
+    {% for c in capitulos %}
+      <li><a href="{{ c.get_absolute_url }}" {% if c.pk == capitulo.pk %}aria-current="page"{% endif %}>{{ c.titulo }}</a></li>
+    {% endfor %}
+  </ol>
+</aside>
+
+<section class="hoja" aria-label="Manuscrito">
+  <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
+  <div id="editor"
+       data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}"></div>
+  {% csrf_token %}
+  {{ capitulo.contenido|json_script:"contenido-inicial" }}
+</section>
+
+<aside class="panel" aria-label="Fichas del proyecto">
+  <h2>Fichas</h2>
+  <p class="sutil pequeno">Aquí aparecerán las fichas de tus personajes. Al seleccionar un nombre en el texto, verás su ficha sin salir del editor.</p>
+  <p class="panel-proximamente pequeno">Disponible en la siguiente versión.</p>
+</aside>
+
+<footer class="estado" aria-live="polite">
+  <span><strong id="palabras">{{ capitulo.palabras }}</strong> palabras</span>
+  <span id="estado-guardado" class="guardado" data-estado="guardado">Guardado</span>
+  <span class="pequeno sutil atajo">Ctrl + S para guardar ahora</span>
+</footer>
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'core/vendor/quill/quill.js' %}"></script>
+  <script src="{% static 'core/js/editor.js' %}"></script>
+{% endblock %}

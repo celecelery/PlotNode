@@ -20,15 +20,16 @@
     {% for p in proyectos %}
       <li class="proyecto">
         <div>
-          <h2>{{ p.titulo }}</h2>
+          <h2><a href="{{ p.get_absolute_url }}">{{ p.titulo }}</a></h2>
           <div class="proyecto-meta">
             <span class="etiqueta">{{ p.get_genero_display }}</span>
             {{ p.capitulos.all|length }} capítulo{{ p.capitulos.all|length|pluralize }} ·
             {{ p.palabras }} palabra{{ p.palabras|pluralize }} ·
-            editado {{ p.actualizado|timesince }}
+            editado hace {{ p.actualizado|timesince }}
           </div>
         </div>
         <div class="proyecto-acciones">
+          <a class="boton boton-chico" href="{{ p.get_absolute_url }}">Escribir</a>
           <a href="{% url 'proyecto_editar' p.pk %}">Renombrar</a>
           <a href="{% url 'proyecto_eliminar' p.pk %}" style="color:var(--peligro)">Eliminar</a>
         </div>

@@ -13,6 +13,10 @@ class RegistroForm(UserCreationForm):
         model = get_user_model()
         fields = ("username", "email")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].help_text = "Letras, números y @ . + - _ (sin espacios)."
+
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
         if get_user_model().objects.filter(email__iexact=email).exists():

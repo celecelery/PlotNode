@@ -84,7 +84,7 @@ input[type=text], input[type=email], input[type=password], select, textarea {
   background: #fff; font: inherit; color: var(--tinta);
 }
 .helptext, .form-ayuda { display: block; color: var(--tinta-suave); font-size: .82rem; margin-top: .3rem; }
-.helptext ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+.helptext ul, form ul:not(.errorlist) { margin: .3rem 0 0; padding-left: 1.1rem; color: var(--tinta-suave); font-size: .82rem; }
 .errorlist { list-style: none; padding: 0; margin: 0 0 .5rem; color: var(--peligro); font-size: .9rem; }
 .acciones { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-top: 1.25rem; }
 
