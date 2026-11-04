@@ -7,7 +7,7 @@
   <p>Cada proyecto es una historia: novela, fanfic o relato.</p>
 </header>
 
-<form method="post" class="nueva-obra hoja" aria-label="Nuevo proyecto">
+<form method="post" class="nueva-obra" aria-label="Nuevo proyecto">
   {% csrf_token %}
   {{ form.titulo.errors }}
   <div class="campo">
@@ -22,38 +22,36 @@
 </form>
 
 {% if proyectos %}
-  <section class="galera-obras hoja" aria-label="Tus proyectos">
-    <ul class="lista-obras">
-      {% for p in proyectos %}
-        {% with n=p.capitulos.all|length palabras=p.palabras %}
-        <li class="obra">
+  <ul class="lista-obras" aria-label="Tus proyectos">
+    {% for p in proyectos %}
+      {% with n=p.capitulos.all|length palabras=p.palabras %}
+      <li class="obra obra-{% cycle 'lila' 'menta' %}">
+        <span class="obra-inicial" aria-hidden="true">{{ p.titulo|slice:":1"|upper }}</span>
+        <div>
           <h2><a href="{{ p.get_absolute_url }}">{{ p.titulo }}</a></h2>
           <p class="obra-datos">
-            <span class="obra-tipo">{{ p.get_genero_display }}</span>
-            <span>{{ n }} capítulo{{ n|pluralize }} · {{ palabras }} palabra{{ palabras|pluralize }}</span>
+            <span>{{ p.get_genero_display }}</span>
+            <span>{{ n }} capítulo{{ n|pluralize }}</span>
+            <span>{{ palabras }} palabra{{ palabras|pluralize }}</span>
             <span>Editado {{ p.actualizado|naturaltime|lower }}</span>
           </p>
-          <div class="obra-acciones">
-            <a class="obra-escribir" href="{{ p.get_absolute_url }}">Escribir</a>
-            <a href="{% url 'proyecto_editar' p.pk %}">Renombrar</a>
-            <a class="enlace-rojo" href="{% url 'proyecto_eliminar' p.pk %}">Eliminar</a>
-          </div>
-        </li>
-        {% endwith %}
-      {% endfor %}
-    </ul>
-  </section>
+        </div>
+        <div class="obra-acciones">
+          <a class="boton boton-lila-borde" href="{{ p.get_absolute_url }}">Escribir</a>
+          <a href="{% url 'proyecto_editar' p.pk %}">Renombrar</a>
+          <a class="enlace-coral" href="{% url 'proyecto_eliminar' p.pk %}">Eliminar</a>
+        </div>
+      </li>
+      {% endwith %}
+    {% endfor %}
+  </ul>
 {% else %}
-  <div class="obra-vacia hoja">
-    <div class="obra-vacia-texto">
+  <div class="obra-vacia">
+    <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
+    <div>
       <h2>Aún no tienes proyectos</h2>
-      <p>Escribe el título de tu historia en el formulario de arriba y pulsa «Crear proyecto».</p>
+      <p>Escribe el título de tu historia arriba y pulsa «Crear proyecto». Cada proyecto nace con su primer capítulo, listo para escribir.</p>
     </div>
-    <p class="nota-margen">
-      {% include "partials/ico-insertar.svg" %}
-      <strong>Un capítulo para empezar</strong>
-      Cada proyecto nace con su primer capítulo. Puedes cambiarle el nombre cuando quieras.
-    </p>
   </div>
 {% endif %}
 {% endblock %}

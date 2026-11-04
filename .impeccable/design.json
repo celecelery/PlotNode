@@ -1,470 +1,360 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-04T01:52:48+00:00",
+  "generatedAt": "2026-11-04T02:52:50+00:00",
   "title": "Design System: PlotNode",
   "extensions": {
     "colorMeta": {
-      "mesa": {
+      "noche": {
         "role": "neutral",
-        "displayName": "Mesa gris fría",
-        "canonical": "#e9eaec",
-        "oklch": "oklch(93.7% 0.003 264.5)",
+        "displayName": "Noche",
+        "canonical": "#17142b",
+        "oklch": "oklch(20.8% 0.045 287.8)",
         "tonalRamp": [
-          "#0a0b0c",
-          "#262628",
-          "#444547",
-          "#656668",
-          "#88898b",
-          "#adaeb0",
-          "#d0d1d3",
-          "#edeef0"
+          "#0b0a11",
+          "#242332",
+          "#413f56",
+          "#5f5e7a",
+          "#807f9c",
+          "#a3a1c0",
+          "#c7c6e1",
+          "#edecfe"
         ]
       },
-      "hoja": {
+      "panel": {
         "role": "neutral",
-        "displayName": "Hoja blanca pura",
-        "canonical": "#ffffff",
-        "oklch": "oklch(100.0% 0.000 89.9)",
+        "displayName": "Panel",
+        "canonical": "#1f1a3a",
+        "oklch": "oklch(24.2% 0.059 288.3)",
         "tonalRamp": [
-          "#0b0b0b",
-          "#262626",
-          "#454545",
-          "#666666",
-          "#898989",
-          "#aeaeae",
-          "#d1d1d1",
-          "#eeeeee"
+          "#0b0a13",
+          "#242236",
+          "#413d5c",
+          "#5f5c81",
+          "#807da4",
+          "#a3a0c9",
+          "#c7c5e9",
+          "#edecff"
         ]
       },
-      "tinta": {
+      "panel-2": {
         "role": "neutral",
-        "displayName": "Tinta casi negra",
-        "canonical": "#16181b",
-        "oklch": "oklch(20.8% 0.007 258.4)",
+        "displayName": "Panel 2",
+        "canonical": "#221d3f",
+        "oklch": "oklch(25.6% 0.062 287.9)",
         "tonalRamp": [
-          "#090b0e",
-          "#24272a",
-          "#434549",
-          "#64666a",
-          "#87898d",
-          "#abaeb2",
-          "#ced1d5",
-          "#eceff3"
+          "#0b0a14",
+          "#242237",
+          "#403d5e",
+          "#5f5c83",
+          "#807da6",
+          "#a29fcb",
+          "#c7c4eb",
+          "#edecfe"
         ]
       },
-      "tinta-2": {
+      "panel-3": {
         "role": "neutral",
-        "displayName": "Tinta gris",
-        "canonical": "#565c66",
-        "oklch": "oklch(47.3% 0.018 260.7)",
+        "displayName": "Panel 3",
+        "canonical": "#2a2450",
+        "oklch": "oklch(29.2% 0.078 286.8)",
         "tonalRamp": [
-          "#090b0f",
-          "#23272c",
-          "#41454d",
-          "#616670",
-          "#848993",
-          "#a9aeb6",
-          "#cdd1d8",
-          "#ebeff4"
+          "#0a0916",
+          "#23213b",
+          "#403c65",
+          "#5e5a8b",
+          "#7f7baf",
+          "#a19ed4",
+          "#c5c3f3",
+          "#ededfe"
         ]
       },
-      "tinta-3": {
+      "panel-4": {
         "role": "neutral",
-        "displayName": "Tinta tenue",
-        "canonical": "#646a73",
-        "oklch": "oklch(52.2% 0.016 258.4)",
+        "displayName": "Panel 4",
+        "canonical": "#2e2754",
+        "oklch": "oklch(30.5% 0.079 288.0)",
         "tonalRamp": [
-          "#090b0e",
-          "#23272b",
-          "#41454c",
-          "#61666f",
-          "#848a92",
-          "#a9aeb5",
-          "#cdd1d7",
-          "#ebeff3"
+          "#0b0916",
+          "#24213b",
+          "#403b65",
+          "#5f5a8b",
+          "#807baf",
+          "#a29ed4",
+          "#c6c3f3",
+          "#edecfe"
         ]
       },
-      "grafito": {
+      "borde": {
         "role": "neutral",
-        "displayName": "Grafito",
-        "canonical": "#24272b",
-        "oklch": "oklch(27.1% 0.009 255.6)",
+        "displayName": "Borde",
+        "canonical": "#332c5c",
+        "oklch": "oklch(32.7% 0.083 287.6)",
         "tonalRamp": [
-          "#090b0f",
-          "#24272b",
-          "#42454a",
-          "#63666b",
-          "#86898e",
-          "#aaaeb3",
-          "#cdd1d7",
-          "#ebeff4"
+          "#0b0917",
+          "#24213c",
+          "#403b67",
+          "#5f598e",
+          "#7f7bb1",
+          "#a29dd7",
+          "#c6c3f5",
+          "#edecff"
         ]
       },
-      "grafito-2": {
+      "borde-2": {
         "role": "neutral",
-        "displayName": "Grafito claro",
-        "canonical": "#34383e",
-        "oklch": "oklch(33.9% 0.012 258.4)",
+        "displayName": "Borde 2",
+        "canonical": "#4a4175",
+        "oklch": "oklch(40.9% 0.086 290.0)",
         "tonalRamp": [
-          "#0a0b0d",
-          "#24272a",
-          "#42454a",
-          "#62666d",
-          "#858990",
-          "#abaeb3",
-          "#ced1d5",
-          "#eceff2"
-        ]
-      },
-      "sobre-grafito": {
-        "role": "neutral",
-        "displayName": "Sobre grafito",
-        "canonical": "#f4f4f2",
-        "oklch": "oklch(96.7% 0.003 106.4)",
-        "tonalRamp": [
-          "#0b0b0a",
-          "#262625",
-          "#454543",
-          "#666664",
-          "#898987",
-          "#aeaeac",
-          "#d1d1cf",
-          "#eeeeec"
-        ]
-      },
-      "sobre-grafito-2": {
-        "role": "neutral",
-        "displayName": "Sobre grafito tenue",
-        "canonical": "#b8bcc2",
-        "oklch": "oklch(79.4% 0.010 258.3)",
-        "tonalRamp": [
-          "#090b0f",
-          "#24272b",
-          "#42454a",
-          "#63666c",
-          "#86898f",
-          "#aaaeb4",
-          "#cdd1d7",
-          "#ebeff5"
-        ]
-      },
-      "rojo": {
-        "role": "secondary",
-        "displayName": "Rojo corrector",
-        "canonical": "#c8102e",
-        "oklch": "oklch(53.0% 0.207 22.3)",
-        "tonalRamp": [
-          "#270000",
-          "#550004",
-          "#870017",
-          "#bd142c",
-          "#e34e53",
-          "#ff8481",
-          "#ffb1ad",
-          "#ffd6d2"
-        ]
-      },
-      "rojo-fondo": {
-        "role": "secondary",
-        "displayName": "Fondo rojo",
-        "canonical": "#fbe7ea",
-        "oklch": "oklch(94.5% 0.022 7.2)",
-        "tonalRamp": [
-          "#0f090a",
-          "#2d2425",
-          "#4e4143",
-          "#716164",
-          "#948487",
-          "#b8aaac",
-          "#d9cecf",
-          "#f5eced"
-        ]
-      },
-      "azul": {
-        "role": "primary",
-        "displayName": "Azul de editor",
-        "canonical": "#2148c0",
-        "oklch": "oklch(45.6% 0.193 265.3)",
-        "tonalRamp": [
-          "#01032f",
-          "#091e5f",
-          "#1c3b94",
-          "#325bcd",
-          "#5682f0",
-          "#83abff",
-          "#aed0ff",
-          "#d2eeff"
-        ]
-      },
-      "azul-np": {
-        "role": "primary",
-        "displayName": "Azul no reproducible",
-        "canonical": "#cdebf5",
-        "oklch": "oklch(92.1% 0.034 219.9)",
-        "tonalRamp": [
-          "#050d10",
-          "#1b292e",
-          "#35494f",
-          "#526b73",
-          "#758e96",
-          "#9db2b9",
-          "#c4d4da",
-          "#e4f1f6"
-        ]
-      },
-      "azul-fondo": {
-        "role": "primary",
-        "displayName": "Fondo azul",
-        "canonical": "#eaf1fd",
-        "oklch": "oklch(95.6% 0.018 261.3)",
-        "tonalRamp": [
-          "#090b0f",
-          "#23272c",
-          "#41454d",
-          "#616670",
-          "#848993",
-          "#a9aeb6",
-          "#cdd1d8",
-          "#ebeff4"
-        ]
-      },
-      "linea": {
-        "role": "neutral",
-        "displayName": "Filete de mesa",
-        "canonical": "#d3d6db",
-        "oklch": "oklch(87.5% 0.008 260.7)",
-        "tonalRamp": [
-          "#090b0e",
-          "#24272a",
-          "#434549",
-          "#64666b",
-          "#86898e",
-          "#abaeb3",
-          "#ced1d6",
-          "#eceff4"
-        ]
-      },
-      "linea-hoja": {
-        "role": "neutral",
-        "displayName": "Filete de hoja",
-        "canonical": "#e6e8eb",
-        "oklch": "oklch(93.0% 0.005 258.3)",
-        "tonalRamp": [
-          "#0a0b0d",
-          "#252629",
-          "#434547",
-          "#646669",
-          "#87898c",
-          "#acaeb1",
-          "#cfd1d4",
-          "#edeff2"
+          "#0b0917",
+          "#25203d",
+          "#423a67",
+          "#61588e",
+          "#8179b2",
+          "#a49cd7",
+          "#c8c2f6",
+          "#eeecff"
         ]
       },
       "campo-borde": {
         "role": "neutral",
         "displayName": "Borde de campo",
-        "canonical": "#8a9099",
-        "oklch": "oklch(78.4% 0.011 256.7)",
+        "canonical": "#7a6db0",
+        "oklch": "oklch(57.5% 0.102 291.8)",
         "tonalRamp": [
-          "#0a0b0d",
-          "#24272a",
-          "#42454a",
-          "#62666c",
-          "#85898f",
-          "#abaeb3",
-          "#ced1d5",
-          "#eceff2"
+          "#0c0819",
+          "#261e41",
+          "#43376d",
+          "#635596",
+          "#8377ba",
+          "#a699e0",
+          "#c9c0fe",
+          "#eeecff"
         ]
       },
-      "marca-nodo": {
-        "role": "brand",
-        "displayName": "Nodo de la marca",
-        "canonical": "#e0394e",
-        "oklch": "oklch(60.3% 0.202 19.2)",
+      "texto": {
+        "role": "neutral",
+        "displayName": "Texto",
+        "canonical": "#efe9fb",
+        "oklch": "oklch(94.4% 0.025 301.1)",
         "tonalRamp": [
-          "#260000",
-          "#54000b",
-          "#850020",
-          "#ba1a37",
-          "#e1505c",
-          "#fd8488",
-          "#ffb2b2",
-          "#ffd6d6"
+          "#0c0a0e",
+          "#26232b",
+          "#443f4c",
+          "#635e6d",
+          "#857f8f",
+          "#a7a2b3",
+          "#cbc6d5",
+          "#f0ecf7"
         ]
       },
-      "mesa-noche": {
+      "texto-libro": {
         "role": "neutral",
-        "displayName": "Mesa gris fría (nocturno)",
-        "canonical": "#17191c",
-        "oklch": "oklch(21.3% 0.007 258.4)",
+        "displayName": "Texto del libro",
+        "canonical": "#e6dff6",
+        "oklch": "oklch(91.6% 0.032 299.6)",
         "tonalRamp": [
-          "#090b0e",
-          "#24272a",
-          "#434549",
-          "#64666a",
-          "#87898d",
-          "#abaeb2",
-          "#ced1d5",
-          "#eceff3"
-        ],
-        "mode": "dark",
-        "lightCounterpart": "mesa"
+          "#0c0a0f",
+          "#26232d",
+          "#443f4f",
+          "#645d71",
+          "#857e93",
+          "#a8a1b7",
+          "#cbc6d9",
+          "#f0ecfa"
+        ]
       },
-      "hoja-noche": {
+      "texto-2": {
         "role": "neutral",
-        "displayName": "Hoja blanca pura (nocturno)",
-        "canonical": "#212428",
-        "oklch": "oklch(25.9% 0.009 255.6)",
+        "displayName": "Texto 2",
+        "canonical": "#c3badf",
+        "oklch": "oklch(80.8% 0.052 296.4)",
         "tonalRamp": [
-          "#090b0f",
-          "#24272b",
-          "#42454a",
-          "#63666b",
-          "#86898e",
-          "#aaaeb3",
-          "#cdd1d7",
-          "#ebeff4"
-        ],
-        "mode": "dark",
-        "lightCounterpart": "hoja"
+          "#0c0a12",
+          "#262233",
+          "#443d58",
+          "#645b7c",
+          "#857c9f",
+          "#a89fc3",
+          "#cbc4e3",
+          "#f0ebfe"
+        ]
       },
-      "tinta-noche": {
+      "texto-3": {
         "role": "neutral",
-        "displayName": "Tinta casi negra (nocturno)",
-        "canonical": "#e8e6e1",
-        "oklch": "oklch(92.5% 0.007 88.6)",
+        "displayName": "Texto 3",
+        "canonical": "#a99fcc",
+        "oklch": "oklch(72.7% 0.065 294.9)",
         "tonalRamp": [
-          "#0c0b08",
-          "#282623",
-          "#464541",
-          "#686662",
-          "#8b8984",
-          "#b0aea9",
-          "#d3d1cc",
-          "#f0eee9"
-        ],
-        "mode": "dark",
-        "lightCounterpart": "tinta"
+          "#0c0914",
+          "#262137",
+          "#443c5e",
+          "#645a83",
+          "#857ba6",
+          "#a79dca",
+          "#cbc3ea",
+          "#efecfe"
+        ]
       },
-      "tinta-2-noche": {
-        "role": "neutral",
-        "displayName": "Tinta gris (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "tinta-2"
-      },
-      "tinta-3-noche": {
-        "role": "neutral",
-        "displayName": "Tinta tenue (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "tinta-3"
-      },
-      "grafito-noche": {
-        "role": "neutral",
-        "displayName": "Grafito (nocturno)",
-        "canonical": "#0e1012",
-        "oklch": "oklch(17.2% 0.005 248.1)",
+      "lila": {
+        "role": "primary",
+        "displayName": "Lila de desvelo",
+        "canonical": "#b69cff",
+        "oklch": "oklch(75.5% 0.141 294.9)",
         "tonalRamp": [
-          "#090b0d",
-          "#242729",
-          "#434548",
-          "#646669",
-          "#87898c",
-          "#abaeb1",
-          "#ced1d4",
-          "#eceff2"
-        ],
-        "mode": "dark",
-        "lightCounterpart": "grafito"
+          "#0d061d",
+          "#29194a",
+          "#482f7c",
+          "#684ca8",
+          "#896ecd",
+          "#ac92f4",
+          "#cdbffc",
+          "#efebfe"
+        ]
       },
-      "grafito-2-noche": {
-        "role": "neutral",
-        "displayName": "Grafito claro (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "grafito-2"
+      "lila-claro": {
+        "role": "primary",
+        "displayName": "Lila claro",
+        "canonical": "#c9b8ff",
+        "oklch": "oklch(82.2% 0.100 295.1)",
+        "tonalRamp": [
+          "#0c0818",
+          "#281e3f",
+          "#46376b",
+          "#665494",
+          "#8776b8",
+          "#a998dd",
+          "#cdbffb",
+          "#efecfe"
+        ]
       },
-      "sobre-grafito-noche": {
-        "role": "neutral",
-        "displayName": "Sobre grafito (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "sobre-grafito"
+      "sobre-lila": {
+        "role": "primary",
+        "displayName": "Tinta de lila",
+        "canonical": "#1a1235",
+        "oklch": "oklch(21.5% 0.066 290.3)",
+        "tonalRamp": [
+          "#0b0914",
+          "#252137",
+          "#423c5f",
+          "#615b84",
+          "#827ca8",
+          "#a49ecc",
+          "#c8c4ec",
+          "#eeecff"
+        ]
       },
-      "sobre-grafito-2-noche": {
-        "role": "neutral",
-        "displayName": "Sobre grafito tenue (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "sobre-grafito-2"
-      },
-      "rojo-noche": {
+      "durazno": {
         "role": "secondary",
-        "displayName": "Rojo corrector (nocturno)",
-        "canonical": "#ff6b78",
-        "oklch": "oklch(71.4% 0.180 17.6)",
+        "displayName": "Durazno de lámpara",
+        "canonical": "#ffb38a",
+        "oklch": "oklch(83.0% 0.104 49.2)",
         "tonalRamp": [
-          "#240001",
-          "#500011",
-          "#7f1327",
-          "#b32b40",
-          "#d95964",
-          "#f58a8f",
-          "#ffb5b8",
-          "#ffd9da"
-        ],
-        "mode": "dark",
-        "lightCounterpart": "rojo"
+          "#170601",
+          "#3d1a04",
+          "#68300b",
+          "#904d25",
+          "#b46e47",
+          "#da9169",
+          "#f9b896",
+          "#feeadf"
+        ]
       },
-      "rojo-fondo-noche": {
+      "sobre-durazno": {
         "role": "secondary",
-        "displayName": "Fondo rojo (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "rojo-fondo"
-      },
-      "azul-noche": {
-        "role": "primary",
-        "displayName": "Azul de editor (nocturno)",
-        "canonical": "#93b2ff",
-        "oklch": "oklch(77.1% 0.116 266.9)",
+        "displayName": "Tinta de durazno",
+        "canonical": "#2b1607",
+        "oklch": "oklch(22.6% 0.042 54.7)",
         "tonalRamp": [
-          "#030921",
-          "#162449",
-          "#2f4275",
-          "#4963a5",
-          "#6d87c8",
-          "#96ade4",
-          "#bdd1fe",
-          "#deeeff"
-        ],
-        "mode": "dark",
-        "lightCounterpart": "azul"
+          "#100a06",
+          "#2f2219",
+          "#523d2f",
+          "#755b4a",
+          "#977c6a",
+          "#bb9f8c",
+          "#ddc4b3",
+          "#fcebdf"
+        ]
       },
-      "azul-np-noche": {
-        "role": "primary",
-        "displayName": "Azul no reproducible (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "azul-np"
+      "menta": {
+        "role": "tertiary",
+        "displayName": "Menta de guardado",
+        "canonical": "#7fd8be",
+        "oklch": "oklch(81.9% 0.094 173.1)",
+        "tonalRamp": [
+          "#000f0a",
+          "#002d23",
+          "#054e3e",
+          "#01725c",
+          "#39957d",
+          "#5fb89f",
+          "#91dbc4",
+          "#cafbeb"
+        ]
       },
-      "azul-fondo-noche": {
-        "role": "primary",
-        "displayName": "Fondo azul (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "azul-fondo"
+      "sobre-menta": {
+        "role": "tertiary",
+        "displayName": "Tinta de menta",
+        "canonical": "#0f2b23",
+        "oklch": "oklch(26.4% 0.037 172.1)",
+        "tonalRamp": [
+          "#060d0a",
+          "#192924",
+          "#304840",
+          "#4b685f",
+          "#6c8a80",
+          "#8eada2",
+          "#b5d0c7",
+          "#e1f4ed"
+        ]
       },
-      "linea-noche": {
-        "role": "neutral",
-        "displayName": "Filete de mesa (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "linea"
+      "coral": {
+        "role": "error",
+        "displayName": "Coral de alarma",
+        "canonical": "#ff7a85",
+        "oklch": "oklch(73.7% 0.162 16.8)",
+        "tonalRamp": [
+          "#1d0104",
+          "#4a0413",
+          "#7c0b25",
+          "#a92b3f",
+          "#d1515f",
+          "#f97580",
+          "#ffb1b4",
+          "#ffe8e8"
+        ]
       },
-      "linea-hoja-noche": {
-        "role": "neutral",
-        "displayName": "Filete de hoja (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "linea-hoja"
+      "coral-texto": {
+        "role": "error",
+        "displayName": "Coral legible",
+        "canonical": "#ffa3ab",
+        "oklch": "oklch(80.9% 0.110 14.1)",
+        "tonalRamp": [
+          "#180407",
+          "#40141b",
+          "#6c2832",
+          "#95444e",
+          "#ba656e",
+          "#e18890",
+          "#fcb3b8",
+          "#fee8ea"
+        ]
       },
-      "campo-borde-noche": {
-        "role": "neutral",
-        "displayName": "Borde de campo (nocturno)",
-        "mode": "dark",
-        "lightCounterpart": "campo-borde"
+      "sobre-coral": {
+        "role": "error",
+        "displayName": "Tinta de coral",
+        "canonical": "#2b0b10",
+        "oklch": "oklch(20.6% 0.053 13.6)",
+        "tonalRamp": [
+          "#120809",
+          "#331e20",
+          "#58383b",
+          "#7d5558",
+          "#a07679",
+          "#c4989b",
+          "#e5bec0",
+          "#fee8ea"
+        ]
       }
     },
     "typographyMeta": {
@@ -474,245 +364,264 @@
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Título de página y título del capítulo en la hoja."
+        "purpose": "Título de página dentro de la app y de las tarjetas de cuenta."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Títulos de obra, de sección de portada y de la galera de ejemplo."
+        "purpose": "Títulos de panel, pasos de la portada y estados vacíos."
+      },
+      "titulo-obra": {
+        "displayName": "Título de obra",
+        "purpose": "Título del capítulo sobre el manuscrito."
+      },
+      "titulo-historia": {
+        "displayName": "Título de historia",
+        "purpose": "Nombre de cada historia en Mis proyectos y su inicial en círculo."
       },
       "manuscrito": {
         "displayName": "Manuscrito",
-        "purpose": "El texto del autor en el editor; medida máxima 40rem, cifras antiguas."
+        "purpose": "El texto del autor, medida de 40rem."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Interfaz y párrafos de apoyo, con cifras tabulares."
+        "purpose": "Toda la interfaz, con cifras tabulares."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Etiquetas de campo y botones; títulos de grupo del riel y encabezado del margen."
+        "purpose": "Etiquetas de formulario y acciones de tarjeta."
       },
-      "nota": {
-        "displayName": "Nota",
-        "purpose": "Cuerpo de notas al margen, metadatos y estado de guardado."
+      "cifra": {
+        "displayName": "Cifra",
+        "purpose": "Número de palabras del capítulo en el contador del riel."
       }
     },
     "shadows": [
       {
-        "name": "sombra-hoja",
-        "value": "0 1px 2px rgba(22, 24, 27, .08), 0 8px 24px -6px rgba(22, 24, 27, .12)",
-        "purpose": "Única elevación: toda hoja sobre la mesa y el desplegable de estilo de párrafo."
+        "name": "flotante-portada",
+        "value": "0 30px 60px -24px rgba(0, 0, 0, .7)",
+        "purpose": "Solo la tarjeta de ejemplo de la portada, que flota sobre la luna."
       },
       {
-        "name": "sombra-hoja-noche",
-        "value": "0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -8px rgba(0, 0, 0, .55)",
-        "purpose": "La misma hoja en modo nocturno."
+        "name": "menu-desplegable",
+        "value": "0 16px 32px -12px rgba(0, 0, 0, .6)",
+        "purpose": "Opciones del selector de estilo de párrafo."
       },
       {
-        "name": "halo-foco-campo",
-        "value": "0 0 0 3px var(--azul-np)",
-        "purpose": "Campo enfocado, junto con el borde azul."
+        "name": "halo-foco",
+        "value": "0 0 0 3px rgba(182, 156, 255, .25)",
+        "purpose": "Input o select con foco, junto con el borde lila."
       },
       {
-        "name": "anillo-foco",
-        "value": "outline: 2px solid var(--azul); outline-offset: 2px",
-        "purpose": "Foco visible global de enlaces y botones; dentro del riel usa #9fb8ff."
+        "name": "choque",
+        "value": "inset 0 -2px 0 #ff7a85",
+        "purpose": "Línea inferior de la frase que contradice una ficha (sobre fondo coral al 22%)."
       }
     ],
     "motion": [
       {
-        "name": "transicion-control",
-        "value": "background-color .15s ease, border-color .15s ease",
-        "purpose": "Hover de botones y foco de campos."
+        "name": "color-hover",
+        "value": ".15s ease",
+        "purpose": "Transiciones de background-color, border-color, color y box-shadow en hover y foco. Única animación del sistema."
       },
       {
         "name": "pulsar",
-        "value": "transform: translateY(1px)",
+        "value": "translateY(1px)",
         "purpose": "Botón en :active."
       },
       {
-        "name": "trazo-dibujar",
-        "value": "stroke-dashoffset 700ms cubic-bezier(.16,1,.3,1), delay 250ms + 350ms por marca",
-        "purpose": "El tramo sólido del trazo de una marca al margen se dibuja una sola vez al aparecer. Es la única animación del sistema."
-      },
-      {
-        "name": "movimiento-reducido",
-        "value": "@media (prefers-reduced-motion: reduce) { transition: none; animation: none }",
-        "purpose": "Desactiva toda transición y el dibujo del trazo."
+        "name": "reduced-motion",
+        "value": "transition: none; animation: none",
+        "purpose": "prefers-reduced-motion: reduce anula toda transición."
       }
     ],
     "breakpoints": [
       {
-        "name": "riel-angosto",
-        "value": "1100px",
-        "purpose": "Riel a 200px; margen del editor a 12.5rem; la barra de formato baja a una segunda fila."
+        "name": "editor-reparto-estrecho",
+        "value": "1200px"
+      },
+      {
+        "name": "riel-estrecho",
+        "value": "1100px"
+      },
+      {
+        "name": "editor-apilado",
+        "value": "1000px"
       },
       {
         "name": "portada-una-columna",
-        "value": "900px",
-        "purpose": "Portada y «Cómo funciona» en una columna."
+        "value": "900px"
       },
       {
         "name": "movil",
-        "value": "760px",
-        "purpose": "Riel como barra superior; margen bajo el texto; notas apiladas sin trazos."
+        "value": "760px"
       },
       {
         "name": "movil-chico",
-        "value": "480px",
-        "purpose": "La barra pública deja solo «Crear cuenta»."
+        "value": "480px"
       }
-    ],
-    "darkMode": {
-      "strategy": "prefers-color-scheme: dark redefine los mismos custom properties de :root; ver tokens *-noche. El botón principal se invierte a fondo claro con texto #16181b."
-    },
-    "assets": {
-      "fuente": "core/static/core/vendor/literata/*.woff2 (autoalojada, variable 200–900, normal e itálica)",
-      "iconos": "templates/partials/*.svg y core/static/core/img/marca-visto.svg, trazos con currentColor",
-      "marca": "templates/partials/marca.svg; favicon core/static/core/img/marca.svg"
-    }
+    ]
   },
   "components": [
     {
       "name": "Botón principal",
       "kind": "button",
-      "refersTo": "boton",
-      "description": "Bloque de grafito con texto claro; la acción principal de cada pantalla («Probar gratis», «Crear proyecto»).",
+      "refersTo": "button-primary",
+      "description": "Acción principal de cada pantalla: crear, entrar, escribir.",
       "html": "<button class=\"ds-boton\">Crear proyecto</button>",
-      "css": ".ds-boton { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 2.5rem; padding: .5rem 1.05rem; border: 1px solid; border-radius: var(--radio, 6px); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight: 600; font-size: .95rem; line-height: 1.2; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; background: var(--grafito, #24272b); border-color: var(--grafito, #24272b); color: var(--sobre-grafito, #f4f4f2); } .ds-boton:hover { background: var(--grafito-2, #34383e); border-color: var(--grafito-2, #34383e); } .ds-boton:active { transform: translateY(1px); } .ds-boton:focus-visible { outline: 2px solid var(--azul, #2148c0); outline-offset: 2px; }"
+      "css": ".ds-boton { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: .6rem 1.15rem; border: 1.5px solid var(--lila, #b69cff); border-radius: 14px; background: var(--lila, #b69cff); color: var(--sobre-lila, #1a1235); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); font-weight: 750; font-size: .98rem; line-height: 1.2; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; } .ds-boton:hover { background: var(--lila-claro, #c9b8ff); border-color: var(--lila-claro, #c9b8ff); } .ds-boton:active { transform: translateY(1px); } .ds-boton:focus-visible { outline: 2px solid var(--lila, #b69cff); outline-offset: 3px; }"
     },
     {
       "name": "Botón con borde",
       "kind": "button",
-      "refersTo": "boton-borde",
-      "description": "Acción secundaria junto a la principal («Ya tengo cuenta»).",
+      "refersTo": "button-outline",
+      "description": "Acción secundaria junto a un botón principal.",
       "html": "<button class=\"ds-boton-borde\">Ya tengo cuenta</button>",
-      "css": ".ds-boton-borde { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 2.5rem; padding: .5rem 1.05rem; border: 1px solid; border-radius: var(--radio, 6px); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight: 600; font-size: .95rem; line-height: 1.2; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; background: transparent; border-color: var(--campo-borde, #8a9099); color: var(--tinta, #16181b); } .ds-boton-borde:hover { background: var(--hoja, #ffffff); border-color: var(--tinta-3, #646a73); } .ds-boton-borde:active { transform: translateY(1px); } .ds-boton-borde:focus-visible { outline: 2px solid var(--azul, #2148c0); outline-offset: 2px; }"
+      "css": ".ds-boton-borde { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: .6rem 1.15rem; border: 1.5px solid var(--borde-2, #4a4175); border-radius: 14px; background: transparent; color: var(--texto, #efe9fb); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); font-weight: 650; font-size: .98rem; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; } .ds-boton-borde:hover { background: var(--panel-3, #2a2450); border-color: var(--texto-3, #a99fcc); } .ds-boton-borde:focus-visible { outline: 2px solid var(--lila, #b69cff); outline-offset: 3px; }"
     },
     {
-      "name": "Botón rojo (destructivo)",
+      "name": "Botón coral",
       "kind": "button",
-      "refersTo": "boton-rojo",
-      "description": "Solo para confirmar un borrado («Sí, eliminar proyecto»).",
-      "html": "<button class=\"ds-boton-rojo\">Sí, eliminar proyecto</button>",
-      "css": ".ds-boton-rojo { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 2.5rem; padding: .5rem 1.05rem; border: 1px solid; border-radius: var(--radio, 6px); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-weight: 600; font-size: .95rem; line-height: 1.2; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; background: var(--rojo, #c8102e); border-color: var(--rojo, #c8102e); color: #fff; } .ds-boton-rojo:hover { background: #a50d26; border-color: #a50d26; } .ds-boton-rojo:active { transform: translateY(1px); } .ds-boton-rojo:focus-visible { outline: 2px solid var(--azul, #2148c0); outline-offset: 2px; }"
+      "refersTo": "button-danger",
+      "description": "Solo para confirmar un borrado.",
+      "html": "<button class=\"ds-boton-coral\">Sí, eliminar proyecto</button>",
+      "css": ".ds-boton-coral { display: inline-flex; align-items: center; min-height: 2.75rem; padding: .6rem 1.15rem; border: 1.5px solid var(--coral, #ff7a85); border-radius: 14px; background: var(--coral, #ff7a85); color: var(--sobre-coral, #2b0b10); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); font-weight: 750; font-size: .98rem; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; } .ds-boton-coral:hover { background: var(--coral-texto, #ffa3ab); border-color: var(--coral-texto, #ffa3ab); } .ds-boton-coral:focus-visible { outline: 2px solid var(--lila, #b69cff); outline-offset: 3px; }"
     },
     {
       "name": "Campo de texto",
       "kind": "input",
-      "refersTo": "campo",
-      "description": "Campo con etiqueta encima; foco con borde azul y halo azul no reproducible; error en rojo corrector.",
-      "html": "<div class=\"ds-campo\"><label for=\"ds-t\">Título de la nueva historia</label><input id=\"ds-t\" type=\"text\" placeholder=\"Ej. Crónicas de la torre\"><small>Puedes cambiarlo cuando quieras.</small></div>",
-      "css": ".ds-campo { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: var(--tinta, #16181b); max-width: 24rem; } .ds-campo label { display: block; margin-bottom: .35rem; font-weight: 600; font-size: .92rem; } .ds-campo input { width: 100%; box-sizing: border-box; min-height: 2.6rem; padding: .5rem .75rem; border: 1px solid var(--campo-borde, #8a9099); border-radius: var(--radio, 6px); background: var(--hoja, #ffffff); color: var(--tinta, #16181b); font: inherit; transition: border-color .15s ease, box-shadow .15s ease; } .ds-campo input::placeholder { color: var(--tinta-3, #646a73); } .ds-campo input:hover { border-color: var(--tinta-3, #646a73); } .ds-campo input:focus { outline: none; border-color: var(--azul, #2148c0); box-shadow: 0 0 0 3px var(--azul-np, #cdebf5); } .ds-campo small { display: block; margin-top: .35rem; color: var(--tinta-2, #565c66); font-size: .82rem; }"
+      "refersTo": "input",
+      "description": "Input sobre fondo noche, como un pozo dentro del panel.",
+      "html": "<label class=\"ds-campo\"><span>Título de la nueva historia</span><input placeholder=\"Crónicas de la torre\"></label>",
+      "css": ".ds-campo { display: grid; gap: .4rem; font-family: var(--ui, \"Figtree\", system-ui, sans-serif); color: var(--texto, #efe9fb); background: var(--panel-3, #2a2450); padding: 1.2rem 1.3rem; border-radius: 16px; } .ds-campo span { font-weight: 650; font-size: .93rem; } .ds-campo input { min-height: 2.9rem; padding: .6rem .9rem; border: 1.5px solid var(--campo-borde, #7a6db0); border-radius: 12px; background: var(--noche, #17142b); color: var(--texto, #efe9fb); font: inherit; transition: border-color .15s ease, box-shadow .15s ease; } .ds-campo input::placeholder { color: var(--texto-3, #a99fcc); } .ds-campo input:hover { border-color: var(--lila-claro, #c9b8ff); } .ds-campo input:focus { outline: none; border-color: var(--lila, #b69cff); box-shadow: 0 0 0 3px rgba(182, 156, 255, .25); }"
     },
     {
       "name": "Riel de navegación",
       "kind": "nav",
-      "refersTo": "riel",
-      "description": "Columna grafito con la marca, enlaces con icono de trazo y el índice de capítulos; página actual con velo blanco del 10%.",
-      "html": "<nav class=\"ds-riel\" aria-label=\"Navegación\"><a class=\"ds-riel-marca\" href=\"#\"><svg viewBox=\"0 0 32 32\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M5 24.5c4.2-1.1 7.6-4.4 10.4-8.1 2.6-3.4 5.5-6.6 10.6-8.4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><circle cx=\"7\" cy=\"24\" r=\"3.6\" fill=\"currentColor\"/><circle cx=\"25\" cy=\"8.5\" r=\"3.6\" fill=\"#e0394e\"/></svg><span>PlotNode</span></a><a class=\"ds-riel-enlace\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" aria-hidden=\"true\"><path d=\"M6 3.5h9l3 3V20.5H6z M15 3.5v3h3 M9 11h6 M9 14.5h6 M9 18h4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></svg><span>Mis proyectos</span></a><p class=\"ds-riel-titulo\">Crónicas de la torre</p><a class=\"ds-riel-enlace\" href=\"#\" aria-current=\"page\"><span>Capítulo 1</span><span class=\"ds-riel-num\">1,204</span></a><a class=\"ds-riel-enlace\" href=\"#\"><span>Capítulo 2</span><span class=\"ds-riel-num\">876</span></a></nav>",
-      "css": ".ds-riel { display: flex; flex-direction: column; gap: .25rem; width: 240px; padding: 1.1rem .8rem 1rem; background: var(--grafito, #24272b); color: var(--sobre-grafito, #f4f4f2); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-variant-numeric: tabular-nums; } .ds-riel-marca { display: inline-flex; align-items: center; gap: .55rem; padding: 0 .45rem; margin-bottom: 1.4rem; color: var(--sobre-grafito, #f4f4f2); text-decoration: none; font-family: Literata, 'Iowan Old Style', Charter, Georgia, serif; font-weight: 650; font-size: 1.2rem; letter-spacing: -.01em; } .ds-riel-enlace { display: flex; align-items: center; gap: .6rem; padding: .5rem .55rem; border-radius: var(--radio, 6px); color: var(--sobre-grafito-2, #b8bcc2); text-decoration: none; font-size: .95rem; } .ds-riel-enlace:hover { color: var(--sobre-grafito, #f4f4f2); background: rgba(255,255,255,.06); } .ds-riel-enlace[aria-current='page'] { color: var(--sobre-grafito, #f4f4f2); background: rgba(255,255,255,.1); } .ds-riel-enlace:focus-visible { outline: 2px solid #9fb8ff; outline-offset: 2px; } .ds-riel-num { margin-left: auto; font-size: .78rem; color: var(--sobre-grafito-2, #b8bcc2); } .ds-riel-titulo { margin: 1.4rem .55rem .5rem; color: var(--sobre-grafito-2, #b8bcc2); font-size: .8rem; font-weight: 600; }"
+      "refersTo": "rail",
+      "description": "Panel izquierdo con marca, enlaces, índice de capítulos y cuenta.",
+      "html": "<nav class=\"ds-riel\"><a class=\"ds-riel-marca\" href=\"#\"><svg viewBox=\"0 0 32 32\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M5 24.5c4.2-1.1 7.6-4.4 10.4-8.1 2.6-3.4 5.5-6.6 10.6-8.4\" fill=\"none\" stroke=\"#b69cff\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><circle cx=\"7\" cy=\"24\" r=\"3.8\" fill=\"#b69cff\"/><circle cx=\"25\" cy=\"8.5\" r=\"3.8\" fill=\"#ffb38a\"/></svg>PlotNode</a><a class=\"ds-riel-enlace\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" aria-hidden=\"true\"><path d=\"M5 4.5h10.5a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h10.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/></svg>Mis proyectos</a><a class=\"ds-riel-enlace\" href=\"#\" aria-current=\"page\"><span>Capítulo 1</span><span class=\"ds-riel-num\">1,204</span></a><div class=\"ds-riel-cuenta\"><span class=\"ds-avatar\">P</span><span>paula</span></div></nav>",
+      "css": ".ds-riel { display: flex; flex-direction: column; gap: .3rem; width: 250px; padding: 1.3rem 1rem 1rem; border-radius: 22px; background: var(--panel, #1f1a3a); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); } .ds-riel-marca { display: inline-flex; align-items: center; gap: .55rem; padding: 0 .5rem; margin-bottom: 1.2rem; color: var(--texto, #efe9fb); text-decoration: none; font-weight: 800; font-size: 1.35rem; letter-spacing: -.02em; } .ds-riel-enlace { display: flex; align-items: center; justify-content: space-between; gap: .65rem; padding: .7rem .75rem; border-radius: 12px; color: var(--texto-2, #c3badf); text-decoration: none; font-size: .96rem; font-weight: 550; transition: background-color .15s ease, color .15s ease; } .ds-riel-enlace svg { margin-right: auto; } .ds-riel-enlace:hover { background: var(--panel-3, #2a2450); color: var(--texto, #efe9fb); } .ds-riel-enlace[aria-current=\"page\"] { background: var(--lila, #b69cff); color: var(--sobre-lila, #1a1235); font-weight: 750; } .ds-riel-num { font-size: .82rem; } .ds-riel-cuenta { margin-top: 1rem; display: flex; align-items: center; gap: .65rem; padding: .9rem; border-radius: 16px; background: var(--panel-3, #2a2450); color: var(--texto, #efe9fb); font-weight: 700; font-size: .9rem; } .ds-avatar { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--durazno, #ffb38a); color: var(--sobre-durazno, #2b1607); font-weight: 800; } .ds-riel-enlace:focus-visible { outline: 2px solid var(--lila, #b69cff); outline-offset: 3px; }"
     },
     {
-      "name": "Mensaje",
-      "kind": "custom",
-      "refersTo": "mensaje",
-      "description": "Aviso sobre la mesa: hoja con filete y palomita a mano en azul; la variante de error usa rojo corrector.",
-      "html": "<div class=\"ds-mensajes\"><p class=\"ds-mensaje\"><svg viewBox=\"0 0 20 20\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M3.5 10.8c1.6 1.2 2.9 2.6 4 4.3C9.6 10.4 12.6 6.6 16.8 3.8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> Proyecto «Crónicas de la torre» creado.</p><p class=\"ds-mensaje ds-mensaje-error\"><svg viewBox=\"0 0 20 20\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M3.5 10.8c1.6 1.2 2.9 2.6 4 4.3C9.6 10.4 12.6 6.6 16.8 3.8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> No se pudo guardar. Reintentando…</p></div>",
-      "css": ".ds-mensajes { display: grid; gap: .5rem; max-width: 34rem; } .ds-mensaje { display: flex; align-items: center; gap: .6rem; margin: 0; padding: .6rem .9rem; border: 1px solid var(--linea, #d3d6db); border-radius: var(--radio, 6px); background: var(--hoja, #ffffff); color: var(--tinta, #16181b); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: .95rem; } .ds-mensaje svg { flex: none; color: var(--azul, #2148c0); } .ds-mensaje-error { border-color: var(--rojo, #c8102e); } .ds-mensaje-error svg { color: var(--rojo, #c8102e); }"
-    },
-    {
-      "name": "Hoja con margen (editor)",
+      "name": "Tarjeta de obra",
       "kind": "card",
-      "refersTo": "hoja",
-      "description": "La única superficie elevada: texto en Literata a la izquierda y columna «Al margen» de 15rem dentro de la misma hoja.",
-      "html": "<article class=\"ds-hoja\"><div class=\"ds-hoja-texto\"><h1>Capítulo 1</h1><p>Ana parpadeó; sus ojos verdes se llenaron de lágrimas cuando su hermana Lía la abrazó. Nadie en la torre la había visto llorar.</p></div><aside class=\"ds-hoja-margen\"><h2>Al margen</h2><div class=\"ds-nota\"><svg viewBox=\"0 0 28 28\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path d=\"M4.5 13.6c.3-3.8 4.3-7.4 9.9-7.4 5.4 0 9.2 3 9.2 7.2 0 4.6-4.6 8.4-10.4 8.3-5 0-8.9-3.4-8.7-8.1z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"M23.4 14.3c2 .4 3 1.6 3.2 3.4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg><strong>Fichas de personajes</strong>Al seleccionar un nombre, su ficha aparece aquí, junto al párrafo.</div></aside></article>",
-      "css": ".ds-hoja { display: grid; grid-template-columns: minmax(0, 1fr) 15rem; max-width: 46rem; background: var(--hoja, #ffffff); border-radius: 3px; box-shadow: 0 1px 2px rgba(22, 24, 27, .08), 0 8px 24px -6px rgba(22, 24, 27, .12); color: var(--tinta, #16181b); } .ds-hoja-texto { padding: 2.2rem 2rem 2.4rem; min-width: 0; } .ds-hoja-texto h1 { margin: 0 0 1rem; font-family: Literata, 'Iowan Old Style', Charter, Georgia, serif; font-weight: 600; font-size: 2rem; line-height: 1.15; letter-spacing: -.01em; } .ds-hoja-texto p { margin: 0; font-family: Literata, 'Iowan Old Style', Charter, Georgia, serif; font-size: 1.16rem; line-height: 1.85; font-feature-settings: 'kern', 'liga', 'onum'; } .ds-hoja-margen { padding: 2.2rem 1.4rem 2rem 1.2rem; border-left: 1px solid var(--linea-hoja, #e6e8eb); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; } .ds-hoja-margen h2 { margin: .55rem 0 1.4rem; font-size: .82rem; font-weight: 650; color: var(--tinta-2, #565c66); } .ds-nota { color: var(--tinta-2, #565c66); font-size: .88rem; line-height: 1.4; } .ds-nota svg { display: block; margin-bottom: .35rem; color: var(--azul, #2148c0); } .ds-nota strong { display: block; margin-bottom: .2rem; color: var(--azul, #2148c0); }"
+      "refersTo": "card-obra",
+      "description": "Cada historia en Mis proyectos, con su inicial en su color.",
+      "html": "<article class=\"ds-obra\"><span class=\"ds-obra-inicial\">C</span><div><h3>Crónicas de la torre</h3><p>Novela · 3 capítulos · 4,210 palabras</p></div><a class=\"ds-obra-accion\" href=\"#\">Escribir</a></article>",
+      "css": ".ds-obra { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem 1.2rem; padding: 1.1rem 1.3rem; border-radius: 16px; background: var(--panel-3, #2a2450); color: var(--texto, #efe9fb); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); transition: background-color .15s ease; } .ds-obra:hover { background: var(--panel-4, #2e2754); } .ds-obra-inicial { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; background: var(--lila, #b69cff); color: var(--sobre-lila, #1a1235); font-family: var(--libro, \"Literata\", Georgia, serif); font-weight: 600; font-size: 1.3rem; } .ds-obra h3 { margin: 0 0 .25rem; font-family: var(--libro, \"Literata\", Georgia, serif); font-weight: 600; font-size: 1.3rem; letter-spacing: -.01em; } .ds-obra p { margin: 0; color: var(--texto-3, #a99fcc); font-size: .9rem; } .ds-obra-accion { min-height: 2.75rem; display: inline-flex; align-items: center; padding: .6rem 1.15rem; border-radius: 14px; background: var(--lila, #b69cff); color: var(--sobre-lila, #1a1235); font-weight: 750; text-decoration: none; transition: background-color .15s ease; } .ds-obra-accion:hover { background: var(--lila-claro, #c9b8ff); } .ds-obra-accion:focus-visible { outline: 2px solid var(--lila, #b69cff); outline-offset: 3px; }"
     },
     {
-      "name": "Marcas al margen",
-      "kind": "custom",
-      "refersTo": "marca-nota-roja",
-      "description": "Componente firma: palabra marcada en el texto (subrayado azul o óvalo rojo a mano), nota al margen y trazo de lápiz que se dibuja una vez.",
-      "html": "<figure class=\"ds-galera\"><div class=\"ds-galera-cuerpo\"><p class=\"ds-galera-p\"><span class=\"ds-azul\">Ana</span> parpadeó; sus <span class=\"ds-rojo\">ojos cafés</span> se llenaron de lágrimas.</p><aside class=\"ds-mnota ds-mnota-roja\"><strong><svg viewBox=\"0 0 28 28\" width=\"20\" height=\"20\" aria-hidden=\"true\"><path d=\"M4 21.2c3.3-2.2 6.6-6.1 9-11.3M13 9.9c2.2 4.7 5.4 8.6 10.9 11.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M14 22.6v.2M14 14.4v4.4\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\"/></svg>No coincide con la ficha</strong><p>Aquí dice «ojos cafés»; en la ficha de Ana sus ojos son verdes.</p></aside></div><svg class=\"ds-trazo\" viewBox=\"0 0 200 60\" preserveAspectRatio=\"none\" aria-hidden=\"true\"><path class=\"ds-guia\" d=\"M2 40 H150\"/><path class=\"ds-solido\" d=\"M150 40 Q158 40 158 32 V18 Q158 10 166 10 H198\"/></svg></figure>",
-      "css": ".ds-galera { position: relative; margin: 0; max-width: 40rem; padding: 1.6rem 0; background: var(--hoja, #ffffff); border-radius: 3px; box-shadow: 0 1px 2px rgba(22, 24, 27, .08), 0 8px 24px -6px rgba(22, 24, 27, .12); color: var(--tinta, #16181b); } .ds-galera-cuerpo { display: grid; grid-template-columns: minmax(0, 1fr) 13rem; column-gap: 1.8rem; padding: 0 1.8rem 0 2.2rem; } .ds-galera-p { margin: 0; font-family: Literata, 'Iowan Old Style', Charter, Georgia, serif; font-size: 1.08rem; line-height: 1.85; } .ds-azul { text-decoration: underline; text-decoration-color: var(--azul, #2148c0); text-decoration-thickness: 2px; text-underline-offset: .22em; } .ds-rojo { position: relative; white-space: nowrap; } .ds-rojo::after { content: ''; position: absolute; inset: -.08em -.12em; border: 1.6px solid var(--rojo, #c8102e); border-radius: 50% 46% 52% 48% / 58% 50% 54% 46%; transform: rotate(-2deg); pointer-events: none; } .ds-mnota { padding-left: .9rem; border-left: 1px solid var(--linea, #d3d6db); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: .86rem; line-height: 1.4; } .ds-mnota strong { display: flex; align-items: center; gap: .35rem; margin-bottom: .15rem; font-size: .82rem; } .ds-mnota-roja { color: var(--rojo, #c8102e); } .ds-mnota p { margin: 0; color: var(--tinta, #16181b); } .ds-trazo { display: block; width: 100%; height: 24px; margin-top: .6rem; } .ds-trazo path { fill: none; stroke: var(--rojo, #c8102e); stroke-width: 1.4; stroke-linecap: round; } .ds-guia { stroke-dasharray: .5 4.5; opacity: .55; } .ds-solido { stroke-dasharray: 80; stroke-dashoffset: 80; animation: ds-trazar 700ms cubic-bezier(.16,1,.3,1) 250ms forwards; } .ds-galera:hover .ds-solido { animation: none; stroke-dashoffset: 0; } @keyframes ds-trazar { to { stroke-dashoffset: 0; } } @media (prefers-reduced-motion: reduce) { .ds-solido { animation: none; stroke-dashoffset: 0; } }"
+      "name": "Ficha de personaje",
+      "kind": "chip",
+      "refersTo": "chip-ficha",
+      "description": "Píldora clara con la inicial del personaje en su color.",
+      "html": "<span class=\"ds-ficha\"><span class=\"ds-ficha-inicial\">A</span>Ana · 17 · ojos verdes</span> <span class=\"ds-ficha\"><span class=\"ds-ficha-inicial ds-menta\">L</span>Lía · hermana</span>",
+      "css": ".ds-ficha { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .9rem .5rem .5rem; border-radius: 999px; background: var(--texto, #efe9fb); color: var(--sobre-lila, #1a1235); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); font-weight: 750; font-size: .93rem; } .ds-ficha-inicial { display: grid; place-items: center; width: 1.65rem; height: 1.65rem; border-radius: 50%; font-size: .82rem; background: var(--lila, #b69cff); color: var(--sobre-lila, #1a1235); } .ds-ficha-inicial.ds-menta { background: var(--menta, #7fd8be); color: var(--sobre-menta, #0f2b23); }"
     },
     {
-      "name": "Estado de guardado",
+      "name": "Nombre y aviso de continuidad",
       "kind": "custom",
-      "refersTo": "estado-guardado",
-      "description": "Contador de palabras con cifras tabulares y estado de guardado: azul con palomita cuando está guardado, gris con punto si hay cambios, rojo si falla.",
-      "html": "<div class=\"ds-estado\"><span><strong>1,204</strong> palabras</span><span class=\"ds-guardado\" data-estado=\"guardado\"><svg viewBox=\"0 0 20 20\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M3.5 10.8c1.6 1.2 2.9 2.6 4 4.3C9.6 10.4 12.6 6.6 16.8 3.8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg> Guardado a las 19:48</span><span class=\"ds-guardado\" data-estado=\"pendiente\"><i></i>Cambios sin guardar</span><span class=\"ds-guardado\" data-estado=\"error\"><i></i>No se pudo guardar</span></div>",
-      "css": ".ds-estado { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: .88rem; color: var(--tinta-2, #565c66); font-variant-numeric: tabular-nums; } .ds-estado strong { color: var(--tinta, #16181b); } .ds-guardado { display: inline-flex; align-items: center; gap: .35rem; } .ds-guardado svg { width: .95rem; height: .95rem; } .ds-guardado i { display: inline-block; width: .5rem; height: .5rem; margin: 0 .22rem; border-radius: 50%; background: currentColor; } .ds-guardado[data-estado='guardado'] { color: var(--azul, #2148c0); } .ds-guardado[data-estado='pendiente'] { color: var(--tinta-2, #565c66); } .ds-guardado[data-estado='error'] { color: var(--rojo, #c8102e); font-weight: 600; }"
+      "refersTo": "aviso",
+      "description": "Firma: nombres con subrayado ondulado de su color, frase que choca en coral y aviso con punto coral.",
+      "html": "<div class=\"ds-hoja\"><p class=\"ds-texto\"><span class=\"ds-nombre\">Ana</span> parpadeó; sus <span class=\"ds-choca\">ojos cafés</span> se llenaron de lágrimas cuando su hermana <span class=\"ds-nombre ds-nombre-menta\">Lía</span> la abrazó.</p><p class=\"ds-aviso\"><span><strong>Ojo con los ojos de Ana:</strong> en su ficha son verdes.</span></p></div>",
+      "css": ".ds-hoja { padding: 1.9rem 2rem; border-radius: 22px; background: var(--panel-2, #221d3f); } .ds-texto { margin: 0; font-family: var(--libro, \"Literata\", Georgia, serif); font-size: 1.18rem; line-height: 1.85; color: var(--texto-libro, #e6dff6); } .ds-nombre { text-decoration: underline wavy var(--lila, #b69cff); text-underline-offset: .35em; text-decoration-thickness: 1.5px; } .ds-nombre-menta { text-decoration-color: var(--menta, #7fd8be); } .ds-choca { background: rgba(255, 122, 133, .22); border-radius: 4px; padding: 0 .2em; box-shadow: inset 0 -2px 0 var(--coral, #ff7a85); } .ds-aviso { display: flex; gap: .75rem; align-items: flex-start; margin: 1.1rem 0 0; padding: .9rem 1rem; border-radius: 14px; background: var(--panel-4, #2e2754); color: var(--texto, #efe9fb); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); font-size: .96rem; line-height: 1.45; } .ds-aviso::before { content: \"\"; flex: none; width: .6rem; height: .6rem; margin-top: .4rem; border-radius: 50%; background: var(--coral, #ff7a85); } .ds-aviso strong { color: var(--coral-texto, #ffa3ab); }"
+    },
+    {
+      "name": "Barra de formato y guardado",
+      "kind": "custom",
+      "refersTo": "toolbar-button",
+      "description": "Botones redondeados del editor y estado de guardado con punto de color.",
+      "html": "<div class=\"ds-barra\"><span class=\"ds-herramientas\"><button class=\"ds-herr\" aria-label=\"Negritas\"><b>B</b></button><button class=\"ds-herr ds-activo\" aria-label=\"Cursivas\"><i>I</i></button><button class=\"ds-herr\" aria-label=\"Subrayado\"><u>U</u></button></span><span class=\"ds-guardado\">Guardado a las 20:46</span></div>",
+      "css": ".ds-barra { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .85rem 1.3rem; border-bottom: 1px solid var(--borde, #332c5c); background: var(--panel-2, #221d3f); border-radius: 22px 22px 0 0; font-family: var(--ui, \"Figtree\", system-ui, sans-serif); } .ds-herramientas { display: inline-flex; gap: .25rem; } .ds-herr { width: 2.3rem; height: 2.3rem; border: 0; border-radius: 10px; background: var(--panel-4, #2e2754); color: var(--texto, #efe9fb); font: inherit; font-size: 1rem; cursor: pointer; transition: background-color .15s ease; } .ds-herr:hover { background: var(--borde-2, #4a4175); } .ds-herr.ds-activo { background: var(--borde-2, #4a4175); color: var(--lila-claro, #c9b8ff); } .ds-herr:focus-visible { outline: 2px solid var(--lila, #b69cff); outline-offset: 3px; } .ds-guardado { display: inline-flex; align-items: center; gap: .45rem; color: var(--texto-3, #a99fcc); font-size: .9rem; } .ds-guardado::before { content: \"\"; width: .5rem; height: .5rem; border-radius: 50%; background: var(--menta, #7fd8be); }"
+    },
+    {
+      "name": "Estado vacío",
+      "kind": "custom",
+      "description": "Borde punteado y tres puntos de color para lo que todavía no existe.",
+      "html": "<div class=\"ds-vacio\"><span class=\"ds-puntos\"><span></span><span></span><span></span></span><div><strong>Tus personajes vivirán aquí.</strong><p>Pronto podrás crear sus fichas, cada uno con su color.</p></div></div>",
+      "css": ".ds-vacio { display: grid; gap: .9rem; padding: 1.1rem; border: 1.5px dashed var(--borde-2, #4a4175); border-radius: 16px; background: var(--panel, #1f1a3a); color: var(--texto-2, #c3badf); font-family: var(--ui, \"Figtree\", system-ui, sans-serif); font-size: .94rem; } .ds-vacio strong { display: block; margin-bottom: .2rem; color: var(--texto, #efe9fb); } .ds-vacio p { margin: 0; } .ds-puntos { display: flex; } .ds-puntos span { width: 1.9rem; height: 1.9rem; border-radius: 50%; border: 3px solid var(--panel, #1f1a3a); background: var(--lila, #b69cff); } .ds-puntos span + span { margin-left: -.6rem; background: var(--durazno, #ffb38a); } .ds-puntos span + span + span { background: var(--menta, #7fd8be); }"
     }
   ],
   "narrative": {
-    "northStar": "La galera sobre la mesa del corrector",
-    "overview": "La pantalla de PlotNode es una galera de imprenta puesta sobre una mesa gris fría. El texto del autor ocupa la hoja blanca y manda; todo lo que PlotNode aporta (fichas consultadas, alertas del auditor, estados vacíos, avisos) llega como marcas de lápiz en el margen de esa misma hoja. Alrededor, el mobiliario de la mesa es grafito: el riel de navegación y la barra pública son la única masa oscura, y se quedan quietos mientras el autor escribe.\n\nEl sistema es sobrio y de densidad media: una sola superficie elevada (la hoja), tinta casi negra, dos lápices con trabajos fijos (rojo corrector y azul de editor) y ningún otro color con tono. El manuscrito se compone en Literata con interlineado amplio y cifras antiguas; la interfaz habla en la sans del sistema con cifras tabulares, como las anotaciones de un corrector junto a una página impresa. La firma visual son las marcas al margen: una palabra subrayada o encerrada a mano en el texto, unida por un trazo de lápiz a su nota en la columna del margen.\n\nEl mundo rechaza explícitamente el editor flotante sobre gris neutro con barra de herramientas y tarjetas genéricas. Debe sentirse serio para alguien que escribe una novela: nada infantil, caricaturesco ni con apariencia de plantilla.",
+    "northStar": "El cuarto de desvelo",
+    "overview": "PlotNode es un cuarto de escritura a las dos de la mañana: una noche violeta muy oscura (sin negro) sobre la que flotan paneles redondeados y suaves, apenas más claros que el fondo. No hay mesa gris ni barra lateral grafito de software de oficina; el espacio se siente propio, tranquilo y nocturno. El texto del autor, en Literata y en un tono lavanda casi blanco, es lo más legible de la pantalla; la interfaz, en Figtree, se queda en tonos medios y se retira mientras se escribe.\n\nEl color tiene trabajo, no decoración. Tres colores de personaje (lila, durazno y menta) cumplen oficios fijos en toda la app, y el coral aparece solo cuando algo choca o se borra. La firma del sistema es que cada personaje (y cada historia) tiene su color: una inicial en círculo, un subrayado ondulado en el texto y una ficha en píldora, siempre del mismo tono. La densidad es media y el ritmo es amable: paneles grandes, esquinas generosas, contenido corto.\n\nEl movimiento es mínimo: solo transiciones de color de 0.15s al pasar el cursor y un desplazamiento de 1px al pulsar un botón. Sin animaciones decorativas; `prefers-reduced-motion` anula todas las transiciones. Existe un solo tema, el oscuro (`color-scheme: dark`, `theme-color` igual a la noche).",
     "keyCharacteristics": [
-      "Mesa gris fría, hoja blanca pura, tinta casi negra; el grafito solo para el mobiliario (riel, barra, botón principal).",
-      "Dos lápices con trabajos fijos: rojo para corregir, azul para todo lo que PlotNode aporta.",
-      "El margen vive dentro de la hoja, a la derecha del texto, separado por un filete de 1px.",
-      "Literata para la voz del autor y los títulos; sans del sistema para la voz de PlotNode.",
-      "Marcas, iconos y la marca de la casa dibujados como trazos de lápiz en SVG.",
-      "Un solo movimiento: el trazo de la marca se dibuja una vez al aparecer.",
-      "Modo nocturno con la misma lógica: mesa y hoja grafito, lápices aclarados."
+      "Fondo noche violeta y paneles en cuatro pasos de luz, separados por 18px de noche, sin líneas divisorias entre regiones.",
+      "Radios anidados: 22px el panel, 16px la tarjeta, 14px el botón, 12px el campo y el enlace.",
+      "Dos voces tipográficas: Literata para la obra, Figtree para la herramienta.",
+      "Lila, durazno y menta con oficios fijos; coral reservado para alertas, errores y borrar.",
+      "Identidad en círculos: iniciales, avatar, puntos de color y lunas planas.",
+      "Estados vacíos honestos con borde punteado, que anuncian lo que todavía no existe sin fingirlo."
     ],
     "rules": [
       {
-        "name": "La Regla de los Dos Lápices",
-        "body": "El rojo corrector es solo para lo que hay que corregir o borrar; el azul de editor es para todo lo que PlotNode aporta o permite activar. Ningún tercer color con tono entra en la interfaz, y ninguno de los dos lápices se usa como decoración.",
+        "name": "La regla de los oficios fijos",
+        "body": "Lila es acción y «aquí estás», durazno es la persona y lo pendiente, menta es lo guardado y lo correcto. Un color de personaje nunca cambia de oficio entre pantallas; entre personajes el ciclo es lila, menta, durazno; entre historias, solo lila y menta (durazno queda para la persona).",
         "section": "colors"
       },
       {
-        "name": "La Regla del Grafito",
-        "body": "El grafito es mobiliario: riel, barra pública y botón principal. Nunca es fondo del texto del autor en modo claro, y nunca se usa para tarjetas o paneles dentro de la mesa.",
+        "name": "La regla del coral escaso",
+        "body": "El coral solo marca alertas de continuidad, errores y la acción de borrar. Si algo coral no es un problema ni una pérdida, está mal.",
         "section": "colors"
       },
       {
-        "name": "La Regla de las Dos Manos",
-        "body": "Literata es la voz del autor y de los títulos; la sans del sistema es la voz de PlotNode. Una nota al margen nunca se compone en Literata, y el manuscrito nunca en sans.",
+        "name": "La regla de la noche sin negro",
+        "body": "Todos los neutros llevan el mismo matiz violeta (≈288° en OKLCH); no hay grises ni negros puros en superficies. La profundidad se gana subiendo luz dentro de ese matiz.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de las dos voces",
+        "body": "Literata solo para lo que pertenece a la obra: manuscrito, títulos de capítulo e historia, iniciales de historia y texto de ejemplo. Todo lo que es herramienta (botones, navegación, etiquetas, avisos, títulos de panel) va en Figtree.",
         "section": "typography"
       },
       {
-        "name": "La Regla de las Cifras",
-        "body": "La interfaz usa cifras tabulares (contadores de palabras, fechas, metadatos); el manuscrito usa cifras antiguas.",
+        "name": "La regla del titular pesado",
+        "body": "Los titulares de interfaz van en Figtree 800 con tracking negativo y `text-wrap: balance`; los pasos intermedios (550, 650, 750) existen gracias a la fuente variable y se usan para jerarquía fina, no para titulares.",
         "section": "typography"
       },
       {
-        "name": "La Regla del Margen Interior",
-        "body": "Las notas de PlotNode viven en la columna de margen dentro de la hoja, a la derecha del texto y alineadas con el párrafo que comentan. Nunca en un panel flotante, una tarjeta aparte ni una ventana modal.",
+        "name": "La regla de los paneles sobre la noche",
+        "body": "Cada región de la app es un panel redondeado separado de los demás por noche, nunca por una línea. La única línea interna permitida es la que separa la barra de formato del texto.",
         "section": "layout"
       },
       {
-        "name": "La Regla de la Hoja Única",
-        "body": "Solo el papel se levanta de la mesa. Botones, mensajes, notas y el riel no llevan sombra.",
+        "name": "La regla de la luz por capas",
+        "body": "Lo que está más arriba es más claro. Una sombra solo aparece cuando algo flota por encima de la página (menú, tarjeta de demostración); los paneles y tarjetas de trabajo son planos.",
         "section": "elevation"
       },
       {
-        "name": "La Regla del Lápiz",
-        "body": "Lo geométrico es de la imprenta (hoja, controles, filetes); lo orgánico es del lápiz (marcas, trazos, iconos). Nunca se mezclan: no hay botones con forma de mano ni marcas con esquinas rectas.",
+        "name": "La regla del radio anidado",
+        "body": "Un elemento dentro de otro siempre tiene un radio menor que su contenedor. Nada es cuadrado; nada usa radios de píldora salvo las fichas.",
         "section": "shapes"
+      },
+      {
+        "name": "La regla del estado vacío honesto",
+        "body": "Lo que todavía no existe se dibuja con borde punteado y se explica en texto; nunca se simula con datos falsos ni con controles que no hacen nada.",
+        "section": "components"
+      },
+      {
+        "name": "La regla del punto de color",
+        "body": "El estado (guardado, pendiente, éxito, error, aviso) se comunica con un punto de color junto a un texto que lo dice en palabras; el color nunca es la única señal.",
+        "section": "components"
       }
     ],
     "dos": [
-      "**Do** poner todo texto del autor sobre la hoja blanca (`hoja`) con sombra de hoja, sobre la mesa gris fría (`mesa`).",
-      "**Do** reservar el rojo corrector (`rojo`) para alertas, errores y borrar, y el azul de editor (`azul`) para enlaces, foco, nombres con ficha y estado guardado.",
-      "**Do** componer el manuscrito en Literata 1.16rem con interlineado 1.85 y medida máxima de 40rem.",
-      "**Do** colocar cada nota de PlotNode en la columna de margen de 15rem dentro de la hoja, alineada con su párrafo y unida a la palabra por un trazo de lápiz.",
-      "**Do** dibujar iconos y marcas como trazos SVG con extremos redondeados (1.6–2.4px), heredando `currentColor`.",
-      "**Do** usar 6px de radio para controles y 3px para hojas, y filetes de 1px para separar.",
-      "**Do** redefinir los mismos tokens para el modo nocturno en lugar de crear colores nuevos: mesa y hoja grafito, lápices aclarados.",
-      "**Do** desactivar transiciones y animaciones con `prefers-reduced-motion: reduce`."
+      "**Do** construir cada pantalla como paneles redondeados (22px) sobre la noche (`noche`), separados por 18px.",
+      "**Do** subir de Panel a Panel 4 para indicar capas: tarjeta sobre panel, aviso sobre tarjeta.",
+      "**Do** asignar a cada personaje un color del ciclo lila, menta, durazno (y a cada historia lila o menta), y repetir ese color en su inicial, su subrayado ondulado y su ficha.",
+      "**Do** usar Literata solo para la obra (manuscrito a 1.19rem / 1.9 y 40rem de medida, títulos de capítulo e historia) y Figtree para toda la interfaz.",
+      "**Do** acompañar cada color de estado con texto que diga lo mismo (punto menta + «Guardado»).",
+      "**Do** limitar el movimiento a transiciones de color de 0.15s y respetar `prefers-reduced-motion`.",
+      "**Do** mantener un solo tema oscuro (`color-scheme: dark`)."
     ],
     "donts": [
-      "**Don't** construir el editor como una tarjeta flotante sobre gris neutro con barra de herramientas encima; la barra de formato vive sobre la mesa, sin caja.",
-      "**Don't** introducir un tercer color con tono ni usar el rojo o el azul como decoración, fondo de sección o acento de marca (el nodo rojo del logotipo es la única excepción).",
-      "**Don't** abrir paneles flotantes, tarjetas aparte o modales para mostrar fichas o alertas; van al margen.",
-      "**Don't** dar sombra a botones, mensajes, notas o al riel; solo la hoja se levanta.",
-      "**Don't** componer notas al margen o etiquetas de interfaz en Literata, ni el manuscrito en sans.",
-      "**Don't** animar nada salvo el trazo de la marca al aparecer.",
-      "**Don't** usar iconos de fuente, emoji ni ilustraciones caricaturescas; el registro es el de una mesa de corrección, no el de una app infantil."
+      "**Don't** volver a la barra lateral grafito ni a la mesa gris de software de oficina.",
+      "**Don't** usar coral para nada que no sea alerta, error o borrar.",
+      "**Don't** cambiar el oficio de un color de personaje (lila no marca éxito; menta no es acción principal).",
+      "**Don't** separar regiones de la app con líneas divisorias ni levantar paneles de trabajo con sombras.",
+      "**Don't** usar Literata en botones, navegación o etiquetas.",
+      "**Don't** añadir animaciones decorativas (entradas, rebotes, parallax).",
+      "**Don't** mostrar funciones que todavía no existen como si funcionaran; usa el estado vacío honesto."
     ]
   }
 }

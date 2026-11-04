@@ -8,7 +8,6 @@
   const contenedor = document.getElementById("editor");
   const urlGuardar = contenedor.dataset.urlGuardar;
   const csrf = document.querySelector("[name=csrfmiddlewaretoken]").value;
-  const elPalabras = document.getElementById("palabras");
   const elEstado = document.getElementById("estado-guardado");
 
   const quill = new Quill(contenedor, {
@@ -34,7 +33,8 @@
     return coincidencias ? coincidencias.length : 0;
   }
   function actualizarContador() {
-    elPalabras.textContent = contarPalabras().toLocaleString("es-MX");
+    const n = contarPalabras().toLocaleString("es-MX");
+    document.querySelectorAll("[data-palabras]").forEach(function (el) { el.textContent = n; });
   }
 
   // --- Estado de guardado ---------------------------------------------------

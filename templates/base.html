@@ -3,26 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#17142b">
   <title>{% block titulo %}PlotNode{% endblock %} · PlotNode</title>
   <link rel="icon" href="{% static 'core/img/marca.svg' %}" type="image/svg+xml">
-  <link rel="preload" href="{% static 'core/vendor/literata/literata-latin-standard-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'core/vendor/figtree/figtree-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{% static 'core/css/app.css' %}">
   {% block head %}{% endblock %}
 </head>
 <body class="{% block body_class %}publico{% endblock %}">
   {% block shell %}
-  <header class="barra">
+  {% block fondo %}{% endblock %}
+  <header class="barra" style="position:relative">
     <a class="marca" href="{% if user.is_authenticated %}{% url 'proyectos' %}{% else %}{% url 'inicio' %}{% endif %}">
       {% include "partials/marca.svg" %}
       <span>PlotNode</span>
     </a>
     <nav class="barra-nav" aria-label="Cuenta">
       {% if user.is_authenticated %}
-        <a href="{% url 'proyectos' %}">Mis proyectos</a>
+        <a class="boton" href="{% url 'proyectos' %}">Mis proyectos</a>
       {% else %}
         <a href="{% url 'login' %}">Iniciar sesión</a>
-        <a class="boton boton-claro" href="{% url 'registro' %}">Crear cuenta</a>
+        <a class="boton" href="{% url 'registro' %}">Crear cuenta</a>
       {% endif %}
     </nav>
   </header>

@@ -25,21 +25,22 @@
 |---|---|---|
 | ![Inicio](../img/01-inicio.png) | ![Proyectos](../img/03-proyectos.png) | ![Editor](../img/04-editor.png) |
 
-## Rediseño visual: «Galeradas»
+## Identidad visual: «Desvelo»
 
-La interfaz se rediseñó con una identidad propia inspirada en las pruebas de imprenta (galeras) y las marcas del corrector de estilo:
+Primero se probó un estilo editorial («Galeradas»), pero se sentía demasiado corporativo. Se hicieron tres maquetas alternativas y el equipo eligió **«Desvelo»**, pensada para escribir de noche:
 
-- **Mesa y hoja:** el texto vive en una hoja blanca sobre una mesa gris; la navegación va en un riel color grafito.
-- **Dos lápices con trabajos fijos:** azul para lo que PlotNode aporta (enlaces, foco, nombres con ficha) y rojo solo para alertas, errores y borrar.
-- **Marcas al margen:** el editor tiene una columna «Al margen» dentro de la hoja, donde aparecerán las fichas y las alertas del auditor. La portada muestra un ejemplo con trazos de lápiz.
-- **Tipografía:** Literata (libre, incluida en el repositorio) para el manuscrito y los títulos; la sans del sistema para la interfaz.
-- **Modo nocturno automático** según la configuración del equipo, y diseño adaptado a celular.
+- **Paneles redondeados sobre violeta oscuro**, sin barras grises de oficina.
+- **Cada personaje con su color** (lila, menta, durazno): su inicial en un círculo, su nombre subrayado con una onda de su color y su ficha en una píldora. En la portada se muestra un ejemplo; en el editor, el panel «Reparto de este capítulo» espera a las fichas de la iteración 2.
+- **Coral solo para avisos, errores y borrar.**
+- **Tipografía:** Figtree para la interfaz y Literata para el manuscrito (ambas libres e incluidas en el repositorio).
+- Adaptado a celular; contraste AA en textos y bordes de campos.
+- En la portada, lo que todavía no existe (fichas y auditor) aparece marcado como «Pronto».
 
-El sistema completo (colores, tipografía, componentes y reglas) está documentado en [`DESIGN.md`](../../DESIGN.md); el contexto del producto, en [`PRODUCT.md`](../../PRODUCT.md).
+El sistema completo está en [`DESIGN.md`](../../DESIGN.md) y el contexto del producto en [`PRODUCT.md`](../../PRODUCT.md).
 
-| Modo nocturno | Celular |
+| Editor en celular | Portada en celular |
 |---|---|
-| ![Editor en modo nocturno](../img/05-editor-nocturno.png) | ![Portada en celular](../img/06-inicio-celular.png) |
+| ![Editor en celular](../img/05-editor-celular.png) | ![Portada en celular](../img/06-inicio-celular.png) |
 
 ## Guion de la demo (3 minutos)
 

@@ -5,24 +5,24 @@ primary_target: "core/templates/core/editor.html"
 related_targets: ["core/templates/core/inicio.html","core/templates/core/proyectos.html","templates/base.html"]
 ---
 
-# Superficies de la app PlotNode (portada, cuentas, mis obras, editor)
+# Superficies de la app PlotNode (portada, cuentas, mis proyectos, editor)
 
-Scope: rediseño completo con identidad nueva. Modo: Operate (mis obras, editor, cuentas); la portada es Persuade dentro del mismo mundo.
-Audiencia y tarea: escritores de ficción en español escriben capítulos largos y consultan datos de sus personajes sin salir del texto. Prueba disponible: el propio mecanismo (fichas al margen, alertas del auditor); no hay testimonios ni métricas reales.
-Restricciones: $0, Django templates + JS sin compilar, Quill. Evitar lo genérico o "hecho por IA" y lo infantil o caricaturesco.
+Scope: rediseño completo con identidad «Desvelo», elegida por la usuaria a partir de la maqueta B tras pedir algo menos corporativo que «Galeradas». Modo: Operate (mis proyectos, editor, cuentas); la portada es Persuade dentro del mismo mundo.
+Audiencia y tarea: escritores de ficción en español (novela y fanfic) que escriben de noche y consultan datos de sus personajes sin salir del texto. Prueba disponible: el propio mecanismo; no hay testimonios ni métricas reales.
+Restricciones: $0, Django templates + JS sin compilar, Quill; no mostrar funciones que todavía no existen (meta diaria, reparto real, revisar coherencia) como si funcionaran.
 
 ## Direction contract
 
-THESIS: La pantalla es una galera de imprenta sobre la mesa del corrector: el texto del autor ocupa la hoja y todo lo que PlotNode aporta llega como marcas de lápiz en el margen. Rechaza el editor flotante sobre gris neutro con barra de herramientas y tarjetas genéricas.
+THESIS: Un cuarto de escritura de madrugada: paneles redondeados y suaves sobre un violeta muy oscuro, donde cada personaje tiene su color y el texto del autor es lo más luminoso de la pantalla. Rechaza la barra lateral grafito y la mesa gris de software de oficina.
 
-OWN-WORLD: Mesa gris fría (#E9EAEC) con hoja blanca pura; riel y barra superior en grafito (#24272B) con texto blanco; tinta casi negra. Dos lápices con trabajos fijos: rojo corrector (#C8102E) solo para alertas, errores y borrar; azul de editor (#2148C0) para enlaces, foco y nombres con ficha, con resaltado azul no reproducible (#CDEBF5) en selección. Manuscrito en Literata (autoalojada); interfaz en la sans del sistema con cifras tabulares. Marcas de corrección dibujadas en SVG. Modo nocturno: mesa grafito y hoja oscura, mismos lápices aclarados.
+OWN-WORLD: Fondo noche #17142b; paneles #1f1a3a / #221d3f / #2a2450 con radios de 22, 16 y 12 px; texto #efe9fb y del libro #e6dff6. Tres colores de personaje con trabajos fijos: lila #b69cff (acción principal, selección, actual), durazno #ffb38a (avatar del usuario, pendiente) y menta #7fd8be (guardado, éxito); coral #ff7a85 solo para alertas, errores y borrar. Figtree (autoalojada) para la interfaz, Literata para títulos de obra y manuscrito. Nombres de personaje con subrayado ondulado de su color.
 
-STORY: El autor entiende que su texto es lo principal, que el contexto de su mundo aparece al margen sin cambiar de ventana y que la IA señala, no reescribe. Crea cuenta, abre una obra y escribe.
+STORY: La escritora entra a un espacio tranquilo y propio, ve sus historias como objetos con color, abre una y escribe; entiende que su reparto vivirá al lado del texto y que PlotNode avisa pero no escribe.
 
-FIRST VIEWPORT: Editor: riel grafito a la izquierda (marca, Mis obras, índice de capítulos, cuenta); arriba sobre la mesa, migas (obra › capítulo), formato y estado de guardado; al centro la hoja blanca de 72ch con el título del capítulo y una columna de margen de ~220px dentro de la hoja, a la derecha del texto, con encabezado "Al margen". Portada: titular confirmado a la izquierda y, a la derecha, una galera de ejemplo con nombres marcados en azul y una marca roja al margen que conecta "ojos cafés" con la ficha (ojos verdes); acción principal "Probar gratis" bajo el titular.
+FIRST VIEWPORT: Editor: tres paneles sobre la noche: izquierda (marca, Mis proyectos, índice de capítulos con palabras, contador «En este capítulo», cuenta con avatar durazno), centro (barra de formato redondeada y estado de guardado con punto menta; migas, título del capítulo en Literata y el texto a 40rem), derecha «Reparto de este capítulo» con estado vacío honesto. Portada: titular confirmado en Figtree 800 a la izquierda; a la derecha dos lunas planas (violeta y durazno), una tarjeta de ejemplo con nombres subrayados en ondas de color y un aviso coral, y fichas en píldoras; «Empezar a escribir gratis» bajo el titular.
 
-FORM: Galeradas y marcas de corrección de estilo; candidato 1 de mi lista ordenada; seed: da044ef0664cc430.
+FORM: Maqueta B «Desvelo» del lienzo de maquetas; elegida por la usuaria (pin del brief, sustituye la tirada anterior); seed: da044ef0664cc430.
 
-SIGNATURE: Marcas al margen — cada nota (ficha consultada, alerta del auditor, estado vacío) vive en la columna de margen alineada con su párrafo y unida a la palabra por un trazo de lápiz. Movimiento: el trazo se dibuja una vez (stroke) al aparecer la marca; nada más se anima. Respeta prefers-reduced-motion.
+SIGNATURE: Cada personaje con su color: inicial en círculo, subrayado ondulado en el texto y píldora de ficha del mismo color. Sin animaciones decorativas; solo transiciones de color en hover. Respeta prefers-reduced-motion.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

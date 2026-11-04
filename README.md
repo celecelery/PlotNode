@@ -18,11 +18,11 @@ El backlog completo está en [`docs/entregables/PlotNode - Product Backlog.xlsx`
 
 ## Diseño
 
-Identidad visual «Galeradas»: la hoja de texto sobre la mesa del corrector, con lápiz azul para lo que PlotNode aporta y lápiz rojo para lo que hay que corregir. Sistema completo en [`DESIGN.md`](DESIGN.md); contexto del producto en [`PRODUCT.md`](PRODUCT.md).
+Identidad visual «Desvelo»: un espacio para escribir de noche, con paneles redondeados sobre violeta oscuro, el texto en Literata y cada personaje con su color (lila, menta y durazno). Sistema completo en [`DESIGN.md`](DESIGN.md); contexto del producto en [`PRODUCT.md`](PRODUCT.md).
 
 ## Tecnologías (todo gratis)
 
-Python 3.12+ · Django 5.2 LTS · SQLite · Quill 2 (editor) · Literata (fuente libre, incluida) · GitHub Actions · PythonAnywhere (plan gratuito) · API de Gemini en su nivel gratuito (iteración 3).
+Python 3.12+ · Django 5.2 LTS · SQLite · Quill 2 (editor) · Figtree y Literata (fuentes libres, incluidas) · GitHub Actions · PythonAnywhere (plan gratuito) · API de Gemini en su nivel gratuito (iteración 3).
 
 ## Correr el proyecto en tu computadora
 

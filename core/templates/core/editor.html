@@ -17,58 +17,61 @@
       </a></li>
     {% endfor %}
   </ol>
+  <div class="contador">
+    <span class="contador-etiqueta">En este capítulo</span>
+    <span class="contador-cifra"><strong id="palabras" data-palabras>{{ capitulo.palabras }}</strong> palabras</span>
+  </div>
 {% endblock %}
 
-{% block main_class %}mesa mesa-editor{% endblock %}
-{% block contenido %}
-<div class="barra-hoja">
-  <nav class="migas" aria-label="Ubicación">
-    <a href="{% url 'proyectos' %}">Mis proyectos</a>
-    <span aria-hidden="true">/</span>
-    <span>{{ proyecto.titulo }}</span>
-    <span aria-hidden="true">/</span>
-    <span aria-current="page">{{ capitulo.titulo }}</span>
-  </nav>
-  <div id="barra-formato" class="barra-formato" role="toolbar" aria-label="Formato del texto">
-    <select class="ql-header" aria-label="Estilo de párrafo">
-      <option value="2">Título</option>
-      <option value="3">Subtítulo</option>
-      <option selected></option>
-    </select>
-    <span class="ql-formats">
-      <button type="button" class="ql-bold" aria-label="Negritas"></button>
-      <button type="button" class="ql-italic" aria-label="Cursivas"></button>
-      <button type="button" class="ql-underline" aria-label="Subrayado"></button>
-    </span>
-    <span class="ql-formats">
-      <button type="button" class="ql-blockquote" aria-label="Cita"></button>
-      <button type="button" class="ql-list" value="bullet" aria-label="Lista"></button>
-      <button type="button" class="ql-clean" aria-label="Quitar formato"></button>
-    </span>
-  </div>
-  <div class="estado" aria-live="polite">
-    <span class="estado-palabras"><strong id="palabras">{{ capitulo.palabras }}</strong> palabras</span>
-    <span id="estado-guardado" class="guardado" data-estado="guardado">Guardado</span>
-  </div>
-</div>
+{% block area %}
+<div class="area-editor">
+  <main class="panel-texto">
+    <div class="barra-hoja">
+      <div id="barra-formato" class="barra-formato" role="toolbar" aria-label="Formato del texto">
+        <select class="ql-header" aria-label="Estilo de párrafo">
+          <option value="2">Título</option>
+          <option value="3">Subtítulo</option>
+          <option selected></option>
+        </select>
+        <span class="ql-formats">
+          <button type="button" class="ql-bold" aria-label="Negritas"></button>
+          <button type="button" class="ql-italic" aria-label="Cursivas"></button>
+          <button type="button" class="ql-underline" aria-label="Subrayado"></button>
+        </span>
+        <span class="ql-formats">
+          <button type="button" class="ql-blockquote" aria-label="Cita"></button>
+          <button type="button" class="ql-list" value="bullet" aria-label="Lista"></button>
+          <button type="button" class="ql-clean" aria-label="Quitar formato"></button>
+        </span>
+      </div>
+      <span class="estado-movil"><strong data-palabras>{{ capitulo.palabras }}</strong> palabras</span>
+      <span id="estado-guardado" class="guardado" data-estado="guardado" aria-live="polite">Guardado</span>
+    </div>
+    <article class="hoja-texto">
+      <nav class="migas" aria-label="Ubicación">
+        <a href="{% url 'proyectos' %}">Mis proyectos</a>
+        <span aria-hidden="true">/</span>
+        <span>{{ proyecto.titulo }}</span>
+      </nav>
+      <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
+      <div id="editor" data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}"></div>
+    </article>
+    {% csrf_token %}
+    {{ capitulo.contenido|json_script:"contenido-inicial" }}
+  </main>
 
-<article class="hoja hoja-editor">
-  <div class="hoja-texto">
-    <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
-    <div id="editor" data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}"></div>
-  </div>
-  <aside class="margen" aria-labelledby="margen-titulo">
-    <h2 id="margen-titulo" class="margen-titulo">Al margen</h2>
-    <div class="nota-margen">
-      {% include "partials/ico-ficha.svg" %}
-      <strong>Fichas de personajes</strong>
-      Pronto, al seleccionar un nombre en tu texto, su ficha aparecerá aquí, junto al párrafo donde lo mencionas.
+  <aside class="reparto" aria-labelledby="reparto-titulo">
+    {% include "partials/mensajes.html" %}
+    <div class="reparto-panel">
+      <h2 id="reparto-titulo">Reparto de este capítulo</h2>
+      <div class="reparto-vacio">
+        <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
+        <p><strong>Tus personajes vivirán aquí.</strong> Pronto podrás crear sus fichas y, al seleccionar un nombre en el texto, verás su edad, rasgos y relaciones, cada uno con su color.</p>
+      </div>
+      <p class="atajo">Se guarda solo mientras escribes. <kbd>Ctrl</kbd> + <kbd>S</kbd> guarda al instante.</p>
     </div>
   </aside>
-  {% csrf_token %}
-  {{ capitulo.contenido|json_script:"contenido-inicial" }}
-</article>
-<p class="atajo">Se guarda solo mientras escribes. <kbd>Ctrl</kbd> + <kbd>S</kbd> guarda al instante.</p>
+</div>
 {% endblock %}
 
 {% block scripts %}
