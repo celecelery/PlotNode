@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titulo %}Mis proyectos{% endblock %}
+{% block contenido %}
+<div class="encabezado">
+  <div>
+    <h1>Mis proyectos</h1>
+    <p class="sutil" style="margin:0">Cada proyecto es una historia: novela, fanfic o relato.</p>
+  </div>
+</div>
+
+<form method="post" class="nuevo-proyecto tarjeta" aria-label="Nuevo proyecto">
+  {% csrf_token %}
+  <p>{{ form.titulo.label_tag }}{{ form.titulo }}{{ form.titulo.errors }}</p>
+  <p>{{ form.genero.label_tag }}{{ form.genero }}</p>
+  <button class="boton" type="submit">Crear proyecto</button>
+</form>
+
+{% if proyectos %}
+  <ul class="lista-proyectos">
+    {% for p in proyectos %}
+      <li class="proyecto">
+        <div>
+          <h2>{{ p.titulo }}</h2>
+          <div class="proyecto-meta">
+            <span class="etiqueta">{{ p.get_genero_display }}</span>
+            {{ p.capitulos.all|length }} capítulo{{ p.capitulos.all|length|pluralize }} ·
+            {{ p.palabras }} palabra{{ p.palabras|pluralize }} ·
+            editado {{ p.actualizado|timesince }}
+          </div>
+        </div>
+        <div class="proyecto-acciones">
+          <a href="{% url 'proyecto_editar' p.pk %}">Renombrar</a>
+          <a href="{% url 'proyecto_eliminar' p.pk %}" style="color:var(--peligro)">Eliminar</a>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="vacio">
+    <p><strong>Aún no tienes proyectos.</strong></p>
+    <p>Escribe un título arriba y pulsa «Crear proyecto» para empezar.</p>
+  </div>
+{% endif %}
+{% endblock %}

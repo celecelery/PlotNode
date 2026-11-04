@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block titulo %}Renombrar proyecto{% endblock %}
+{% block contenido %}
+<div class="angosto"><div class="tarjeta">
+  <h1>Renombrar proyecto</h1>
+  <form method="post">{% csrf_token %}{{ form.as_p }}
+    <div class="acciones"><button class="boton" type="submit">Guardar</button><a href="{% url 'proyectos' %}">Cancelar</a></div>
+  </form>
+</div></div>
+{% endblock %}

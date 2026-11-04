@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titulo %}Eliminar proyecto{% endblock %}
+{% block contenido %}
+<div class="angosto"><div class="tarjeta">
+  <h1>¿Eliminar «{{ proyecto.titulo }}»?</h1>
+  <p>Se borrarán sus {{ proyecto.capitulos.count }} capítulo{{ proyecto.capitulos.count|pluralize }} y sus fichas. <strong>Esta acción no se puede deshacer.</strong></p>
+  <form method="post">{% csrf_token %}
+    <div class="acciones"><button class="boton boton-peligro" type="submit">Sí, eliminar</button><a href="{% url 'proyectos' %}">Cancelar</a></div>
+  </form>
+</div></div>
+{% endblock %}
