@@ -1,0 +1,25 @@
+name: Pruebas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    env:
+      DEBUG: "True"
+      SECRET_KEY: "clave-solo-para-ci"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+      - name: Revisar migraciones pendientes
+        run: python manage.py makemigrations --check --dry-run
+      - name: Correr pruebas
+        run: python manage.py test
