@@ -16,9 +16,13 @@ Entorno de escritura web para escritores de ficción: une el manuscrito y las fi
 
 El backlog completo está en [`docs/entregables/PlotNode - Product Backlog.xlsx`](docs/entregables/).
 
+## Diseño
+
+Identidad visual «Galeradas»: la hoja de texto sobre la mesa del corrector, con lápiz azul para lo que PlotNode aporta y lápiz rojo para lo que hay que corregir. Sistema completo en [`DESIGN.md`](DESIGN.md); contexto del producto en [`PRODUCT.md`](PRODUCT.md).
+
 ## Tecnologías (todo gratis)
 
-Python 3.12+ · Django 5.2 LTS · SQLite · Quill 2 (editor) · GitHub Actions · PythonAnywhere (plan gratuito) · API de Gemini en su nivel gratuito (iteración 3).
+Python 3.12+ · Django 5.2 LTS · SQLite · Quill 2 (editor) · Literata (fuente libre, incluida) · GitHub Actions · PythonAnywhere (plan gratuito) · API de Gemini en su nivel gratuito (iteración 3).
 
 ## Correr el proyecto en tu computadora
 

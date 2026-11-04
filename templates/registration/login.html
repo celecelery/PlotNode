@@ -1,21 +1,19 @@
 {% extends "base.html" %}
 {% block titulo %}Iniciar sesión{% endblock %}
 {% block contenido %}
-<div class="angosto">
-  <div class="tarjeta">
-    <h1>Iniciar sesión</h1>
-    <p class="sutil">Retoma tu historia donde la dejaste.</p>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.non_field_errors }}
-      {{ form.as_p }}
-      <input type="hidden" name="next" value="{{ next }}">
-      <div class="acciones">
-        <button class="boton" type="submit">Entrar</button>
-        <a class="pequeno" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
-      </div>
-    </form>
-  </div>
-  <p class="sutil pequeno" style="text-align:center">¿Nueva/o en PlotNode? <a href="{% url 'registro' %}">Crea una cuenta</a></p>
+<div class="hoja hoja-cuenta">
+  <h1>Iniciar sesión</h1>
+  <p class="entrada">Retoma tu historia donde la dejaste.</p>
+  <form method="post" class="formulario">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <div class="acciones">
+      <button class="boton" type="submit">Entrar</button>
+      <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+    </div>
+  </form>
 </div>
+<p class="pie-cuenta">¿Nueva o nuevo en PlotNode? <a href="{% url 'registro' %}">Crea una cuenta gratis</a></p>
 {% endblock %}

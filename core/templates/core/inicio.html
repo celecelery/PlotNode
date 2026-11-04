@@ -1,17 +1,57 @@
 {% extends "base.html" %}
+{% load static %}
 {% block titulo %}Escribe sin perder el hilo{% endblock %}
 {% block contenido %}
 <section class="portada">
-  <h1>Escribe tu novela sin perderte en tus notas ni cometer errores de continuidad</h1>
-  <p>PlotNode une tu manuscrito y las fichas de tus personajes en una sola pantalla, y te avisa cuando tu historia se contradice. Tu historia la escribes tú.</p>
-  <div class="acciones" style="justify-content:center">
-    <a class="boton" href="{% url 'registro' %}">Probar gratis</a>
-    <a class="boton boton-secundario" href="{% url 'login' %}">Ya tengo cuenta</a>
+  <div>
+    <h1>Escribe tu novela sin perderte en tus notas ni cometer errores de continuidad</h1>
+    <p class="portada-sub">PlotNode pone tu manuscrito y las fichas de tus personajes en la misma hoja. Lo que necesitas recordar aparece al margen, y si un párrafo contradice tu historia, te lo marca. Nunca escribe por ti.</p>
+    <div class="acciones">
+      <a class="boton boton-grande" href="{% url 'registro' %}">Probar gratis</a>
+      <a class="boton boton-borde boton-grande" href="{% url 'login' %}">Ya tengo cuenta</a>
+    </div>
+    <p class="portada-nota">Gratis y en español. Tus textos son tuyos.</p>
   </div>
+
+  <figure class="galera hoja" data-marcas style="margin:0">
+    <div class="galera-cuerpo">
+      <h3 class="galera-titulo">Capítulo 7</h3>
+      <p class="galera-parrafo"><span class="marcado-azul" id="m-ana">Ana</span> parpadeó; sus <span class="marcado-rojo" id="m-ojos">ojos cafés</span> se llenaron de lágrimas cuando su hermana Lía la abrazó.</p>
+      <aside class="marca-nota marca-nota-roja" id="n-ojos">
+        <strong>{% include "partials/ico-alerta.svg" %}No coincide con la ficha</strong>
+        <p>Aquí dice «ojos cafés»; en la ficha de Ana sus ojos son verdes.</p>
+      </aside>
+      <p class="galera-parrafo">Nadie en la torre la había visto llorar. <span class="marcado-azul" id="m-capitana">La capitana</span> no lloraba nunca, ni siquiera la noche del incendio.</p>
+      <aside class="marca-nota marca-nota-azul" id="n-ana">
+        <strong>{% include "partials/ico-ficha.svg" %}Ana, «la capitana»</strong>
+        <p>17 años · ojos verdes<br>hermano: Leo</p>
+      </aside>
+    </div>
+    <svg class="trazos" aria-hidden="true">
+      <path class="trazo-azul" data-desde="m-capitana" data-hasta="n-ana"/>
+      <path class="trazo-rojo" data-desde="m-ojos" data-hasta="n-ojos"/>
+    </svg>
+    <figcaption class="galera-pie">Ejemplo: así se ve una ficha consultada y una alerta en el margen.</figcaption>
+  </figure>
 </section>
-<section class="ventajas">
-  <div class="tarjeta"><h3>Todo en un lugar</h3><p>Tu texto y tus notas de personajes, lado a lado. Sin libretas ni pestañas extra.</p></div>
-  <div class="tarjeta"><h3>Fichas al instante</h3><p>Selecciona un nombre y su ficha aparece en el panel lateral.</p></div>
-  <div class="tarjeta"><h3>Auditor de coherencia</h3><p>Te avisa si un párrafo contradice lo que ya definiste. No escribe por ti.</p></div>
+
+<section class="como" aria-labelledby="como-titulo">
+  <h2 id="como-titulo">Cómo funciona</h2>
+  <ol class="pasos">
+    <li class="paso">
+      {% include "partials/ico-insertar.svg" %}
+      <div><h3>Escribe en la hoja</h3><p>Tu capítulo ocupa el centro de la pantalla y se guarda solo mientras escribes.</p></div>
+    </li>
+    <li class="paso">
+      {% include "partials/ico-ficha.svg" %}
+      <div><h3>Consulta al margen</h3><p>Selecciona el nombre de un personaje y su ficha aparece a un lado: edad, rasgos, relaciones. Sin libretas ni otras pestañas.</p></div>
+    </li>
+    <li class="paso paso-rojo">
+      {% include "partials/ico-alerta.svg" %}
+      <div><h3>Recibe marcas, no reescrituras</h3><p>El auditor compara tu párrafo con tus fichas y marca lo que no coincide. Tú decides qué corregir.</p></div>
+    </li>
+  </ol>
 </section>
+<p class="pie-portada">PlotNode · Proyecto de Negocios Electrónicos, Ingeniería de Software, UAZ · 2026</p>
 {% endblock %}
+{% block scripts %}<script src="{% static 'core/js/marcas.js' %}" defer></script>{% endblock %}

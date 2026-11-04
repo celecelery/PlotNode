@@ -51,7 +51,7 @@ def proyectos(request):
         messages.success(request, f"Proyecto «{proyecto.titulo}» creado.")
         return redirect("proyectos")
     lista = request.user.proyectos.prefetch_related("capitulos")
-    return render(request, "core/proyectos.html", {"form": form, "proyectos": lista})
+    return render(request, "core/proyectos.html", {"form": form, "proyectos": lista, "seccion": "proyectos"})
 
 
 @login_required
@@ -63,7 +63,7 @@ def proyecto_editar(request, pk):
         form.save()
         messages.success(request, "Proyecto actualizado.")
         return redirect("proyectos")
-    return render(request, "core/proyecto_form.html", {"form": form, "proyecto": proyecto})
+    return render(request, "core/proyecto_form.html", {"form": form, "proyecto": proyecto, "seccion": "proyectos"})
 
 
 @login_required
@@ -75,7 +75,7 @@ def proyecto_eliminar(request, pk):
         proyecto.delete()
         messages.success(request, f"Proyecto «{titulo}» eliminado.")
         return redirect("proyectos")
-    return render(request, "core/proyecto_eliminar.html", {"proyecto": proyecto})
+    return render(request, "core/proyecto_eliminar.html", {"proyecto": proyecto, "seccion": "proyectos"})
 
 
 # --- Editor (HU-06) ----------------------------------------------------------

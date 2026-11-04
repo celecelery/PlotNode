@@ -20,3 +20,6 @@ media/
 .DS_Store
 Thumbs.db
 ~$*
+
+# Capturas de revisión de diseño (se regeneran)
+.impeccable/review/

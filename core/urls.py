@@ -1,11 +1,17 @@
+from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
 from . import views
+from .forms import LoginForm, NuevaContrasenaForm, RecuperarForm
 
 urlpatterns = [
     path("", views.inicio, name="inicio"),
     # Cuentas (HU-02): login, logout y recuperación de contraseña vienen de Django.
     path("cuentas/registro/", views.registro, name="registro"),
+    path("cuentas/login/", auth_views.LoginView.as_view(authentication_form=LoginForm), name="login"),
+    path("cuentas/password_reset/", auth_views.PasswordResetView.as_view(form_class=RecuperarForm), name="password_reset"),
+    path("cuentas/reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(form_class=NuevaContrasenaForm),
+         name="password_reset_confirm"),
     path("cuentas/", include("django.contrib.auth.urls")),
     # Proyectos (HU-04)
     path("proyectos/", views.proyectos, name="proyectos"),

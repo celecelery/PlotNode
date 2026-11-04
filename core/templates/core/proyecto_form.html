@@ -1,10 +1,11 @@
-{% extends "base.html" %}
+{% extends "app_base.html" %}
 {% block titulo %}Renombrar proyecto{% endblock %}
 {% block contenido %}
-<div class="angosto"><div class="tarjeta">
+<div class="hoja hoja-cuenta" style="margin-left:0">
   <h1>Renombrar proyecto</h1>
-  <form method="post">{% csrf_token %}{{ form.as_p }}
-    <div class="acciones"><button class="boton" type="submit">Guardar</button><a href="{% url 'proyectos' %}">Cancelar</a></div>
+  <p class="entrada">Cambia el título o el tipo de «{{ proyecto.titulo }}».</p>
+  <form method="post" class="formulario">{% csrf_token %}{{ form.as_p }}
+    <div class="acciones"><button class="boton" type="submit">Guardar cambios</button><a href="{% url 'proyectos' %}">Cancelar</a></div>
   </form>
-</div></div>
+</div>
 {% endblock %}

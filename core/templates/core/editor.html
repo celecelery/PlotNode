@@ -1,43 +1,76 @@
-{% extends "base.html" %}
+{% extends "app_base.html" %}
 {% load static %}
 {% block titulo %}{{ capitulo.titulo }} · {{ proyecto.titulo }}{% endblock %}
 {% block head %}
   <link rel="stylesheet" href="{% static 'core/vendor/quill/quill.snow.css' %}">
   <link rel="stylesheet" href="{% static 'core/css/editor.css' %}">
 {% endblock %}
-{% block body_class %}pagina-editor{% endblock %}
-{% block main_class %}espacio{% endblock %}
-{% block contenido %}
-<aside class="capitulos" aria-label="Capítulos">
-  <a class="volver pequeno" href="{% url 'proyectos' %}">← Mis proyectos</a>
-  <h2 class="proyecto-titulo">{{ proyecto.titulo }}</h2>
-  <ol class="lista-capitulos">
+{% block body_class %}app pagina-editor{% endblock %}
+
+{% block riel_extra %}
+  <p class="riel-titulo" id="riel-capitulos-titulo">{{ proyecto.titulo }}</p>
+  <ol class="riel-capitulos" aria-labelledby="riel-capitulos-titulo">
     {% for c in capitulos %}
-      <li><a href="{{ c.get_absolute_url }}" {% if c.pk == capitulo.pk %}aria-current="page"{% endif %}>{{ c.titulo }}</a></li>
+      <li><a href="{{ c.get_absolute_url }}" {% if c.pk == capitulo.pk %}aria-current="page"{% endif %}>
+        <span class="cap-titulo">{{ c.titulo }}</span>
+        <span class="cap-palabras">{{ c.palabras }}</span>
+      </a></li>
     {% endfor %}
   </ol>
-</aside>
+{% endblock %}
 
-<section class="hoja" aria-label="Manuscrito">
-  <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
-  <div id="editor"
-       data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}"></div>
+{% block main_class %}mesa mesa-editor{% endblock %}
+{% block contenido %}
+<div class="barra-hoja">
+  <nav class="migas" aria-label="Ubicación">
+    <a href="{% url 'proyectos' %}">Mis proyectos</a>
+    <span aria-hidden="true">/</span>
+    <span>{{ proyecto.titulo }}</span>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ capitulo.titulo }}</span>
+  </nav>
+  <div id="barra-formato" class="barra-formato" role="toolbar" aria-label="Formato del texto">
+    <select class="ql-header" aria-label="Estilo de párrafo">
+      <option value="2">Título</option>
+      <option value="3">Subtítulo</option>
+      <option selected></option>
+    </select>
+    <span class="ql-formats">
+      <button type="button" class="ql-bold" aria-label="Negritas"></button>
+      <button type="button" class="ql-italic" aria-label="Cursivas"></button>
+      <button type="button" class="ql-underline" aria-label="Subrayado"></button>
+    </span>
+    <span class="ql-formats">
+      <button type="button" class="ql-blockquote" aria-label="Cita"></button>
+      <button type="button" class="ql-list" value="bullet" aria-label="Lista"></button>
+      <button type="button" class="ql-clean" aria-label="Quitar formato"></button>
+    </span>
+  </div>
+  <div class="estado" aria-live="polite">
+    <span class="estado-palabras"><strong id="palabras">{{ capitulo.palabras }}</strong> palabras</span>
+    <span id="estado-guardado" class="guardado" data-estado="guardado">Guardado</span>
+  </div>
+</div>
+
+<article class="hoja hoja-editor">
+  <div class="hoja-texto">
+    <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
+    <div id="editor" data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}"></div>
+  </div>
+  <aside class="margen" aria-labelledby="margen-titulo">
+    <h2 id="margen-titulo" class="margen-titulo">Al margen</h2>
+    <div class="nota-margen">
+      {% include "partials/ico-ficha.svg" %}
+      <strong>Fichas de personajes</strong>
+      Pronto, al seleccionar un nombre en tu texto, su ficha aparecerá aquí, junto al párrafo donde lo mencionas.
+    </div>
+  </aside>
   {% csrf_token %}
   {{ capitulo.contenido|json_script:"contenido-inicial" }}
-</section>
-
-<aside class="panel" aria-label="Fichas del proyecto">
-  <h2>Fichas</h2>
-  <p class="sutil pequeno">Aquí aparecerán las fichas de tus personajes. Al seleccionar un nombre en el texto, verás su ficha sin salir del editor.</p>
-  <p class="panel-proximamente pequeno">Disponible en la siguiente versión.</p>
-</aside>
-
-<footer class="estado" aria-live="polite">
-  <span><strong id="palabras">{{ capitulo.palabras }}</strong> palabras</span>
-  <span id="estado-guardado" class="guardado" data-estado="guardado">Guardado</span>
-  <span class="pequeno sutil atajo">Ctrl + S para guardar ahora</span>
-</footer>
+</article>
+<p class="atajo">Se guarda solo mientras escribes. <kbd>Ctrl</kbd> + <kbd>S</kbd> guarda al instante.</p>
 {% endblock %}
+
 {% block scripts %}
   <script src="{% static 'core/vendor/quill/quill.js' %}"></script>
   <script src="{% static 'core/js/editor.js' %}"></script>

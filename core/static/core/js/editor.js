@@ -15,13 +15,7 @@
     theme: "snow",
     placeholder: "Empieza a escribir tu capítulo…",
     modules: {
-      toolbar: [
-        [{ header: [2, 3, false] }],
-        ["bold", "italic", "underline"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["blockquote"],
-        ["clean"],
-      ],
+      toolbar: "#barra-formato",   // barra propia en la parte superior de la mesa
     },
   });
 
@@ -72,6 +66,8 @@
       });
       const datos = await resp.json().catch(() => ({}));
       if (!resp.ok || !datos.ok) throw new Error(datos.error || `Error ${resp.status}`);
+      const enIndice = document.querySelector('.riel-capitulos [aria-current="page"] .cap-palabras');
+      if (enIndice) enIndice.textContent = datos.palabras.toLocaleString("es-MX");
       mostrarEstado(hayCambios ? "pendiente" : "guardado",
                     hayCambios ? "Cambios sin guardar" : `Guardado a las ${datos.guardado}`);
     } catch (err) {

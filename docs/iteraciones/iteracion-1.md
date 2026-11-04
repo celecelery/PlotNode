@@ -25,6 +25,22 @@
 |---|---|---|
 | ![Inicio](../img/01-inicio.png) | ![Proyectos](../img/03-proyectos.png) | ![Editor](../img/04-editor.png) |
 
+## Rediseño visual: «Galeradas»
+
+La interfaz se rediseñó con una identidad propia inspirada en las pruebas de imprenta (galeras) y las marcas del corrector de estilo:
+
+- **Mesa y hoja:** el texto vive en una hoja blanca sobre una mesa gris; la navegación va en un riel color grafito.
+- **Dos lápices con trabajos fijos:** azul para lo que PlotNode aporta (enlaces, foco, nombres con ficha) y rojo solo para alertas, errores y borrar.
+- **Marcas al margen:** el editor tiene una columna «Al margen» dentro de la hoja, donde aparecerán las fichas y las alertas del auditor. La portada muestra un ejemplo con trazos de lápiz.
+- **Tipografía:** Literata (libre, incluida en el repositorio) para el manuscrito y los títulos; la sans del sistema para la interfaz.
+- **Modo nocturno automático** según la configuración del equipo, y diseño adaptado a celular.
+
+El sistema completo (colores, tipografía, componentes y reglas) está documentado en [`DESIGN.md`](../../DESIGN.md); el contexto del producto, en [`PRODUCT.md`](../../PRODUCT.md).
+
+| Modo nocturno | Celular |
+|---|---|
+| ![Editor en modo nocturno](../img/05-editor-nocturno.png) | ![Portada en celular](../img/06-inicio-celular.png) |
+
 ## Guion de la demo (3 minutos)
 
 1. Abrir la página de inicio y pulsar **Probar gratis**.

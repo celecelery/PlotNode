@@ -3,45 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>{% block titulo %}PlotNode{% endblock %} · PlotNode</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='8' cy='22' r='5' fill='%231F3A5F'/%3E%3Ccircle cx='24' cy='10' r='5' fill='%23C9822B'/%3E%3Cpath d='M11 19 21 13' stroke='%231F3A5F' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="icon" href="{% static 'core/img/marca.svg' %}" type="image/svg+xml">
+  <link rel="preload" href="{% static 'core/vendor/literata/literata-latin-standard-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{% static 'core/css/app.css' %}">
   {% block head %}{% endblock %}
 </head>
-<body class="{% block body_class %}{% endblock %}">
+<body class="{% block body_class %}publico{% endblock %}">
+  {% block shell %}
   <header class="barra">
     <a class="marca" href="{% if user.is_authenticated %}{% url 'proyectos' %}{% else %}{% url 'inicio' %}{% endif %}">
-      <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
-        <circle cx="8" cy="22" r="5" fill="currentColor"/>
-        <circle cx="24" cy="10" r="5" class="nodo-acento"/>
-        <path d="M11 19 21 13" stroke="currentColor" stroke-width="3"/>
-      </svg>
-      PlotNode
+      {% include "partials/marca.svg" %}
+      <span>PlotNode</span>
     </a>
-    <nav class="nav">
+    <nav class="barra-nav" aria-label="Cuenta">
       {% if user.is_authenticated %}
         <a href="{% url 'proyectos' %}">Mis proyectos</a>
-        <span class="nav-usuario">{{ user.username }}</span>
-        <form method="post" action="{% url 'logout' %}" class="en-linea">
-          {% csrf_token %}
-          <button type="submit" class="boton-enlace">Cerrar sesión</button>
-        </form>
       {% else %}
         <a href="{% url 'login' %}">Iniciar sesión</a>
-        <a class="boton boton-chico" href="{% url 'registro' %}">Crear cuenta</a>
+        <a class="boton boton-claro" href="{% url 'registro' %}">Crear cuenta</a>
       {% endif %}
     </nav>
   </header>
-
-  {% if messages %}
-    <div class="mensajes" role="status">
-      {% for m in messages %}<p class="mensaje mensaje-{{ m.tags }}">{{ m }}</p>{% endfor %}
-    </div>
-  {% endif %}
-
-  <main class="{% block main_class %}contenido{% endblock %}">
+  {% include "partials/mensajes.html" %}
+  <main class="{% block main_class %}mesa{% endblock %}">
     {% block contenido %}{% endblock %}
   </main>
+  {% endblock %}
   {% block scripts %}{% endblock %}
 </body>
 </html>

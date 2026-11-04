@@ -1,45 +1,59 @@
-{% extends "base.html" %}
+{% extends "app_base.html" %}
+{% load humanize %}
 {% block titulo %}Mis proyectos{% endblock %}
 {% block contenido %}
-<div class="encabezado">
-  <div>
-    <h1>Mis proyectos</h1>
-    <p class="sutil" style="margin:0">Cada proyecto es una historia: novela, fanfic o relato.</p>
-  </div>
-</div>
+<header class="encabezado-pagina">
+  <h1>Mis proyectos</h1>
+  <p>Cada proyecto es una historia: novela, fanfic o relato.</p>
+</header>
 
-<form method="post" class="nuevo-proyecto tarjeta" aria-label="Nuevo proyecto">
+<form method="post" class="nueva-obra hoja" aria-label="Nuevo proyecto">
   {% csrf_token %}
-  <p>{{ form.titulo.label_tag }}{{ form.titulo }}{{ form.titulo.errors }}</p>
-  <p>{{ form.genero.label_tag }}{{ form.genero }}</p>
+  {{ form.titulo.errors }}
+  <div class="campo">
+    <label for="{{ form.titulo.id_for_label }}">Título de la nueva historia</label>
+    {{ form.titulo }}
+  </div>
+  <div class="campo">
+    <label for="{{ form.genero.id_for_label }}">Tipo</label>
+    {{ form.genero }}
+  </div>
   <button class="boton" type="submit">Crear proyecto</button>
 </form>
 
 {% if proyectos %}
-  <ul class="lista-proyectos">
-    {% for p in proyectos %}
-      <li class="proyecto">
-        <div>
+  <section class="galera-obras hoja" aria-label="Tus proyectos">
+    <ul class="lista-obras">
+      {% for p in proyectos %}
+        {% with n=p.capitulos.all|length palabras=p.palabras %}
+        <li class="obra">
           <h2><a href="{{ p.get_absolute_url }}">{{ p.titulo }}</a></h2>
-          <div class="proyecto-meta">
-            <span class="etiqueta">{{ p.get_genero_display }}</span>
-            {{ p.capitulos.all|length }} capítulo{{ p.capitulos.all|length|pluralize }} ·
-            {{ p.palabras }} palabra{{ p.palabras|pluralize }} ·
-            editado hace {{ p.actualizado|timesince }}
+          <p class="obra-datos">
+            <span class="obra-tipo">{{ p.get_genero_display }}</span>
+            <span>{{ n }} capítulo{{ n|pluralize }} · {{ palabras }} palabra{{ palabras|pluralize }}</span>
+            <span>Editado {{ p.actualizado|naturaltime|lower }}</span>
+          </p>
+          <div class="obra-acciones">
+            <a class="obra-escribir" href="{{ p.get_absolute_url }}">Escribir</a>
+            <a href="{% url 'proyecto_editar' p.pk %}">Renombrar</a>
+            <a class="enlace-rojo" href="{% url 'proyecto_eliminar' p.pk %}">Eliminar</a>
           </div>
-        </div>
-        <div class="proyecto-acciones">
-          <a class="boton boton-chico" href="{{ p.get_absolute_url }}">Escribir</a>
-          <a href="{% url 'proyecto_editar' p.pk %}">Renombrar</a>
-          <a href="{% url 'proyecto_eliminar' p.pk %}" style="color:var(--peligro)">Eliminar</a>
-        </div>
-      </li>
-    {% endfor %}
-  </ul>
+        </li>
+        {% endwith %}
+      {% endfor %}
+    </ul>
+  </section>
 {% else %}
-  <div class="vacio">
-    <p><strong>Aún no tienes proyectos.</strong></p>
-    <p>Escribe un título arriba y pulsa «Crear proyecto» para empezar.</p>
+  <div class="obra-vacia hoja">
+    <div class="obra-vacia-texto">
+      <h2>Aún no tienes proyectos</h2>
+      <p>Escribe el título de tu historia en el formulario de arriba y pulsa «Crear proyecto».</p>
+    </div>
+    <p class="nota-margen">
+      {% include "partials/ico-insertar.svg" %}
+      <strong>Un capítulo para empezar</strong>
+      Cada proyecto nace con su primer capítulo. Puedes cambiarle el nombre cuando quieras.
+    </p>
   </div>
 {% endif %}
 {% endblock %}
