@@ -1,0 +1,60 @@
+from django.contrib import admin
+
+from .models import Alerta, Atributo, Capitulo, Evento, Ficha, Perfil, Proyecto
+
+
+class CapituloInline(admin.TabularInline):
+    model = Capitulo
+    fields = ("orden", "titulo", "palabras", "actualizado")
+    readonly_fields = ("palabras", "actualizado")
+    extra = 0
+
+
+@admin.register(Proyecto)
+class ProyectoAdmin(admin.ModelAdmin):
+    list_display = ("titulo", "dueno", "genero", "es_plantilla", "actualizado")
+    list_filter = ("genero", "es_plantilla")
+    search_fields = ("titulo", "dueno__username")
+    inlines = [CapituloInline]
+
+
+@admin.register(Capitulo)
+class CapituloAdmin(admin.ModelAdmin):
+    list_display = ("titulo", "proyecto", "orden", "palabras", "actualizado")
+    search_fields = ("titulo", "proyecto__titulo")
+
+
+class AtributoInline(admin.TabularInline):
+    model = Atributo
+    extra = 1
+
+
+@admin.register(Ficha)
+class FichaAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "tipo", "proyecto")
+    list_filter = ("tipo",)
+    search_fields = ("nombre", "terminos")
+    readonly_fields = ("terminos",)
+    inlines = [AtributoInline]
+
+
+@admin.register(Alerta)
+class AlertaAdmin(admin.ModelAdmin):
+    list_display = ("capitulo", "ficha", "estado", "creada")
+    list_filter = ("estado",)
+
+
+@admin.register(Evento)
+class EventoAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "tipo", "proyecto", "valor", "fecha")
+    list_filter = ("tipo", "usuario")
+    date_hierarchy = "fecha"
+
+
+@admin.register(Perfil)
+class PerfilAdmin(admin.ModelAdmin):
+    list_display = ("user", "onboarding_completado", "acepto_privacidad")
+
+
+admin.site.site_header = "PlotNode · Administración"
+admin.site.site_title = "PlotNode"
