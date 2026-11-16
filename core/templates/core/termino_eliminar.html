@@ -1,0 +1,11 @@
+{% extends "app_base.html" %}
+{% block titulo %}Eliminar término{% endblock %}
+{% block contenido %}
+<div class="hoja hoja-cuenta hoja-lateral">
+  <h1>¿Eliminar «{{ termino.nombre }}»?</h1>
+  <p class="entrada">Las palabras marcadas con este término en tus capítulos dejarán de mostrar su definición. Tu texto no cambia. <strong>No se puede deshacer.</strong></p>
+  <form method="post">{% csrf_token %}
+    <div class="acciones"><button class="boton boton-coral" type="submit">Sí, eliminar término</button><a href="{% url 'glosario' proyecto.pk %}">Cancelar</a></div>
+  </form>
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@
 {% block titulo %}{{ capitulo.titulo }} · {{ proyecto.titulo }}{% endblock %}
 {% block head %}
   <link rel="stylesheet" href="{% static 'core/vendor/quill/quill.snow.css' %}">
+  <link rel="stylesheet" href="{% static 'core/css/gestion.css' %}">
   <link rel="stylesheet" href="{% static 'core/css/editor.css' %}">
 {% endblock %}
 {% block body_class %}app pagina-editor{% endblock %}
@@ -17,6 +18,13 @@
       </a></li>
     {% endfor %}
   </ol>
+  <div class="riel-capitulos-acciones">
+    <form method="post" action="{% url 'capitulo_nuevo' proyecto.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="boton boton-borde">+ Nuevo capítulo</button>
+    </form>
+    <a href="{% url 'capitulos_gestion' proyecto.pk %}">Gestionar capítulos</a>
+  </div>
   <div class="contador">
     <span class="contador-etiqueta">En este capítulo</span>
     <span class="contador-cifra"><strong id="palabras" data-palabras>{{ capitulo.palabras }}</strong> palabras</span>
@@ -24,57 +32,201 @@
 {% endblock %}
 
 {% block area %}
-<div class="area-editor">
-  <main class="panel-texto">
+<div class="area-editor" id="area-editor" data-reparto="abierto">
+  <main class="panel-texto" id="panel-texto" data-barra="visible">
     <div class="barra-hoja">
-      <div id="barra-formato" class="barra-formato" role="toolbar" aria-label="Formato del texto">
-        <select class="ql-header" aria-label="Estilo de párrafo">
-          <option value="2">Título</option>
-          <option value="3">Subtítulo</option>
-          <option selected></option>
-        </select>
-        <span class="ql-formats">
-          <button type="button" class="ql-bold" aria-label="Negritas"></button>
-          <button type="button" class="ql-italic" aria-label="Cursivas"></button>
-          <button type="button" class="ql-underline" aria-label="Subrayado"></button>
-        </span>
-        <span class="ql-formats">
-          <button type="button" class="ql-blockquote" aria-label="Cita"></button>
-          <button type="button" class="ql-list" value="bullet" aria-label="Lista"></button>
-          <button type="button" class="ql-clean" aria-label="Quitar formato"></button>
-        </span>
-      </div>
+      <button type="button" class="boton-barra" id="btn-barra" aria-pressed="true" aria-controls="barra-formato">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Formato</span>
+      </button>
       <span class="estado-movil"><strong data-palabras>{{ capitulo.palabras }}</strong> palabras</span>
       <span id="estado-guardado" class="guardado" data-estado="guardado" aria-live="polite">Guardado</span>
+      <button type="button" class="boton-barra" id="btn-reparto" aria-expanded="true" aria-controls="reparto">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5M16 6.5a2.6 2.6 0 0 1 0 5M17.5 14.7c1.7.5 2.8 1.9 3.2 4.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Panel</span>
+      </button>
     </div>
-    <article class="hoja-texto">
-      <nav class="migas" aria-label="Ubicación">
-        <a href="{% url 'proyectos' %}">Mis proyectos</a>
-        <span aria-hidden="true">/</span>
-        <span>{{ proyecto.titulo }}</span>
-      </nav>
-      <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
-      <div id="editor" data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}"></div>
-    </article>
+    <div class="cuerpo-texto">
+      <div id="barra-formato" class="barra-formato" role="group" aria-label="Formato del texto">
+        <details class="barra-seccion" open>
+          <summary>Texto</summary>
+          <div class="barra-selects">
+            <select class="ql-header" aria-label="Estilo de párrafo">
+              <option value="2">Título</option>
+              <option value="3">Subtítulo</option>
+              <option selected></option>
+            </select>
+            <select class="ql-font" aria-label="Tipo de letra">
+              <option selected></option>
+              <option value="Figtree">Figtree</option>
+            </select>
+            <select class="ql-size" aria-label="Tamaño de letra">
+              <option value="14px">14</option>
+              <option value="16px">16</option>
+              <option selected></option>
+              <option value="22px">22</option>
+              <option value="28px">28</option>
+            </select>
+          </div>
+        </details>
+        <details class="barra-seccion" open>
+          <summary>Estilo</summary>
+          <div class="barra-botones">
+            <button type="button" class="ql-bold" aria-label="Negritas" title="Negritas (Ctrl+B)"></button>
+            <button type="button" class="ql-italic" aria-label="Cursiva" title="Cursiva (Ctrl+I)"></button>
+            <button type="button" class="ql-underline" aria-label="Subrayado" title="Subrayado (Ctrl+U)"></button>
+            <button type="button" class="ql-strike" aria-label="Tachado" title="Tachado"></button>
+            <button type="button" class="ql-list" value="bullet" aria-label="Lista con viñetas" title="Lista con viñetas"></button>
+            <button type="button" class="ql-list" value="ordered" aria-label="Lista numerada" title="Lista numerada"></button>
+            <button type="button" class="ql-indent" value="-1" aria-label="Reducir sangría" title="Reducir sangría"></button>
+            <button type="button" class="ql-indent" value="+1" aria-label="Aumentar sangría" title="Aumentar sangría"></button>
+            <button type="button" class="ql-blockquote" aria-label="Cita" title="Cita"></button>
+            <button type="button" class="ql-divider" aria-label="Línea separadora" title="Línea separadora">
+              <svg viewBox="0 0 18 18" aria-hidden="true"><line class="ql-stroke" x1="3" x2="15" y1="9" y2="9"/></svg>
+            </button>
+            <button type="button" class="ql-link" aria-label="Enlace" title="Enlace"></button>
+            <button type="button" class="ql-image" aria-label="Imagen por dirección web" title="Imagen por dirección web"></button>
+            <button type="button" class="ql-clean" aria-label="Quitar formato" title="Quitar formato"></button>
+          </div>
+        </details>
+        <details class="barra-seccion">
+          <summary>Alineación</summary>
+          <div class="barra-botones">
+            <button type="button" class="ql-align" value="" aria-label="Alinear a la izquierda" title="Izquierda"></button>
+            <button type="button" class="ql-align" value="center" aria-label="Centrar" title="Centrar"></button>
+            <button type="button" class="ql-align" value="right" aria-label="Alinear a la derecha" title="Derecha"></button>
+            <button type="button" class="ql-align" value="justify" aria-label="Justificar" title="Justificar"></button>
+          </div>
+        </details>
+        <details class="barra-seccion" open>
+          <summary>Glosario</summary>
+          <button type="button" class="ql-termino barra-boton-texto" id="btn-glosario" aria-label="Añadir la palabra seleccionada al glosario" title="Selecciona una palabra del texto">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 4.5h10.5a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h10.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <span>Añadir al glosario</span>
+          </button>
+        </details>
+      </div>
+      <article class="hoja-texto">
+        <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
+        <div id="editor" data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}" data-version="{{ version }}"></div>
+      </article>
+    </div>
     {% csrf_token %}
     {{ capitulo.contenido|json_script:"contenido-inicial" }}
+    {{ fichas|json_script:"fichas-inicial" }}
+    {{ terminos|json_script:"terminos-inicial" }}
   </main>
 
-  <aside class="reparto" aria-labelledby="reparto-titulo">
+  <div class="reparto-fondo" id="reparto-fondo" aria-hidden="true"></div>
+  <aside class="reparto" id="reparto" aria-label="Panel: fichas, glosario y muletillas"
+         data-url-consulta="{% url 'ficha_consulta' proyecto.pk %}"
+         data-url-ficha-nueva="{% url 'ficha_nueva' proyecto.pk %}"
+         data-url-ficha-editar="{% url 'ficha_editar' proyecto.pk 0 %}"
+         data-url-ficha-eliminar="{% url 'ficha_eliminar' proyecto.pk 0 %}"
+         data-url-fichas="{% url 'fichas_lista' proyecto.pk %}"
+         data-url-glosario-api="{% url 'termino_api' proyecto.pk %}"
+         data-url-glosario-borrar="{% url 'termino_api_eliminar' proyecto.pk 0 %}"
+         data-url-glosario="{% url 'glosario' proyecto.pk %}">
+    <div class="reparto-asa" id="reparto-asa" role="separator" aria-orientation="vertical" tabindex="0"
+         aria-label="Cambiar el ancho del panel. Usa las flechas izquierda y derecha."></div>
     {% include "partials/mensajes.html" %}
     <div class="reparto-panel">
-      <h2 id="reparto-titulo">Reparto de este capítulo</h2>
-      <div class="reparto-vacio">
-        <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
-        <p><strong>Tus personajes vivirán aquí.</strong> Pronto podrás crear sus fichas y, al seleccionar un nombre en el texto, verás su edad, rasgos y relaciones, cada uno con su color.</p>
+      <div class="reparto-cabeza">
+        <div class="reparto-tabs" role="tablist" aria-label="Herramientas del panel">
+          <button type="button" role="tab" id="tab-btn-fichas" aria-controls="tab-fichas" aria-selected="true">Fichas</button>
+          <button type="button" role="tab" id="tab-btn-glosario" aria-controls="tab-glosario" aria-selected="false" tabindex="-1">Glosario</button>
+          <button type="button" role="tab" id="tab-btn-muletillas" aria-controls="tab-muletillas" aria-selected="false" tabindex="-1">Muletillas</button>
+        </div>
+        <button type="button" class="reparto-plegar" id="reparto-plegar" aria-label="Ocultar el panel" title="Ocultar el panel">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
       </div>
-      <p class="atajo">Se guarda solo mientras escribes. <kbd>Ctrl</kbd> + <kbd>S</kbd> guarda al instante.</p>
+
+      <section class="reparto-vista" id="tab-fichas" role="tabpanel" aria-labelledby="tab-btn-fichas">
+        <div id="fichas-lista-vista" class="reparto-cuerpo">
+          <div class="campo reparto-buscar">
+            <label class="solo-lectores" for="reparto-buscar">Buscar ficha por nombre o alias</label>
+            <input type="search" id="reparto-buscar" placeholder="Buscar por nombre o alias" autocomplete="off">
+          </div>
+          <div class="campo">
+            <label class="solo-lectores" for="filtro-tipo">Filtrar por tipo</label>
+            <select id="filtro-tipo">
+              <option value="">Todos los tipos</option>
+              <option value="personaje">Personajes</option>
+              <option value="lugar">Lugares</option>
+              <option value="objeto">Objetos</option>
+              <option value="evento">Eventos</option>
+            </select>
+          </div>
+          <div id="reparto-detalle" aria-live="polite"></div>
+          <ul id="reparto-lista" class="reparto-lista" aria-label="Fichas del proyecto"></ul>
+          <p id="reparto-sin-resultados" class="reparto-nota" hidden>Ninguna ficha coincide con tu búsqueda.</p>
+          <div id="reparto-vacio" class="reparto-vacio" {% if fichas %}hidden{% endif %}>
+            <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
+            <p><strong>Aún no hay fichas.</strong> Crea la de tu primer personaje: al seleccionar su nombre en el texto, su ficha aparecerá aquí.</p>
+          </div>
+          <div class="nueva-ficha" role="group" aria-label="Crear una ficha nueva">
+            <span class="nueva-ficha-etiqueta">Nueva ficha</span>
+            <button type="button" class="boton boton-lila-borde boton-chico" data-nueva="personaje">Personaje</button>
+            <button type="button" class="boton boton-borde boton-chico" data-nueva="lugar">Lugar</button>
+            <button type="button" class="boton boton-borde boton-chico" data-nueva="objeto">Objeto</button>
+            <button type="button" class="boton boton-borde boton-chico" data-nueva="evento">Evento</button>
+          </div>
+          <a class="reparto-enlace" href="{% url 'fichas_lista' proyecto.pk %}" target="_blank" rel="noopener">Ver todas las fichas en una página</a>
+        </div>
+        <div id="ficha-form-vista" class="reparto-cuerpo" hidden></div>
+      </section>
+
+      <section class="reparto-vista" id="tab-glosario" role="tabpanel" aria-labelledby="tab-btn-glosario" hidden>
+        <div class="reparto-cuerpo">
+          <p class="reparto-nota">Selecciona una palabra del texto y pulsa «Añadir al glosario» en la barra de formato. Al pasar el cursor por ella verás su definición.</p>
+          <div class="campo reparto-buscar">
+            <label class="solo-lectores" for="glosario-buscar">Buscar en el glosario</label>
+            <input type="search" id="glosario-buscar" placeholder="Buscar un término" autocomplete="off">
+          </div>
+          <p id="glosario-aviso" class="reparto-nota aviso-glosario" role="status" aria-live="polite" hidden></p>
+          <form id="glosario-form" class="form-ficha glosario-form" hidden novalidate>
+            <h3 class="form-titulo" id="glosario-form-titulo">Nuevo término</h3>
+            <p class="errorlist" id="glosario-errores" hidden></p>
+            <div class="campo"><label for="g-nombre">Término</label><input type="text" id="g-nombre" maxlength="120" autocomplete="off"></div>
+            <div class="campo"><label for="g-definicion">Definición</label><textarea id="g-definicion" rows="3" maxlength="1000" placeholder="Qué significa en tu mundo."></textarea></div>
+            <div class="campo"><label for="g-categoria">Categoría (opcional)</label><input type="text" id="g-categoria" maxlength="60" placeholder="Hechizo, raza, lugar…" autocomplete="off"></div>
+            <div class="acciones"><button class="boton" type="submit">Guardar término</button><button type="button" class="boton boton-borde" id="glosario-cancelar">Cancelar</button></div>
+          </form>
+          <ul id="glosario-lista" class="reparto-lista reparto-lista-vertical" aria-label="Términos del glosario"></ul>
+          <p id="glosario-vacio" class="reparto-vacio-texto" hidden>Aún no hay términos.</p>
+          <button type="button" class="boton boton-lila-borde boton-chico" id="glosario-nuevo">Nuevo término</button>
+          <a class="reparto-enlace" href="{% url 'glosario' proyecto.pk %}" target="_blank" rel="noopener">Ver el glosario en una página</a>
+        </div>
+      </section>
+
+      <section class="reparto-vista" id="tab-muletillas" role="tabpanel" aria-labelledby="tab-btn-muletillas" hidden>
+        <div class="reparto-cuerpo">
+          <p class="reparto-nota">Las palabras que más se repiten en este capítulo. Elige una para verla resaltada y cambiarla.</p>
+          <div class="campo campo-umbral">
+            <label for="muletillas-umbral">Mostrar las que aparecen al menos</label>
+            <div class="umbral"><input type="number" id="muletillas-umbral" min="2" max="50" value="4" inputmode="numeric"><span>veces</span></div>
+          </div>
+          <ul id="muletillas-lista" class="muletillas-lista" aria-label="Palabras repetidas"></ul>
+          <p id="muletillas-vacio" class="reparto-nota" hidden></p>
+          <div id="muletillas-detalle" class="muletillas-detalle" hidden></div>
+        </div>
+      </section>
+
+      <p class="atajo">Selecciona un nombre en el texto para ver su ficha. Se guarda solo mientras escribes. <kbd>Ctrl</kbd> + <kbd>S</kbd> guarda al instante.</p>
     </div>
   </aside>
 </div>
+<div id="tooltip-glosario" class="tooltip-glosario" role="tooltip" hidden></div>
 {% endblock %}
 
 {% block scripts %}
   <script src="{% static 'core/vendor/quill/quill.js' %}"></script>
+  <script src="{% static 'core/js/ficha-form.js' %}"></script>
+  <script src="{% static 'core/js/sinonimos.js' %}"></script>
   <script src="{% static 'core/js/editor.js' %}"></script>
+  <script src="{% static 'core/js/panel.js' %}"></script>
+  <script src="{% static 'core/js/glosario.js' %}"></script>
+  <script src="{% static 'core/js/muletillas.js' %}"></script>
+  <script src="{% static 'core/js/nombres.js' %}"></script>
 {% endblock %}

@@ -73,3 +73,18 @@ class ProyectosTests(TestCase):
             self.assertEqual(self.client.post(reverse(nombre, args=[ajeno.pk]), {"titulo": "Hackeado"}).status_code, 404)
         ajeno.refresh_from_db()
         self.assertEqual(ajeno.titulo, "Ajeno")
+
+
+class RecuperarContrasenaCopyTests(TestCase):
+    def test_con_correo_de_consola_no_promete_un_enlace(self):
+        with self.settings(EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"):
+            r = self.client.get(reverse("password_reset"))
+            self.assertContains(r, "no envía correos")
+            self.assertNotContains(r, "te enviaremos un enlace")
+            hecho = self.client.get(reverse("password_reset_done"))
+            self.assertContains(hecho, "no te llegará ningún enlace")
+
+    def test_con_correo_real_si_lo_promete(self):
+        with self.settings(EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"):
+            r = self.client.get(reverse("password_reset"))
+            self.assertContains(r, "te enviaremos un enlace")

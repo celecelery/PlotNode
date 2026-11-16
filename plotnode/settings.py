@@ -96,6 +96,11 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Archivos subidos por las usuarias (fotos de personaje). Nunca se suben a Git.
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
+MAX_FOTO_BYTES = 2 * 1024 * 1024  # 2 MB
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "login"
@@ -118,3 +123,6 @@ if not DEBUG:
 # --- Iteraciones siguientes ---
 # GEMINI_API_KEY se lee en core/services/auditor.py (iteración 3).
 MODELO_AUDITOR = os.getenv("MODELO_AUDITOR", "")
+
+# Formulario de lista de espera de MailerLite (HU-01). Vacío = no se muestra el botón.
+MAILERLITE_FORM_URL = os.getenv("MAILERLITE_FORM_URL", "")

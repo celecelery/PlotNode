@@ -2,7 +2,7 @@
 {% block titulo %}Eliminar proyecto{% endblock %}
 {% block contenido %}
 {% with n=proyecto.capitulos.count %}
-<div class="hoja hoja-cuenta" style="margin-left:0;background:var(--panel-3)">
+<div class="hoja hoja-cuenta hoja-lateral">
   <h1>¿Eliminar «{{ proyecto.titulo }}»?</h1>
   <p class="entrada">Se borrarán sus {{ n }} capítulo{{ n|pluralize }} y sus fichas. <strong>No se puede deshacer.</strong></p>
   <form method="post">{% csrf_token %}

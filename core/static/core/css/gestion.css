@@ -1,0 +1,96 @@
+/* PlotNode — pantallas de gestión: capítulos y fichas (iteración 2) */
+.solo-lectores { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.volver { display: inline-block; margin-bottom: 1rem; font-weight: 650; }
+
+.lista-gestion { list-style: none; margin: 0 0 1.5rem; padding: 0; max-width: 56rem; display: grid; gap: .8rem; }
+.item-gestion {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) 7.5rem auto; align-items: center; gap: .8rem 1.1rem;
+  padding: 1rem 1.2rem; border-radius: var(--r-tarjeta); background: var(--panel-3);
+}
+.item-num { display: grid; place-items: center; width: 2.3rem; height: 2.3rem; border-radius: 50%; background: var(--panel-4); color: var(--texto-2); font-weight: 750; }
+.item-renombrar { display: flex; gap: .6rem; align-items: center; min-width: 0; }
+.item-renombrar .campo { flex: 1; margin: 0; min-width: 0; }
+.item-datos { color: var(--texto-3); font-size: .9rem; white-space: nowrap; }
+.item-acciones { display: flex; align-items: center; gap: .5rem; }
+.item-acciones form { margin: 0; }
+.boton-icono { min-width: 2.4rem; min-height: 2.4rem; padding: .3rem; border: 1px solid var(--borde-2); border-radius: var(--r-control); background: transparent; color: var(--texto); font: inherit; font-weight: 700; cursor: pointer; }
+.boton-icono:hover:not(:disabled) { background: var(--panel-4); }
+.boton-icono:disabled { opacity: .35; cursor: default; }
+.boton-chico { min-height: 2.4rem; padding: .4rem .9rem; font-size: .9rem; }
+
+.lista-fichas { list-style: none; margin: 0 0 1.5rem; padding: 0; max-width: 56rem; display: grid; gap: .8rem; }
+.tarjeta-ficha { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1rem 1.2rem; align-items: start; padding: 1.1rem 1.3rem; border-radius: var(--r-tarjeta); background: var(--panel-3); }
+.tarjeta-ficha .inicial { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; font-family: var(--libro); font-weight: 600; font-size: 1.3rem; }
+.tarjeta-ficha h2 { margin: 0 0 .45rem; font-family: var(--libro); font-weight: 600; font-size: 1.3rem; overflow-wrap: anywhere; }
+.tarjeta-ficha .meta { margin: 0 0 .6rem; color: var(--texto-3); font-size: .9rem; }
+.tarjeta-ficha dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .3rem .9rem; font-size: .95rem; }
+.tarjeta-ficha dt { color: var(--texto-3); font-weight: 650; }
+.tarjeta-ficha dd { margin: 0; overflow-wrap: anywhere; }
+.tarjeta-ficha .notas { margin: .6rem 0 0; color: var(--texto-2); font-size: .93rem; overflow-wrap: anywhere; }
+.tarjeta-ficha .acciones-ficha { display: flex; gap: 1rem; font-weight: 600; font-size: .93rem; }
+.inicial.p-lila { color: var(--sobre-lila); } .inicial.p-menta { color: var(--sobre-menta); } .inicial.p-durazno { color: var(--sobre-durazno); }
+
+.form-ficha { max-width: 44rem; display: grid; gap: 1.1rem; }
+.form-ficha .campo { margin: 0; }
+.form-ficha textarea {
+  width: 100%; padding: .6rem .9rem; border: 1.5px solid var(--campo-borde); border-radius: var(--r-control);
+  background: var(--noche); color: var(--texto); font: inherit; resize: vertical;
+}
+.form-ficha textarea:hover { border-color: var(--lila-claro); }
+.form-ficha textarea:focus { outline: none; border-color: var(--lila); box-shadow: 0 0 0 3px rgba(182, 156, 255, .25); }
+.form-ficha .ayuda { margin: .35rem 0 0; color: var(--texto-3); font-size: .85rem; }
+.form-ficha fieldset { margin: 0; padding: 1.1rem 1.2rem; border: 0; border-radius: var(--r-tarjeta); background: var(--panel-3); }
+.form-ficha legend { padding: 0; font-size: 1.1rem; font-weight: 800; float: left; width: 100%; margin-bottom: .3rem; }
+.fila-atributo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) 5.5rem; gap: .6rem; align-items: center; margin-top: .6rem; clear: both; }
+.fila-atributo .campo { margin: 0; }
+.fila-atributo label.borrar { display: flex; align-items: center; gap: .4rem; margin: 0; color: var(--coral-texto); font-size: .88rem; font-weight: 650; }
+
+@media (max-width: 760px) {
+  .item-gestion { grid-template-columns: auto minmax(0, 1fr); }
+  .item-datos, .item-acciones { grid-column: 2; }
+  .item-renombrar { flex-wrap: wrap; }
+  .tarjeta-ficha { grid-template-columns: auto minmax(0, 1fr); }
+  .tarjeta-ficha .acciones-ficha { grid-column: 2; }
+  .fila-atributo { grid-template-columns: 1fr; }
+}
+
+/* ---- Sprint 2: ficha completa, glosario, filtros ---- */
+.barra-acciones { display: flex; flex-wrap: wrap; gap: .6rem; }
+.filtros { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1.1rem 0 0; }
+.filtros a { padding: .35rem .9rem; border: 1px solid var(--borde-2); border-radius: 999px; color: var(--texto-2); text-decoration: none; font-size: .9rem; font-weight: 650; }
+.filtros a:hover { background: var(--panel-3); color: var(--texto); }
+.filtros a[aria-current="true"] { background: var(--panel-4); border-color: var(--lila); color: var(--texto); }
+.foto-ficha { width: 3rem; height: 3rem; border-radius: 50%; object-fit: cover; }
+.buscador-glosario { display: flex; gap: .6rem; align-items: center; max-width: 44rem; margin-bottom: 1.2rem; }
+.buscador-glosario .campo { flex: 1; margin: 0; }
+.form-termino { margin-bottom: 1rem; }
+.tarjeta-termino { grid-template-columns: minmax(0, 1fr) auto; }
+.form-titulo { margin: 0 0 .4rem; font-size: 1.15rem; font-weight: 800; }
+
+.foto-bloque { display: flex; gap: 1rem; align-items: center; }
+.foto-vista { flex: none; width: 5rem; height: 5rem; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: var(--panel-4); }
+.foto-vista img { width: 100%; height: 100%; object-fit: cover; }
+.foto-vista .inicial { display: grid; place-items: center; width: 100%; height: 100%; font-family: var(--libro); font-weight: 600; font-size: 2rem; }
+.foto-controles { display: grid; gap: .4rem; min-width: 0; }
+.foto-controles input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.foto-controles:focus-within .foto-subir { outline: 3px solid rgba(182, 156, 255, .5); outline-offset: 2px; }
+.foto-controles .ayuda { margin: 0; }
+.foto-quitar { display: flex; align-items: center; gap: .4rem; margin: 0; font-weight: 600; font-size: .9rem; color: var(--coral-texto); }
+
+.form-seccion { border-radius: var(--r-tarjeta); background: var(--panel-3); }
+.form-seccion > summary { cursor: pointer; padding: .9rem 1.2rem; font-weight: 800; font-size: 1.02rem; list-style: none; border-radius: var(--r-tarjeta); }
+.form-seccion > summary::-webkit-details-marker { display: none; }
+.form-seccion > summary::before { content: "▸"; display: inline-block; margin-right: .55rem; color: var(--lila-claro); transition: transform .15s ease; }
+.form-seccion[open] > summary::before { transform: rotate(90deg); }
+.form-seccion > summary:focus-visible { outline: 3px solid rgba(182, 156, 255, .5); }
+.form-seccion > .ayuda, .form-seccion > .campos-grid, .form-seccion > .fila-atributo { margin-left: 1.2rem; margin-right: 1.2rem; }
+.form-seccion[open] { padding-bottom: 1.1rem; }
+.campos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .9rem 1rem; }
+.campo-ancho { grid-column: 1 / -1; }
+.form-ficha select { width: 100%; min-height: 2.9rem; padding: .6rem .9rem; border: 1.5px solid var(--campo-borde); border-radius: var(--r-control); background: var(--noche); color: var(--texto); font: inherit; }
+.form-ficha input[type="text"] { width: 100%; min-height: 2.9rem; padding: .6rem .9rem; border: 1.5px solid var(--campo-borde); border-radius: var(--r-control); background: var(--noche); color: var(--texto); font: inherit; }
+.form-ficha input:focus, .form-ficha select:focus { outline: none; border-color: var(--lila); box-shadow: 0 0 0 3px rgba(182, 156, 255, .25); }
+.form-ficha .errorlist { margin-top: .3rem; }
+.form-ficha { max-width: 52rem; }
+
+.foto-controles .foto-subir { justify-self: start; }

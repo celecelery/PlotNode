@@ -210,7 +210,7 @@ PlotNode es un cuarto de escritura a las dos de la mañana: una noche violeta mu
 
 El color tiene trabajo, no decoración. Tres colores de personaje (lila, durazno y menta) cumplen oficios fijos en toda la app, y el coral aparece solo cuando algo choca o se borra. La firma del sistema es que cada personaje (y cada historia) tiene su color: una inicial en círculo, un subrayado ondulado en el texto y una ficha en píldora, siempre del mismo tono. La densidad es media y el ritmo es amable: paneles grandes, esquinas generosas, contenido corto.
 
-El movimiento es mínimo: solo transiciones de color de 0.15s al pasar el cursor y un desplazamiento de 1px al pulsar un botón. Sin animaciones decorativas; `prefers-reduced-motion` anula todas las transiciones. Existe un solo tema, el oscuro (`color-scheme: dark`, `theme-color` igual a la noche).
+El movimiento es mínimo: transiciones de color de 0.15s al pasar el cursor, un desplazamiento de 1px al pulsar un botón y el deslizamiento del panel lateral (única excepción, porque comunica de dónde viene y a dónde va). Sin animaciones decorativas; `prefers-reduced-motion` anula todas las transiciones. Existe un solo tema, el oscuro (`color-scheme: dark`, `theme-color` igual a la noche).
 
 **Key Characteristics:**
 - Fondo noche violeta y paneles en cuatro pasos de luz, separados por 18px de noche, sin líneas divisorias entre regiones.
@@ -268,7 +268,7 @@ Una noche violeta en capas con tres colores de personaje cálidos y claros encim
 ### Hierarchy
 - **Display** (800, clamp(2.4rem, 4.4vw, 3.85rem), 1.04, −0.03em): solo el titular de la portada.
 - **Headline** (800, clamp(2rem, 3vw, 2.6rem), 1.12, −0.02em): título de página dentro de la app (Mis proyectos) y, a 2rem, el título de las tarjetas de cuenta. «Cómo funciona» usa 1.8rem.
-- **Title** (800, 1.08–1.25rem, 1.12, −0.01em): títulos de panel (Reparto de este capítulo), pasos de la portada y estados vacíos.
+- **Title** (800, 1.08–1.25rem, 1.12, −0.01em): títulos de panel (Fichas, Glosario, Muletillas), pasos de la portada y estados vacíos.
 - **Título de obra** (Literata 600, clamp(2rem, 3vw, 2.4rem), −0.01em): el título del capítulo sobre el manuscrito.
 - **Título de historia** (Literata 600, 1.3rem, −0.01em): el nombre de cada historia en Mis proyectos y su inicial en círculo.
 - **Manuscrito** (Literata 400, 1.19rem, 1.9, `kern liga onum`): el texto del autor, con medida de 40rem; los párrafos se separan con 1em. El texto de ejemplo de la portada usa 1.18rem / 1.85.
@@ -361,11 +361,13 @@ Redondos, sólidos y amables; el peso del texto hace el trabajo.
 ### Editor (firma)
 - **Barra de formato:** botones cuadrados redondeados de 2.3rem en Panel 4 (radio 10px), iconos en Texto; activo o en hover pasan a Borde 2 y el icono activo se pinta lila claro. El selector de estilo dice «Párrafo / Título / Subtítulo».
 - **Estado de guardado:** texto Texto 3 a 0.9rem con un punto de 0.5rem: menta guardado, durazno pendiente o guardando, coral (y texto coral legible, 650) si falla.
-- **Hoja:** migas en Texto 3, título del capítulo en Literata, manuscrito a 40rem con cursor lila. Las citas llevan una línea izquierda fina de 1px en Texto 3 y texto en Texto 2.
+- **Hoja:** título del capítulo en Literata, manuscrito a 40rem con cursor lila. Las citas llevan una línea izquierda fina de 1px en Texto 3 y texto en Texto 2.
 - **Contador:** tarjeta Panel 3 en el riel con «En este capítulo», la cifra en Figtree 800 y «palabras» en Texto 3. Cada capítulo del índice muestra sus palabras a la derecha.
-- **Reparto:** panel derecho en Panel con título de panel, el estado vacío y, al pie, el atajo de teclado con teclas (`kbd`: borde Borde 2 con base de 2px, fondo Panel 3, radio 6px).
+- **Panel:** panel derecho deslizable con pestañas (Fichas, Glosario, Muletillas), título de panel, el estado vacío y, al pie, el atajo de teclado con teclas (`kbd`: borde Borde 2 con base de 2px, fondo Panel 3, radio 6px).
 
 ### Nombre de personaje (firma)
+
+En el editor, los nombres y alias que ya tienen ficha se subrayan con la API de resaltados de CSS (`::highlight(nombre-lila|menta|durazno)`, ondulado de 1.5px): el subrayado no se guarda en el texto y se omite en navegadores sin esa API.
 Cada personaje se marca en el texto con subrayado ondulado de su color (lila, menta o durazno), se representa con su inicial en un círculo de ese color y su ficha es una píldora con esa inicial. Lo que contradice una ficha se resalta con fondo coral al 22%, radio 4px y una línea coral inferior.
 
 ### Estado vacío
@@ -384,7 +386,7 @@ Contenedor con borde punteado de 1.5px en Borde 2 y radio 16px, encabezado por t
 - **Do** asignar a cada personaje un color del ciclo lila, menta, durazno (y a cada historia lila o menta), y repetir ese color en su inicial, su subrayado ondulado y su ficha.
 - **Do** usar Literata solo para la obra (manuscrito a 1.19rem / 1.9 y 40rem de medida, títulos de capítulo e historia) y Figtree para toda la interfaz.
 - **Do** acompañar cada color de estado con texto que diga lo mismo (punto menta + «Guardado»).
-- **Do** limitar el movimiento a transiciones de color de 0.15s y respetar `prefers-reduced-motion`.
+- **Do** limitar el movimiento a transiciones de color de 0.15s (y al deslizamiento del panel) y respetar `prefers-reduced-motion`.
 - **Do** mantener un solo tema oscuro (`color-scheme: dark`).
 
 ### Don't:

@@ -22,9 +22,37 @@ class EditorTests(TestCase):
         return cliente.post(reverse("guardar_capitulo", args=[cap.pk]),
                             data=json.dumps({"contenido": contenido}), content_type="application/json")
 
-    def test_abrir_proyecto_lleva_al_primer_capitulo(self):
+    def test_abrir_proyecto_lleva_al_ultimo_capitulo_editado(self):
         r = self.client.get(reverse("proyecto_abrir", args=[self.proyecto.pk]))
         self.assertRedirects(r, reverse("editor", args=[self.cap.pk]))
+        segundo = Capitulo.objects.create(proyecto=self.proyecto, titulo="Capítulo 2", orden=2)
+        self.guardar(segundo, "<p>Sigo aquí</p>")
+        r = self.client.get(reverse("proyecto_abrir", args=[self.proyecto.pk]))
+        self.assertRedirects(r, reverse("editor", args=[segundo.pk]))
+
+    def test_guardar_con_version_vieja_responde_409_y_no_pisa_el_texto(self):
+        primera = self.guardar(self.cap, "<p>Desde la pestaña A</p>").json()
+        self.assertTrue(primera["version"])
+        # Otra pestaña guarda con la versión correcta…
+        ok = self.client.post(reverse("guardar_capitulo", args=[self.cap.pk]),
+                              data=json.dumps({"contenido": "<p>B</p>", "version": primera["version"]}),
+                              content_type="application/json")
+        self.assertEqual(ok.status_code, 200)
+        # …y la pestaña A, que aún tiene la versión anterior, ya no puede pisar a B.
+        viejo = self.client.post(reverse("guardar_capitulo", args=[self.cap.pk]),
+                                 data=json.dumps({"contenido": "<p>A</p>", "version": primera["version"]}),
+                                 content_type="application/json")
+        self.assertEqual(viejo.status_code, 409)
+        self.assertTrue(viejo.json()["conflicto"])
+        self.cap.refresh_from_db()
+        self.assertEqual(self.cap.contenido, "<p>B</p>")
+
+    def test_guardar_sin_version_sigue_funcionando(self):
+        self.assertEqual(self.guardar(self.cap, "<p>Hola</p>").status_code, 200)
+
+    def test_editor_entrega_la_version_actual(self):
+        r = self.client.get(reverse("editor", args=[self.cap.pk]))
+        self.assertContains(r, 'data-version="')
 
     def test_abrir_proyecto_sin_capitulos_crea_uno(self):
         vacio = Proyecto.objects.create(dueno=self.ana, titulo="Vacío")

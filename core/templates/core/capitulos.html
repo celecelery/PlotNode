@@ -1,0 +1,44 @@
+{% extends "app_base.html" %}
+{% load static %}
+{% block titulo %}Capítulos · {{ proyecto.titulo }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}">{% endblock %}
+{% block contenido %}
+<header class="encabezado-pagina">
+  <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
+  <h1>Capítulos de «{{ proyecto.titulo }}»</h1>
+  <p>Cambia el nombre, el orden o elimina capítulos. El texto de cada uno se conserva al moverlo.</p>
+</header>
+
+<ol class="lista-gestion" aria-label="Capítulos">
+  {% for c in capitulos %}
+  <li class="item-gestion">
+    <span class="item-num" aria-hidden="true">{{ forloop.counter }}</span>
+    <form method="post" action="{% url 'capitulo_renombrar' c.pk %}" class="item-renombrar">
+      {% csrf_token %}
+      <div class="campo">
+        <label class="solo-lectores" for="titulo-{{ c.pk }}">Título del capítulo {{ forloop.counter }}</label>
+        <input type="text" id="titulo-{{ c.pk }}" name="titulo" value="{{ c.titulo }}" maxlength="150" required>
+      </div>
+      <button type="submit" class="boton boton-lila-borde boton-chico">Guardar nombre</button>
+    </form>
+    <span class="item-datos">{{ c.palabras }} palabra{{ c.palabras|pluralize }}</span>
+    <div class="item-acciones">
+      <form method="post" action="{% url 'capitulo_mover' c.pk %}">{% csrf_token %}
+        <input type="hidden" name="direccion" value="arriba">
+        <button type="submit" class="boton-icono" aria-label="Subir «{{ c.titulo }}»" {% if forloop.first %}disabled{% endif %}>↑</button>
+      </form>
+      <form method="post" action="{% url 'capitulo_mover' c.pk %}">{% csrf_token %}
+        <input type="hidden" name="direccion" value="abajo">
+        <button type="submit" class="boton-icono" aria-label="Bajar «{{ c.titulo }}»" {% if forloop.last %}disabled{% endif %}>↓</button>
+      </form>
+      <a class="enlace-coral" href="{% url 'capitulo_eliminar' c.pk %}">Eliminar</a>
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+
+<form method="post" action="{% url 'capitulo_nuevo' proyecto.pk %}">
+  {% csrf_token %}
+  <button type="submit" class="boton">+ Nuevo capítulo</button>
+</form>
+{% endblock %}

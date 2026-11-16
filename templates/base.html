@@ -14,7 +14,7 @@
 <body class="{% block body_class %}publico{% endblock %}">
   {% block shell %}
   {% block fondo %}{% endblock %}
-  <header class="barra" style="position:relative">
+  <header class="barra">
     <a class="marca" href="{% if user.is_authenticated %}{% url 'proyectos' %}{% else %}{% url 'inicio' %}{% endif %}">
       {% include "partials/marca.svg" %}
       <span>PlotNode</span>
