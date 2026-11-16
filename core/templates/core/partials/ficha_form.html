@@ -1,0 +1,85 @@
+{# Formulario de ficha: se usa como página completa y como fragmento dentro del panel del editor. #}
+<form method="post" enctype="multipart/form-data" class="form-ficha" data-form-ficha novalidate
+      action="{% if ficha.pk %}{% url 'ficha_editar' proyecto.pk ficha.pk %}{% else %}{% url 'ficha_nueva' proyecto.pk %}?tipo={{ ficha.tipo }}{% endif %}">
+  {% csrf_token %}
+  {% if not en_pagina %}
+    <h3 class="form-titulo">{% if ficha.pk %}Editar la ficha de {{ ficha.nombre }}{% else %}Nuevo {{ tipo_nombre|lower }}{% endif %}</h3>
+  {% endif %}
+  {{ form.non_field_errors }}
+
+  <div class="foto-bloque">
+    <div class="foto-vista" data-foto-vista>
+      {% if ficha.foto %}<img src="{{ ficha.foto.url }}" alt="Foto de {{ ficha.nombre }}">
+      {% else %}<span class="inicial p-{{ ficha.color }}" aria-hidden="true">{{ ficha.inicial }}</span>{% endif %}
+    </div>
+    <div class="foto-controles">
+      <label class="boton boton-borde boton-chico foto-subir" for="{{ form.foto.id_for_label }}">
+        {% if ficha.foto %}Cambiar foto{% else %}Subir foto{% endif %}
+      </label>
+      {{ form.foto }}
+      {% if ficha.foto %}
+        <label class="foto-quitar" for="{{ form.quitar_foto.id_for_label }}">{{ form.quitar_foto }} Quitar la foto</label>
+      {% endif %}
+      <p class="ayuda">JPG, PNG o WebP de hasta 2 MB. Sin foto se muestra la inicial con el color del personaje.</p>
+      {{ form.foto.errors }}
+    </div>
+  </div>
+
+  <div class="campo">
+    <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+    {{ form.nombre.errors }}{{ form.nombre }}
+  </div>
+  <div class="campo">
+    <label for="{{ form.alias_texto.id_for_label }}">{{ form.alias_texto.label }}</label>
+    {{ form.alias_texto.errors }}{{ form.alias_texto }}
+    <p class="ayuda">{{ form.alias_texto.help_text }}</p>
+  </div>
+
+  {% for sec in secciones %}
+  <details class="form-seccion" {% if sec.abierta %}open{% endif %}>
+    <summary>{{ sec.titulo }}</summary>
+    <div class="campos-grid">
+      {% for campo in sec.campos %}
+      <div class="campo {% if campo.widget_type == 'textarea' %}campo-ancho{% endif %}">
+        <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+        {{ campo.errors }}{{ campo }}
+      </div>
+      {% endfor %}
+    </div>
+  </details>
+  {% endfor %}
+
+  <details class="form-seccion" {% if formset.total_form_count > 2 or ficha.atributos.exists or formset.errors %}open{% endif %}>
+    <summary>Otros atributos</summary>
+    <p class="ayuda">Lo que no tenga un campo propio: «Color favorito», «Fecha del juramento»…</p>
+    {{ formset.management_form }}
+    {{ formset.non_form_errors }}
+    {% for f in formset %}
+    <div class="fila-atributo">
+      {{ f.id }}
+      <div class="campo">
+        <label class="solo-lectores" for="{{ f.clave.id_for_label }}">Atributo {{ forloop.counter }}: nombre</label>
+        {{ f.clave.errors }}{{ f.clave }}
+      </div>
+      <div class="campo">
+        <label class="solo-lectores" for="{{ f.valor.id_for_label }}">Atributo {{ forloop.counter }}: valor</label>
+        {{ f.valor.errors }}{{ f.valor }}
+      </div>
+      {% if f.instance.pk %}
+      <label class="borrar" for="{{ f.DELETE.id_for_label }}">{{ f.DELETE }} Quitar</label>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </details>
+
+  <div class="campo">
+    <label for="{{ form.notas.id_for_label }}">{{ form.notas.label }}</label>
+    {{ form.notas.errors }}{{ form.notas }}
+  </div>
+
+  <div class="acciones">
+    <button class="boton" type="submit">Guardar ficha</button>
+    {% if en_pagina %}<a href="{% url 'fichas_lista' proyecto.pk %}">Cancelar</a>
+    {% else %}<button type="button" class="boton boton-borde" data-cancelar>Cancelar</button>{% endif %}
+  </div>
+</form>

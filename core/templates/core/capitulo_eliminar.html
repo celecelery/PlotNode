@@ -1,0 +1,11 @@
+{% extends "app_base.html" %}
+{% block titulo %}Eliminar capítulo{% endblock %}
+{% block contenido %}
+<div class="hoja hoja-cuenta hoja-lateral">
+  <h1>¿Eliminar «{{ capitulo.titulo }}»?</h1>
+  <p class="entrada">Se borrará su texto ({{ capitulo.palabras }} palabra{{ capitulo.palabras|pluralize }}). <strong>No se puede deshacer.</strong></p>
+  <form method="post">{% csrf_token %}
+    <div class="acciones"><button class="boton boton-coral" type="submit">Sí, eliminar capítulo</button><a href="{% url 'capitulos_gestion' proyecto.pk %}">Cancelar</a></div>
+  </form>
+</div>
+{% endblock %}

@@ -4,17 +4,15 @@ Entorno de escritura web para escritores de ficción: une el manuscrito y las fi
 
 **Equipo:** Maria Paula Carrillo Gamboa · Karina Celeste Hernández Pérez
 
-![Editor de PlotNode](docs/img/04-editor.png)
-
 ## Estado
 
 | Iteración | Fechas | Objetivo | Estado |
 |---|---|---|---|
-| 1 | 2 – 4 nov | Cuenta, proyectos y editor con autoguardado | ✅ Hecha ([bitácora](docs/iteraciones/iteracion-1.md)) |
-| 2 | 5 – 11 nov | Fichas y panel lateral; publicar en PythonAnywhere | Pendiente |
+| 1 | 2 – 4 nov | Cuenta, proyectos y editor con autoguardado | ✅ Hecha |
+| 2 | 5 – 11 nov | Ficha completa en panel deslizable, barra vertical, muletillas y glosario | En curso ([bitácora](docs/iteraciones/iteracion-2.md)) |
 | 3 | 12 – 18 nov | Auditor con IA, tutorial y pruebas con 6 escritores | Pendiente |
 
-El backlog completo está en [`docs/entregables/PlotNode - Product Backlog.xlsx`](docs/entregables/).
+El backlog completo (`PlotNode - Product Backlog.xlsx`) vive en el Project del equipo, no en este repositorio.
 
 ## Diseño
 
@@ -22,7 +20,7 @@ Identidad visual «Desvelo»: un espacio para escribir de noche, con paneles red
 
 ## Tecnologías (todo gratis)
 
-Python 3.12+ · Django 5.2 LTS · SQLite · Quill 2 (editor) · Figtree y Literata (fuentes libres, incluidas) · GitHub Actions · PythonAnywhere (plan gratuito) · API de Gemini en su nivel gratuito (iteración 3).
+Python 3.12+ · Django 5.2 LTS · SQLite · Pillow (fotos de personaje) · Quill 2 (editor) · Figtree y Literata (fuentes libres, incluidas) · GitHub Actions · PythonAnywhere (plan gratuito) · API de Gemini en su nivel gratuito (`google-genai`).
 
 ## Correr el proyecto en tu computadora
 
@@ -97,12 +95,18 @@ plotnode/        configuración (settings.py, urls.py)
 core/            app principal
   models.py      Perfil, Proyecto, Capitulo, Ficha, Atributo, Alerta, Evento
   views.py       páginas y endpoints JSON
+  fichas_schema.py  campos de cada tipo de ficha (personaje, lugar, objeto, evento)
+  services/      fichas.py (búsqueda y serialización) y auditor.py (Gemini; futuro)
   templates/     plantillas de la app
   static/core/   CSS, JavaScript del editor y Quill
   tests/         pruebas automáticas
 templates/       plantilla base y pantallas de cuentas
-docs/            entregables, bitácoras de iteración y capturas
+docs/            entregables, bitácoras, pruebas (guion, formulario, auditor) y despliegue
 ```
+
+## Despliegue
+
+Pasos para PythonAnywhere (plan gratuito) en [`docs/despliegue-pythonanywhere.md`](docs/despliegue-pythonanywhere.md). Variables nuevas del `.env`: `GEMINI_API_KEY`, `MODELO_AUDITOR` (opcional) y `MAILERLITE_FORM_URL` (opcional).
 
 ## Notas
 

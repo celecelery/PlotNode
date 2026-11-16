@@ -35,3 +35,11 @@ class ModelosTests(TestCase):
         self.assertEqual(ficha.terminos, "ana|la capitana")
         self.assertTrue(ficha.coincide("la capitána"))
         self.assertFalse(ficha.coincide("Leo"))
+
+
+class ConteoDePalabrasEntreBloquesTests(TestCase):
+    def test_los_bloques_pegados_no_unen_palabras(self):
+        ana = User.objects.create_user("ana2", password="clave-segura-123")
+        p = Proyecto.objects.create(dueno=ana, titulo="La torre")
+        cap = Capitulo.objects.create(proyecto=p, titulo="Uno", contenido="<h2>Capítulo uno</h2><p>Había una torre</p><p>y un faro</p><hr><p>Fin</p>")
+        self.assertEqual(cap.palabras, 9)

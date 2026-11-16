@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Alerta, Atributo, Capitulo, Evento, Ficha, Perfil, Proyecto
+from .models import Alerta, Atributo, Capitulo, EventoUso, Ficha, Perfil, Proyecto, Termino
 
 
 class CapituloInline(admin.TabularInline):
@@ -38,16 +38,24 @@ class FichaAdmin(admin.ModelAdmin):
     inlines = [AtributoInline]
 
 
+@admin.register(Termino)
+class TerminoAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "categoria", "proyecto")
+    search_fields = ("nombre", "definicion")
+    readonly_fields = ("clave",)
+
+
 @admin.register(Alerta)
 class AlertaAdmin(admin.ModelAdmin):
     list_display = ("capitulo", "ficha", "estado", "creada")
     list_filter = ("estado",)
 
 
-@admin.register(Evento)
+@admin.register(EventoUso)
 class EventoAdmin(admin.ModelAdmin):
     list_display = ("usuario", "tipo", "proyecto", "valor", "fecha")
     list_filter = ("tipo", "usuario")
+    search_fields = ("usuario__username", "proyecto__titulo")
     date_hierarchy = "fecha"
 
 

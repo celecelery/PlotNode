@@ -1,4 +1,6 @@
 import html
+import re
+import uuid
 
 from django.conf import settings
 from django.db import models
@@ -78,8 +80,16 @@ class Capitulo(models.Model):
         return reverse("editor", args=[self.pk])
 
     def save(self, *args, **kwargs):
-        self.palabras = contar_palabras(html.unescape(strip_tags(self.contenido)))
+        # Un espacio entre bloques: «<p>uno</p><p>dos</p>» son dos palabras, no «unodos».
+        con_espacios = re.sub(r"(?i)</(p|h[1-6]|li|blockquote|div|pre)>|<(br|hr)\s*/?>", " ", self.contenido)
+        self.palabras = contar_palabras(html.unescape(strip_tags(con_espacios)))
         super().save(*args, **kwargs)
+
+
+def ruta_foto(instancia, nombre_archivo):
+    """Nombre aleatorio: no se puede adivinar y no depende del nombre original."""
+    extension = nombre_archivo.rsplit(".", 1)[-1].lower() if "." in nombre_archivo else "jpg"
+    return f"fichas/{uuid.uuid4().hex}.{extension}"
 
 
 class Ficha(models.Model):
@@ -96,6 +106,10 @@ class Ficha(models.Model):
     terminos = models.CharField(max_length=600, editable=False, blank=True,
                                 help_text="Nombre y alias normalizados para buscar.")
     notas = models.TextField(blank=True)
+    datos = models.JSONField(default=dict, blank=True, help_text="Campos del tipo de ficha (ver fichas_schema.py).")
+    foto = models.ImageField(upload_to=ruta_foto, blank=True)
+    indice_color = models.PositiveSmallIntegerField(
+        default=0, editable=False, help_text="Posición en el ciclo de colores (lila, menta, durazno).")
 
     class Meta:
         ordering = ["nombre"]
@@ -104,13 +118,49 @@ class Ficha(models.Model):
         return self.nombre
 
     def save(self, *args, **kwargs):
+        if self._state.adding and self.proyecto_id:
+            # El color se fija al crear: sigue al de la última ficha del proyecto, así las vecinas no se repiten.
+            ultima = Ficha.objects.filter(proyecto_id=self.proyecto_id).order_by("-pk").first()
+            self.indice_color = ((ultima.indice_color + 1) % 3) if ultima else 0
         nombres = [self.nombre, *(self.alias or [])]
         self.terminos = "|".join(normalizar(n) for n in nombres if n and n.strip())
         super().save(*args, **kwargs)
 
+    @property
+    def color(self):
+        """Color del personaje (ciclo del sistema de diseño: lila, menta, durazno)."""
+        return ("lila", "menta", "durazno")[(self.indice_color or 0) % 3]
+
+    @property
+    def inicial(self):
+        return (self.nombre or "?").strip()[:1].upper()
+
     def coincide(self, texto):
         """True si el texto (ya sea nombre o alias) corresponde a esta ficha."""
         return normalizar(texto) in self.terminos.split("|")
+
+
+class Termino(models.Model):
+    """Término propio del mundo de la historia (hechizos, razas, lugares inventados): HU-29."""
+
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name="terminos")
+    nombre = models.CharField(max_length=120)
+    definicion = models.TextField(max_length=1000)
+    categoria = models.CharField("categoría", max_length=60, blank=True)
+    clave = models.CharField(max_length=120, editable=False, blank=True,
+                             help_text="Nombre normalizado: evita términos repetidos.")
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "término"
+        constraints = [models.UniqueConstraint(fields=["proyecto", "clave"], name="termino_unico_por_proyecto")]
+
+    def __str__(self):
+        return self.nombre
+
+    def save(self, *args, **kwargs):
+        self.clave = normalizar(self.nombre)
+        super().save(*args, **kwargs)
 
 
 class Atributo(models.Model):
@@ -143,8 +193,10 @@ class Alerta(models.Model):
         return f"Alerta en {self.capitulo}: {self.explicacion[:40]}"
 
 
-class Evento(models.Model):
-    """Registro de uso para medir la señal y el umbral del MVP."""
+class EventoUso(models.Model):
+    """Registro de uso para medir la señal y el umbral del MVP.
+
+    No confundir con las fichas de tipo «evento» (Ficha.Tipo.EVENTO): esas son parte de la historia."""
 
     class Tipo(models.TextChoices):
         CONSULTA_FICHA = "consulta_ficha", "Consulta de ficha"

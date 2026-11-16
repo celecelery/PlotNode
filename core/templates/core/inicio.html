@@ -11,11 +11,14 @@
 <section class="portada">
   <div>
     <h1>Escribe tu novela sin perderte en tus notas ni cometer errores de continuidad</h1>
-    <p class="portada-sub">Tus personajes te acompañan junto al texto, cada uno con su color. Si un párrafo contradice lo que ya decidiste, PlotNode te avisa. La historia la escribes tú.</p>
-    <div class="acciones" style="margin-top:0">
+    <p class="portada-sub">Tus personajes te acompañan junto al texto, cada uno con su color. Pronto, si un párrafo contradice lo que ya decidiste, PlotNode te avisará. La historia la escribes tú.</p>
+    <div class="acciones acciones-portada">
       <a class="boton boton-grande" href="{% url 'registro' %}">Empezar a escribir gratis</a>
       <a class="boton boton-borde boton-grande" href="{% url 'login' %}">Ya tengo cuenta</a>
     </div>
+    {% if lista_espera_url %}
+    <p class="portada-nota"><a href="{{ lista_espera_url }}" rel="noopener">Quiero que me avisen de las novedades</a></p>
+    {% endif %}
     <p class="portada-nota">
       <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
       Para novelas, fanfics y sagas. Gratis y en español.
@@ -23,11 +26,11 @@
   </div>
 
   <figure class="ejemplo" aria-label="Ejemplo del editor con una alerta">
-    <span class="ejemplo-etiqueta">Ejemplo</span>
+    <span class="ejemplo-etiqueta">Ejemplo · próximamente</span>
     <div class="ejemplo-hoja">
       <div class="ejemplo-cabeza"><span>Crónicas de la torre · Capítulo 7</span><span>2:14 a. m.</span></div>
       <p class="ejemplo-texto"><span class="nombre nombre-lila">Ana</span> parpadeó; sus <span class="choca">ojos cafés</span> se llenaron de lágrimas cuando su hermana <span class="nombre nombre-menta">Lía</span> la abrazó.</p>
-      <p class="aviso" style="margin-bottom:0"><span><strong>Ojo con los ojos de Ana:</strong> en su ficha son verdes.</span></p>
+      <p class="aviso aviso-final"><span><strong>Ojo con los ojos de Ana:</strong> en su ficha son verdes.</span></p>
     </div>
     <div class="fichas-flotantes">
       <span class="ficha-chip"><span class="inicial p-lila" aria-hidden="true">A</span>Ana · 17 · ojos verdes</span>
@@ -44,8 +47,8 @@
       <p>Tu capítulo al centro de la pantalla, en una letra pensada para leer. Se guarda solo mientras escribes.</p>
     </li>
     <li class="paso">
-      <h3><span class="nombre nombre-menta">Tu reparto a la mano</span> <span class="pronto">Pronto</span></h3>
-      <p>Podrás crear fichas de tus personajes y, al seleccionar un nombre, ver su edad, rasgos y relaciones a un lado del texto.</p>
+      <h3><span class="nombre nombre-menta">Tu reparto a la mano</span></h3>
+      <p>Crea fichas de tus personajes con sus alias y rasgos; al seleccionar un nombre en el texto, su ficha aparece a un lado.</p>
     </li>
     <li class="paso">
       <h3><span class="nombre nombre-durazno">Avisos, no reescrituras</span> <span class="pronto">Pronto</span></h3>

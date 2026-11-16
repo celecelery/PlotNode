@@ -1,0 +1,12 @@
+{% extends "app_base.html" %}
+{% load static %}
+{% block titulo %}{% if ficha.pk %}Editar ficha{% else %}Nuevo {{ tipo_nombre|lower }}{% endif %} · {{ proyecto.titulo }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}">{% endblock %}
+{% block contenido %}
+<header class="encabezado-pagina">
+  <a class="volver" href="{% url 'fichas_lista' proyecto.pk %}">← Fichas de «{{ proyecto.titulo }}»</a>
+  <h1>{% if ficha.pk %}Editar la ficha de {{ ficha.nombre }}{% else %}Nuevo {{ tipo_nombre|lower }}{% endif %}</h1>
+</header>
+{% include "core/partials/ficha_form.html" with en_pagina=True %}
+{% endblock %}
+{% block scripts %}<script src="{% static 'core/js/ficha-form.js' %}"></script>{% endblock %}
