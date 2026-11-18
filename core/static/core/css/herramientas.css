@@ -1,0 +1,68 @@
+/* Relaciones, línea de tiempo y tablón de ideas (iteración 3) */
+.form-herramienta { margin: 1.4rem 0 0; }
+.form-herramienta .form-titulo { margin: 0; font-size: 1.1rem; font-weight: 800; }
+.form-herramienta select, .form-herramienta input[type="text"] { width: 100%; }
+.punto-color { display: inline-block; flex: none; width: .65rem; height: .65rem; border-radius: 50%; margin-right: .4rem; }
+.punto-color.p-lila { background: var(--lila); } .punto-color.p-menta { background: var(--menta); } .punto-color.p-durazno { background: var(--durazno); }
+
+/* Relaciones */
+.rel-vista { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 1fr); gap: 1.2rem; margin-top: 1.2rem; align-items: start; }
+.mapa-relaciones { margin: 0; padding: .8rem; border-radius: var(--r-panel); background: var(--panel-3); }
+.mapa-relaciones svg { display: block; width: 100%; height: auto; }
+.mapa-relaciones figcaption { margin-top: .4rem; color: var(--texto-3); font-size: .85rem; }
+.mapa-relaciones .arista { stroke: var(--campo-borde); stroke-width: 2; }
+.mapa-relaciones .arista-texto { fill: var(--texto-2); font-size: 13px; font-weight: 700; paint-order: stroke; stroke: var(--panel-3); stroke-width: 5px; text-anchor: middle; }
+.mapa-relaciones .nodo-nombre { fill: var(--texto); font-size: 14px; font-weight: 700; text-anchor: middle; }
+.mapa-relaciones .nodo-inicial { font-size: 22px; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
+.mapa-relaciones a:focus-visible circle { stroke: var(--lila-claro); stroke-width: 3; }
+.mapa-relaciones .c-lila { fill: var(--lila); } .mapa-relaciones .c-menta { fill: var(--menta); } .mapa-relaciones .c-durazno { fill: var(--durazno); }
+.mapa-relaciones .t-lila { fill: var(--sobre-lila); } .mapa-relaciones .t-menta { fill: var(--sobre-menta); } .mapa-relaciones .t-durazno { fill: var(--sobre-durazno); }
+.rel-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.rel-item { display: grid; gap: .3rem; padding: .8rem 1rem; border-radius: var(--r-tarjeta); background: var(--panel-3); }
+.rel-texto { margin: 0 .4rem; padding: .1rem .6rem; border: 1px solid var(--borde-2); border-radius: 999px; color: var(--texto-2); font-size: .85rem; font-weight: 700; }
+.rel-nota { color: var(--texto-3); font-size: .9rem; }
+.ficha-relaciones { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .4rem; font-size: .93rem; }
+.ficha-relaciones li { display: flex; align-items: center; flex-wrap: wrap; gap: .2rem; }
+.ficha-relaciones .rel-tipo { margin-left: auto; padding: .05rem .6rem; border: 1px solid var(--borde-2); border-radius: 999px; color: var(--texto-2); font-size: .82rem; font-weight: 700; }
+.enlace-relacion { display: inline-block; margin-top: .5rem; font-size: .9rem; }
+.ficha-seccion .punto-color.p-lila { background: var(--lila); }
+
+/* Línea de tiempo */
+.filtros-carriles { align-items: center; }
+.chip-carril { display: inline-flex; align-items: center; gap: .3rem; padding: .35rem .9rem; border: 1px solid var(--borde-2); border-radius: 999px; font-size: .9rem; font-weight: 650; cursor: pointer; color: var(--texto-2); }
+.chip-carril:has(input:checked) { background: var(--panel-4); border-color: var(--lila); color: var(--texto); }
+.chip-carril input { accent-color: var(--lila); }
+.linea-scroll { margin-top: 1rem; overflow-x: auto; border-radius: var(--r-panel); }
+.linea-scroll:focus-visible { outline: 2px solid var(--lila); outline-offset: 3px; }
+.linea { border-collapse: separate; border-spacing: .5rem; min-width: calc(9rem + var(--cols) * 11.5rem); width: 100%; }
+.linea th { color: var(--texto-3); font-size: .85rem; font-weight: 750; text-align: center; padding: .2rem; }
+.linea td { vertical-align: top; min-width: 11rem; background: var(--panel-2); border-radius: var(--r-control); padding: .4rem; }
+.linea-carril { text-align: left !important; display: table-cell; vertical-align: middle; min-width: 8rem; color: var(--texto) !important; font-size: .95rem !important; }
+.linea-carril .inicial { display: inline-grid; place-items: center; width: 2rem; height: 2rem; margin-right: .5rem; border-radius: 50%; font-weight: 800; vertical-align: middle; }
+.evento-trama { padding: .7rem .8rem; border-radius: var(--r-control); background: var(--panel-3); border: 1px solid var(--borde-2); margin-bottom: .4rem; }
+.evento-trama h3 { margin: .1rem 0 .2rem; font-size: .98rem; font-weight: 800; overflow-wrap: anywhere; }
+.evento-cap { margin: 0; color: var(--texto-3); font-size: .78rem; }
+.evento-desc { margin: 0 0 .3rem; color: var(--texto-2); font-size: .88rem; overflow-wrap: anywhere; }
+.participantes ul { list-style: none; margin: .3rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem 1rem; }
+.participantes label { display: inline-flex; gap: .4rem; align-items: center; }
+.participantes input { accent-color: var(--lila); }
+
+/* Tablón */
+.tablon-barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; margin-top: 1.2rem; }
+.tablon-barra .filtros { margin: 0; }
+.tablon-scroll { margin-top: 1rem; overflow: auto; max-height: 70vh; border-radius: var(--r-panel); border: 1px solid var(--borde); background-color: var(--panel-2);
+  background-image: radial-gradient(var(--borde) 1.5px, transparent 1.5px); background-size: 28px 28px; }
+.tablon { position: relative; }
+.nota { position: absolute; width: 17rem; box-sizing: border-box; padding: .9rem 1rem; border-radius: var(--r-tarjeta); background: var(--panel-3); border: 1px solid var(--borde-2);
+  box-shadow: 0 14px 28px -14px rgba(0, 0, 0, .7); cursor: grab; touch-action: none; user-select: none; }
+.nota.arrastrando { cursor: grabbing; z-index: 5; border-color: var(--lila); }
+.nota:focus-visible { outline: 2px solid var(--lila); outline-offset: 3px; }
+.nota-cabeza { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.nota-tag { padding: .1rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; border: 1px solid var(--lila); color: var(--lila-claro); }
+.nota-texto + .acciones-ficha { margin: 0; }
+.nota-texto { margin: .6rem 0; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-line; }
+.nota-ficha { display: inline-flex; align-items: center; font-size: .82rem; color: var(--texto-3); }
+.nota-ficha .punto-color { margin-right: .35rem; }
+.ayuda-tablon { margin: .6rem 0 0; color: var(--texto-3); font-size: .88rem; }
+.nota .acciones-ficha a { cursor: pointer; }
+@media (max-width: 760px) { .rel-vista { grid-template-columns: minmax(0, 1fr); } }

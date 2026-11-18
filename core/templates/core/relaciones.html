@@ -1,0 +1,65 @@
+{% extends "app_base.html" %}
+{% load static %}
+{% block titulo %}Relaciones · {{ proyecto.titulo }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}"><link rel="stylesheet" href="{% static 'core/css/herramientas.css' %}">{% endblock %}
+{% block contenido %}
+<header class="encabezado-pagina">
+  <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
+  <h1>Relaciones de «{{ proyecto.titulo }}»</h1>
+  <p>Quién se relaciona con quién. Cada relación se ve desde las dos fichas, y también en el panel del editor.</p>
+</header>
+
+{% if hay_fichas %}
+<form method="post" class="form-ficha form-herramienta" novalidate>
+  {% csrf_token %}
+  <h2 class="form-titulo">Nueva relación</h2>
+  {{ form.non_field_errors }}
+  <div class="campos-grid">
+    <div class="campo"><label for="{{ form.origen.id_for_label }}">{{ form.origen.label }}</label>{{ form.origen.errors }}{{ form.origen }}</div>
+    <div class="campo"><label for="{{ form.destino.id_for_label }}">{{ form.destino.label }}</label>{{ form.destino.errors }}{{ form.destino }}</div>
+    <div class="campo"><label for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>{{ form.categoria.errors }}{{ form.categoria }}</div>
+    <div class="campo"><label for="{{ form.etiqueta.id_for_label }}">{{ form.etiqueta.label }}</label>{{ form.etiqueta.errors }}{{ form.etiqueta }}</div>
+    <div class="campo campo-ancho"><label for="{{ form.nota.id_for_label }}">{{ form.nota.label }}</label>{{ form.nota.errors }}{{ form.nota }}</div>
+  </div>
+  <div class="acciones"><button class="boton" type="submit">Guardar relación</button></div>
+</form>
+{% else %}
+<div class="obra-vacia">
+  <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
+  <div><h2>Necesitas al menos dos fichas</h2>
+  <p>Crea dos personajes (o un personaje y un lugar) y podrás relacionarlos. <a href="{% url 'fichas_lista' proyecto.pk %}">Ir a las fichas</a></p></div>
+</div>
+{% endif %}
+
+<nav class="filtros" aria-label="Filtrar por tipo de relación">
+  <a href="{% url 'relaciones' proyecto.pk %}" {% if not categoria %}aria-current="true"{% endif %}>Todas</a>
+  {% for clave, nombre in categorias %}<a href="?categoria={{ clave }}" {% if categoria == clave %}aria-current="true"{% endif %}>{{ nombre }}</a>{% endfor %}
+</nav>
+
+{% if relaciones %}
+<div class="rel-vista">
+  <figure class="mapa-relaciones" id="mapa-relaciones" data-sin-js="true">
+    <svg id="mapa-svg" role="img" aria-label="Mapa de relaciones: cada ficha es un círculo y cada relación una línea con su nombre." viewBox="0 0 720 460"></svg>
+    <figcaption>Pulsa un personaje para abrir su ficha.</figcaption>
+  </figure>
+  <ul class="rel-lista" aria-label="Todas las relaciones">
+    {% for r in relaciones %}
+    <li class="rel-item">
+      <span class="rel-par"><strong><span class="nombre nombre-{{ r.origen.color }}">{{ r.origen.nombre }}</span></strong>
+        <span class="rel-texto">{{ r.texto }}</span>
+        <strong><span class="nombre nombre-{{ r.destino.color }}">{{ r.destino.nombre }}</span></strong></span>
+      {% if r.nota %}<span class="rel-nota">{{ r.nota }}</span>{% endif %}
+      <span class="acciones-ficha"><a href="{% url 'relacion_editar' proyecto.pk r.pk %}">Editar</a><a class="enlace-coral" href="{% url 'relacion_eliminar' proyecto.pk r.pk %}">Eliminar</a></span>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{{ mapa|json_script:"mapa-datos" }}
+<script src="{% static 'core/js/mapa.js' %}" defer></script>
+{% elif hay_fichas %}
+<div class="obra-vacia mt-lista">
+  <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
+  <div><h2>Aún no hay relaciones{% if categoria %} de este tipo{% endif %}</h2><p>Une dos fichas arriba: hermanas, rivales, mentor y alumno… El mapa se dibuja solo.</p></div>
+</div>
+{% endif %}
+{% endblock %}

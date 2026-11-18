@@ -329,7 +329,7 @@ p { text-wrap: pretty; }
   .riel .marca { margin: 0 auto 0 0; padding: 0; font-size: 1.15rem; }
   .riel-enlace { padding: .5rem; }
   .riel-enlace-texto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .riel-titulo { display: none; }
+  .riel-titulo, .riel-herramientas { display: none; }   /* PlotNode es de escritorio: en pantallas angostas queda solo lo esencial */
   .riel-cuenta { margin: 0; padding: 0; background: none; }
   .riel-cuenta .avatar, .riel-usuario { display: none; }
   .zona { min-height: 0; }
@@ -355,3 +355,6 @@ p { text-wrap: pretty; }
 .aviso-final { margin-bottom: 0; }
 .hoja-lateral { margin-left: 0; background: var(--panel-3); }
 .mt-lista { margin-top: 1.4rem; }
+
+.riel-herramientas { list-style: none; margin: 0; padding: 0; display: grid; gap: .15rem; }
+.riel-herramientas .riel-enlace { padding: .5rem .75rem; font-size: .93rem; }

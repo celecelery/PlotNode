@@ -14,10 +14,11 @@ from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from .fichas_schema import TIPO_PLURAL, TIPOS
-from .forms import (AtributoFormSet, CapituloForm, FichaForm, ProyectoForm, RegistroForm, TerminoForm,
-                    secciones_del_formulario)
-from .models import Capitulo, EventoUso, Ficha, Proyecto, Termino
-from .services.fichas import buscar_ficha, ficha_a_dict
+from .forms import (AtributoFormSet, CapituloForm, EventoTramaForm, FichaForm, NotaForm, ProyectoForm, RegistroForm,
+                    RelacionForm, TerminoForm, secciones_del_formulario)
+from .models import Capitulo, EventoTrama, EventoUso, Ficha, Nota, Perfil, Proyecto, Relacion, Termino
+from .services.plantilla import crear_proyecto_de_muestra
+from .services.fichas import RELACIONES_PRECARGA, buscar_ficha, ficha_a_dict
 from .utils import normalizar
 
 
@@ -36,7 +37,8 @@ def registro(request):
         usuario = form.save()
         login(request, usuario)
         messages.success(request, f"¡Bienvenida/o a PlotNode, {usuario.username}!")
-        return redirect("proyectos")
+        capitulo = crear_proyecto_de_muestra(usuario)   # algo con qué probar el panel desde el primer minuto
+        return redirect("editor", pk=capitulo.pk)
     return render(request, "registration/registro.html", {"form": form})
 
 
@@ -109,12 +111,14 @@ def proyecto_abrir(request, pk):
 @login_required
 def editor(request, pk):
     capitulo = _capitulo_del_usuario(request, pk)
+    perfil, _ = Perfil.objects.get_or_create(user=request.user)
     return render(request, "core/editor.html", {
+        "tutorial": request.GET.get("tutorial") == "1" or not perfil.onboarding_completado,
         "capitulo": capitulo,
         "version": _version(capitulo),
         "proyecto": capitulo.proyecto,
         "capitulos": capitulo.proyecto.capitulos.all(),
-        "fichas": [ficha_a_dict(f) for f in capitulo.proyecto.fichas.prefetch_related("atributos")],
+        "fichas": [ficha_a_dict(f) for f in capitulo.proyecto.fichas.prefetch_related(*RELACIONES_PRECARGA)],
         "terminos": [_termino_a_dict(t) for t in capitulo.proyecto.terminos.all()],
     })
 
@@ -281,7 +285,7 @@ def fichas_lista(request, pk):
     if tipo in TIPOS:
         fichas = fichas.filter(tipo=tipo)
     return render(request, "core/fichas.html", {
-        "proyecto": proyecto, "fichas": fichas, "seccion": "proyectos", "tipo": tipo,
+        "proyecto": proyecto, "fichas": fichas, "seccion": "proyectos", "tipo": tipo, "herramienta": "fichas",
         "tipos": [(t, TIPO_PLURAL[t]) for t in TIPOS],
     })
 
@@ -306,7 +310,7 @@ def ficha_form(request, pk, ficha_pk=None):
             formset.instance = ficha
             formset.save()
         if _es_panel(request):
-            ficha = Ficha.objects.prefetch_related("atributos").get(pk=ficha.pk)
+            ficha = Ficha.objects.prefetch_related(*RELACIONES_PRECARGA).get(pk=ficha.pk)
             return JsonResponse({"ok": True, "ficha": ficha_a_dict(ficha)})
         messages.success(request, f"Ficha de {ficha.nombre} guardada.")
         return redirect("fichas_lista", pk=proyecto.pk)
@@ -357,6 +361,7 @@ def glosario(request, pk):
     terminos = [t for t in proyecto.terminos.all() if not q or q in t.clave or q in normalizar(t.definicion)]
     return render(request, "core/glosario.html", {
         "proyecto": proyecto, "terminos": terminos, "form": form, "q": request.GET.get("q", ""), "seccion": "proyectos",
+        "herramienta": "glosario",
     })
 
 
@@ -457,3 +462,241 @@ def ficha_rapida(request, pk):
         return JsonResponse({"error": "Ya existe una ficha con ese nombre"}, status=409)
     ficha = Ficha.objects.create(proyecto=proyecto, nombre=nombre)
     return JsonResponse({"ficha": ficha_a_dict(ficha)}, status=201)
+
+
+# --- Relaciones entre fichas ---------------------------------------------------------------
+
+def _ficha_json(f):
+    return {"id": f.pk, "nombre": f.nombre, "color": f.color, "inicial": f.inicial}
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def relaciones(request, pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    inicial = {}
+    de = request.GET.get("de", "")
+    if de.isdigit() and proyecto.fichas.filter(pk=int(de)).exists():
+        inicial["origen"] = int(de)
+    form = RelacionForm(request.POST or None, proyecto=proyecto, initial=inicial)
+    if request.method == "POST" and form.is_valid():
+        r = form.save(commit=False)
+        r.proyecto = proyecto
+        r.save()
+        messages.success(request, "Relación guardada.")
+        return redirect("relaciones", pk=proyecto.pk)
+    categoria = request.GET.get("categoria", "")
+    lista = proyecto.relaciones.select_related("origen", "destino")
+    if categoria in Relacion.Categoria.values:
+        lista = lista.filter(categoria=categoria)
+    lista = list(lista)
+    nodos = {}
+    for r in lista:
+        nodos[r.origen_id] = r.origen
+        nodos[r.destino_id] = r.destino
+    mapa = {
+        "nodos": [_ficha_json(f) for f in nodos.values()],
+        "aristas": [{"origen": r.origen_id, "destino": r.destino_id, "texto": r.texto} for r in lista],
+    }
+    return render(request, "core/relaciones.html", {
+        "proyecto": proyecto, "form": form, "relaciones": lista, "mapa": mapa, "categoria": categoria,
+        "categorias": Relacion.Categoria.choices, "herramienta": "relaciones", "hay_fichas": proyecto.fichas.count() >= 2,
+    })
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def relacion_editar(request, pk, relacion_pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    relacion = get_object_or_404(Relacion, pk=relacion_pk, proyecto=proyecto)
+    form = RelacionForm(request.POST or None, instance=relacion, proyecto=proyecto)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Relación actualizada.")
+        return redirect("relaciones", pk=proyecto.pk)
+    return render(request, "core/relacion_form.html", {"proyecto": proyecto, "form": form, "relacion": relacion,
+                                                       "herramienta": "relaciones"})
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def relacion_eliminar(request, pk, relacion_pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    relacion = get_object_or_404(Relacion, pk=relacion_pk, proyecto=proyecto)
+    if request.method == "POST":
+        relacion.delete()
+        messages.success(request, "Relación eliminada.")
+        return redirect("relaciones", pk=proyecto.pk)
+    return render(request, "core/relacion_eliminar.html", {"proyecto": proyecto, "relacion": relacion,
+                                                           "herramienta": "relaciones"})
+
+
+# --- Línea de tiempo -------------------------------------------------------------------------
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def linea_tiempo(request, pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    form = EventoTramaForm(request.POST or None, proyecto=proyecto)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Evento agregado a la línea de tiempo.")
+        return redirect("linea_tiempo", pk=proyecto.pk)
+    eventos = list(proyecto.eventos_trama.select_related("capitulo").prefetch_related("participantes"))
+    etapas = []
+    for e in eventos:
+        if e.etapa.lower() not in [x.lower() for x in etapas]:
+            etapas.append(e.etapa)
+    carriles = {}
+    sin_personaje = []
+    for e in eventos:
+        quienes = list(e.participantes.all())
+        for f in quienes:
+            carriles.setdefault(f.pk, {"ficha": f, "eventos": []})["eventos"].append(e)
+        if not quienes:
+            sin_personaje.append(e)
+    columnas = {e.pk: [x.lower() for x in etapas].index(e.etapa.lower()) for e in eventos}
+    lista_carriles = sorted(carriles.values(), key=lambda c: c["ficha"].nombre.lower())
+    for c in lista_carriles:
+        c["celdas"] = [{"evento": e, "col": columnas[e.pk]} for e in c["eventos"]]
+    if sin_personaje:
+        lista_carriles.append({"ficha": None, "celdas": [{"evento": e, "col": columnas[e.pk]} for e in sin_personaje]})
+    return render(request, "core/linea_tiempo.html", {
+        "proyecto": proyecto, "form": form, "etapas": etapas, "carriles": lista_carriles, "total": len(eventos),
+        "herramienta": "linea", "ancho": max(len(etapas), 1),
+    })
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def evento_editar(request, pk, evento_pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    evento = get_object_or_404(EventoTrama, pk=evento_pk, proyecto=proyecto)
+    form = EventoTramaForm(request.POST or None, instance=evento, proyecto=proyecto)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Evento actualizado.")
+        return redirect("linea_tiempo", pk=proyecto.pk)
+    return render(request, "core/evento_form.html", {
+        "proyecto": proyecto, "form": form, "evento": evento, "herramienta": "linea",
+        "etapas": sorted({e.etapa for e in proyecto.eventos_trama.all()}, key=str.lower)})
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def evento_eliminar(request, pk, evento_pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    evento = get_object_or_404(EventoTrama, pk=evento_pk, proyecto=proyecto)
+    if request.method == "POST":
+        evento.delete()
+        messages.success(request, "Evento eliminado.")
+        return redirect("linea_tiempo", pk=proyecto.pk)
+    return render(request, "core/evento_eliminar.html", {"proyecto": proyecto, "evento": evento, "herramienta": "linea"})
+
+
+# --- Tablón de ideas ---------------------------------------------------------------------------
+
+def _posicion_libre(proyecto):
+    """Siguiente hueco de una cuadrícula de notas, para que las nuevas no se amontonen."""
+    n = proyecto.notas.count()
+    return 24 + (n % 4) * 300, 24 + (n // 4) * 190
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def tablon(request, pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    form = NotaForm(request.POST or None, proyecto=proyecto)
+    if request.method == "POST" and form.is_valid():
+        nota = form.save(commit=False)
+        nota.proyecto = proyecto
+        nota.tipo = Nota.Tipo.IDEA
+        nota.x, nota.y = _posicion_libre(proyecto)
+        nota.save()
+        messages.success(request, "Idea agregada al tablón.")
+        return redirect("tablon", pk=proyecto.pk)
+    tipo = request.GET.get("tipo", "")
+    notas = proyecto.notas.select_related("ficha", "capitulo")
+    if tipo in Nota.Tipo.values:
+        notas = notas.filter(tipo=tipo)
+    q = normalizar(request.GET.get("q", ""))
+    notas = [n for n in notas if not q or q in normalizar(n.contenido)]
+    return render(request, "core/tablon.html", {
+        "proyecto": proyecto, "form": form, "notas": notas, "tipo": tipo, "q": request.GET.get("q", ""),
+        "total": proyecto.notas.count(), "n_ideas": proyecto.notas.filter(tipo="idea").count(),
+        "n_texto": proyecto.notas.filter(tipo="texto").count(), "herramienta": "tablon",
+        "alto": max([n.y for n in notas] + [0]) + 260, "ancho": max([n.x for n in notas] + [0]) + 340,
+    })
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def nota_editar(request, pk, nota_pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    nota = get_object_or_404(Nota, pk=nota_pk, proyecto=proyecto)
+    form = NotaForm(request.POST or None, instance=nota, proyecto=proyecto)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Nota actualizada.")
+        return redirect("tablon", pk=proyecto.pk)
+    return render(request, "core/nota_form.html", {"proyecto": proyecto, "form": form, "nota": nota, "herramienta": "tablon"})
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def nota_eliminar(request, pk, nota_pk):
+    proyecto = _proyecto_del_usuario(request, pk)
+    nota = get_object_or_404(Nota, pk=nota_pk, proyecto=proyecto)
+    if request.method == "POST":
+        nota.delete()
+        messages.success(request, "Nota eliminada.")
+        return redirect("tablon", pk=proyecto.pk)
+    return render(request, "core/nota_eliminar.html", {"proyecto": proyecto, "nota": nota, "herramienta": "tablon"})
+
+
+@login_required
+@require_POST
+def nota_mover(request, pk, nota_pk):
+    """Guarda la posición de una nota tras arrastrarla. JSON: {x, y}."""
+    proyecto = _proyecto_del_usuario(request, pk)
+    nota = get_object_or_404(Nota, pk=nota_pk, proyecto=proyecto)
+    try:
+        datos = json.loads(request.body or b"{}")
+        x, y = int(datos["x"]), int(datos["y"])
+    except (ValueError, KeyError, TypeError):
+        return JsonResponse({"ok": False, "error": "Posición no válida."}, status=400)
+    nota.x, nota.y = max(0, min(x, 5000)), max(0, min(y, 5000))
+    nota.save(update_fields=["x", "y"])
+    return JsonResponse({"ok": True})
+
+
+@login_required
+@require_POST
+def nota_desde_texto(request, pk):
+    """Envía al tablón un pasaje seleccionado en el editor. JSON: {texto, capitulo}."""
+    proyecto = _proyecto_del_usuario(request, pk)
+    try:
+        datos = json.loads(request.body or b"{}")
+    except ValueError:
+        return JsonResponse({"ok": False, "error": "Datos no válidos."}, status=400)
+    texto = " ".join(str(datos.get("texto", "")).split())
+    if not texto:
+        return JsonResponse({"ok": False, "error": "Selecciona un pasaje primero."}, status=400)
+    capitulo = None
+    if str(datos.get("capitulo", "")).isdigit():
+        capitulo = proyecto.capitulos.filter(pk=int(datos["capitulo"])).first()
+    ficha = buscar_ficha(proyecto, texto) if len(texto.split()) <= 6 else None
+    x, y = _posicion_libre(proyecto)
+    Nota.objects.create(proyecto=proyecto, tipo=Nota.Tipo.TEXTO, contenido=texto[:1000], capitulo=capitulo,
+                        ficha=ficha, x=x, y=y)
+    return JsonResponse({"ok": True, "total": proyecto.notas.count()})
+
+
+@login_required
+@require_POST
+def tutorial_terminar(request):
+    """El tutorial se completó u omitió: no vuelve a salir solo (se puede repetir con «Ver tutorial»)."""
+    perfil, _ = Perfil.objects.get_or_create(user=request.user)
+    perfil.onboarding_completado = True
+    perfil.save(update_fields=["onboarding_completado"])
+    return JsonResponse({"ok": True})

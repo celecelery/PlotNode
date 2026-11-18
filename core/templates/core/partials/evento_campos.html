@@ -1,0 +1,10 @@
+{{ form.non_field_errors }}
+<div class="campos-grid">
+  <div class="campo"><label for="{{ form.titulo.id_for_label }}">{{ form.titulo.label }}</label>{{ form.titulo.errors }}{{ form.titulo }}</div>
+  <div class="campo"><label for="{{ form.etapa.id_for_label }}">{{ form.etapa.label }}</label>{{ form.etapa.errors }}{{ form.etapa }}
+    <datalist id="etapas-existentes">{% for e in etapas %}<option value="{{ e }}">{% endfor %}</datalist>
+    <p class="ayuda">Si escribes una etapa que ya existe, el evento se coloca en esa columna.</p></div>
+  <div class="campo campo-ancho"><label for="{{ form.descripcion.id_for_label }}">{{ form.descripcion.label }}</label>{{ form.descripcion.errors }}{{ form.descripcion }}</div>
+  <div class="campo"><label for="{{ form.capitulo.id_for_label }}">{{ form.capitulo.label }}</label>{{ form.capitulo.errors }}{{ form.capitulo }}</div>
+  <fieldset class="campo campo-ancho participantes"><legend>{{ form.participantes.label }}</legend>{{ form.participantes.errors }}{{ form.participantes }}</fieldset>
+</div>

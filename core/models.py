@@ -172,6 +172,83 @@ class Atributo(models.Model):
         return f"{self.clave}: {self.valor}"
 
 
+class Relacion(models.Model):
+    """Vínculo entre dos fichas (familia, pareja, rivalidad…). Es una sola fila y se ve desde ambas fichas."""
+
+    class Categoria(models.TextChoices):
+        FAMILIA = "familia", "Familia"
+        PAREJA = "pareja", "Pareja"
+        RIVALIDAD = "rivalidad", "Rivalidad"
+        ALIANZA = "alianza", "Alianza"
+        OTRA = "otra", "Otra"
+
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name="relaciones")
+    origen = models.ForeignKey(Ficha, on_delete=models.CASCADE, related_name="relaciones_salientes")
+    destino = models.ForeignKey(Ficha, on_delete=models.CASCADE, related_name="relaciones_entrantes")
+    categoria = models.CharField("categoría", max_length=20, choices=Categoria.choices, default=Categoria.OTRA)
+    etiqueta = models.CharField("cómo se llama", max_length=60, blank=True,
+                                help_text="Ej. «hermanas», «mentor de Mateo». Si queda vacío se usa la categoría.")
+    nota = models.CharField(max_length=300, blank=True)
+
+    class Meta:
+        verbose_name = "relación"
+        verbose_name_plural = "relaciones"
+        ordering = ["pk"]
+
+    def __str__(self):
+        return f"{self.origen} — {self.destino} ({self.texto})"
+
+    @property
+    def texto(self):
+        return self.etiqueta or self.get_categoria_display()
+
+    def otro(self, ficha):
+        return self.destino if ficha.pk == self.origen_id else self.origen
+
+
+class EventoTrama(models.Model):
+    """Evento de la historia para la línea de tiempo. No es el EventoUso de las métricas."""
+
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name="eventos_trama")
+    titulo = models.CharField("título", max_length=120)
+    descripcion = models.TextField("descripción", max_length=1000, blank=True)
+    etapa = models.CharField(max_length=40, help_text="Momento de la historia: «Día 2», «Semana 2», «Antes de la historia».")
+    orden = models.PositiveIntegerField(default=1, editable=False, help_text="Posición de la etapa en la línea de tiempo.")
+    capitulo = models.ForeignKey(Capitulo, on_delete=models.SET_NULL, null=True, blank=True, related_name="eventos_trama")
+    participantes = models.ManyToManyField(Ficha, blank=True, related_name="eventos_trama")
+
+    class Meta:
+        verbose_name = "evento de la trama"
+        verbose_name_plural = "eventos de la trama"
+        ordering = ["orden", "pk"]
+
+    def __str__(self):
+        return f"{self.etapa}: {self.titulo}"
+
+
+class Nota(models.Model):
+    """Nota del tablón de ideas: idea suelta o pasaje enviado desde el editor."""
+
+    class Tipo(models.TextChoices):
+        IDEA = "idea", "Idea"
+        TEXTO = "texto", "Del texto"
+
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name="notas")
+    tipo = models.CharField(max_length=10, choices=Tipo.choices, default=Tipo.IDEA)
+    contenido = models.TextField(max_length=1000)
+    ficha = models.ForeignKey(Ficha, on_delete=models.SET_NULL, null=True, blank=True, related_name="notas_tablon")
+    capitulo = models.ForeignKey(Capitulo, on_delete=models.SET_NULL, null=True, blank=True, related_name="notas_tablon")
+    x = models.IntegerField(default=24)
+    y = models.IntegerField(default=24)
+    creada = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["pk"]
+
+    def __str__(self):
+        return self.contenido[:40]
+
+
 class Alerta(models.Model):
     class Estado(models.TextChoices):
         NUEVA = "nueva", "Nueva"

@@ -1,0 +1,11 @@
+{% extends "app_base.html" %}
+{% block titulo %}Eliminar evento{% endblock %}
+{% block contenido %}
+<div class="hoja hoja-cuenta hoja-lateral">
+  <h1>¿Eliminar «{{ evento.titulo }}»?</h1>
+  <p class="entrada">Se quita de la línea de tiempo. Tu texto no cambia. <strong>No se puede deshacer.</strong></p>
+  <form method="post">{% csrf_token %}
+    <div class="acciones"><button class="boton boton-coral" type="submit">Sí, eliminar evento</button><a href="{% url 'linea_tiempo' proyecto.pk %}">Cancelar</a></div>
+  </form>
+</div>
+{% endblock %}

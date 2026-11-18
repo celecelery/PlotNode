@@ -316,3 +316,22 @@ kbd {
 ::highlight(nombre-lila) { text-decoration: underline wavy var(--lila); text-decoration-thickness: 1.5px; }
 ::highlight(nombre-menta) { text-decoration: underline wavy var(--menta); text-decoration-thickness: 1.5px; }
 ::highlight(nombre-durazno) { text-decoration: underline wavy var(--durazno); text-decoration-thickness: 1.5px; }
+
+.barra-aviso { margin: .4rem 0 0; color: var(--texto-2); font-size: .82rem; line-height: 1.35; }
+
+/* Tutorial de bienvenida: el anillo no bloquea el clic, así se puede probar lo que explica. */
+.tuto-anillo {
+  position: fixed; z-index: 80; display: none; pointer-events: none; border-radius: 14px;
+  border: 2px solid var(--lila); box-shadow: 0 0 0 9999px rgba(15, 12, 30, .72);
+}
+.tuto-caja {
+  position: fixed; z-index: 90; width: min(23rem, calc(100vw - 2rem)); box-sizing: border-box; padding: 1.2rem 1.3rem;
+  border-radius: 18px; background: var(--panel-3); border: 1.5px solid var(--campo-borde); box-shadow: 0 24px 48px -12px rgba(0, 0, 0, .7);
+}
+.tuto-caja h2 { margin: .2rem 0 .4rem; font-size: 1.2rem; font-weight: 800; }
+.tuto-caja p { margin: 0; color: var(--texto-2); line-height: 1.5; }
+.tuto-caja .tuto-paso { color: var(--lila-claro); font-size: .78rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.tuto-puntos { display: flex; gap: .35rem; margin: .9rem 0; }
+.tuto-puntos span { width: 1.4rem; height: .38rem; border-radius: 3px; background: var(--borde-2); }
+.tuto-puntos span.on { background: var(--lila); }
+.tuto-acciones { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
