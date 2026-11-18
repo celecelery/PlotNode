@@ -173,13 +173,14 @@ class Atributo(models.Model):
 
 
 class Relacion(models.Model):
-    """Vínculo entre dos fichas (familia, pareja, rivalidad…). Es una sola fila y se ve desde ambas fichas."""
+    """Vínculo entre dos fichas (familia, amistad, alianza, romance, enemistad…). Es una sola fila y se ve desde ambas fichas."""
 
     class Categoria(models.TextChoices):
         FAMILIA = "familia", "Familia"
-        PAREJA = "pareja", "Pareja"
-        RIVALIDAD = "rivalidad", "Rivalidad"
+        AMISTAD = "amistad", "Amistad"
         ALIANZA = "alianza", "Alianza"
+        ROMANCE = "romance", "Romance"
+        ENEMISTAD = "enemistad", "Enemistad"
         OTRA = "otra", "Otra"
 
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name="relaciones")
@@ -212,8 +213,8 @@ class EventoTrama(models.Model):
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name="eventos_trama")
     titulo = models.CharField("título", max_length=120)
     descripcion = models.TextField("descripción", max_length=1000, blank=True)
-    etapa = models.CharField(max_length=40, help_text="Momento de la historia: «Día 2», «Semana 2», «Antes de la historia».")
-    orden = models.PositiveIntegerField(default=1, editable=False, help_text="Posición de la etapa en la línea de tiempo.")
+    etapa = models.CharField(max_length=40, help_text="Momento de la historia en texto libre: «Año 3», «Hace una semana».")
+    orden = models.PositiveIntegerField(default=1, editable=False, help_text="Posición del evento en la línea de tiempo (se cambia a mano).")
     capitulo = models.ForeignKey(Capitulo, on_delete=models.SET_NULL, null=True, blank=True, related_name="eventos_trama")
     participantes = models.ManyToManyField(Ficha, blank=True, related_name="eventos_trama")
 
@@ -236,6 +237,12 @@ class Nota(models.Model):
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name="notas")
     tipo = models.CharField(max_length=10, choices=Tipo.choices, default=Tipo.IDEA)
     contenido = models.TextField(max_length=1000)
+    class Color(models.TextChoices):
+        LILA = "lila", "Lila"
+        MENTA = "menta", "Menta"
+        DURAZNO = "durazno", "Durazno"
+
+    color = models.CharField(max_length=10, choices=Color.choices, default=Color.LILA)
     ficha = models.ForeignKey(Ficha, on_delete=models.SET_NULL, null=True, blank=True, related_name="notas_tablon")
     capitulo = models.ForeignKey(Capitulo, on_delete=models.SET_NULL, null=True, blank=True, related_name="notas_tablon")
     x = models.IntegerField(default=24)

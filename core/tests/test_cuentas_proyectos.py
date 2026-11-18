@@ -11,7 +11,7 @@ class CuentasTests(TestCase):
     def test_registro_crea_usuario_inicia_sesion_y_redirige(self):
         r = self.client.post(reverse("registro"), {
             "username": "lia", "email": "lia@ejemplo.com",
-            "password1": "una-clave-larga-42", "password2": "una-clave-larga-42",
+            "password1": "una-clave-larga-42", "password2": "una-clave-larga-42", "privacidad": "on",
         })
         lia = User.objects.get(username="lia")
         capitulo = lia.proyectos.get().capitulos.get()      # proyecto de muestra con su capítulo
@@ -23,7 +23,7 @@ class CuentasTests(TestCase):
         User.objects.create_user("ana", email="ana@ejemplo.com", password="x-clave-segura-1")
         r = self.client.post(reverse("registro"), {
             "username": "ana2", "email": "ANA@ejemplo.com",
-            "password1": "una-clave-larga-42", "password2": "una-clave-larga-42",
+            "password1": "una-clave-larga-42", "password2": "una-clave-larga-42", "privacidad": "on",
         })
         self.assertEqual(r.status_code, 200)
         self.assertContains(r, "Ya existe una cuenta con este correo")

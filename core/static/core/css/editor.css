@@ -335,3 +335,18 @@ kbd {
 .tuto-puntos span { width: 1.4rem; height: .38rem; border-radius: 3px; background: var(--borde-2); }
 .tuto-puntos span.on { background: var(--lila); }
 .tuto-acciones { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+
+/* Personajes en este capítulo (HU-11) y notas del panel (HU-32) */
+.presentes { margin: .2rem 0 .8rem; }
+.presentes h3 { margin: 0 0 .4rem; font-size: .8rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--texto-2, #b9b3d9); }
+.nota-mini a { display: block; padding: .6rem .75rem; border: 1.5px solid var(--borde-2, #3a3560); border-radius: 12px; color: inherit; text-decoration: none; }
+.nota-mini a:hover, .nota-mini a:focus-visible { border-color: #b69cff; }
+.nota-mini-tipo { display: block; font-size: .72rem; font-weight: 800; color: var(--texto-2, #b9b3d9); }
+.nota-mini-texto { display: block; font-size: .92rem; }
+
+/* Buscar y reemplazar (HU-31) */
+.dialogo-buscar { width: min(26rem, 92vw); padding: 1.2rem 1.4rem; border: 1.5px solid var(--borde-2, #3a3560); border-radius: 16px; background: var(--panel, #221e3d); color: var(--texto, #f1eeff); }
+.dialogo-buscar::backdrop { background: rgba(10, 8, 24, .6); }
+.dialogo-buscar h2 { margin: 0 0 .8rem; font-size: 1.1rem; font-weight: 800; }
+.dialogo-buscar .acciones { flex-wrap: wrap; gap: .5rem; }
+.reparto.recibe-nota { outline: 2px dashed #b69cff; outline-offset: -6px; }

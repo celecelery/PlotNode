@@ -11,6 +11,10 @@
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 4.5h10.5a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h10.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
       <span class="riel-enlace-texto">Mis proyectos</span>
     </a>
+    <a class="riel-enlace riel-enlace-general" href="{% url 'tablon_general' %}" {% if seccion == "tablon_general" %}aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span class="riel-enlace-texto">Tablón general</span>
+    </a>
     {% block riel_extra %}{% endblock %}
     {% if proyecto and proyecto.pk %}
     <p class="riel-titulo" id="riel-herramientas">Herramientas</p>

@@ -1,5 +1,5 @@
-"""Proyecto de muestra para quien se registra: un capítulo, dos fichas y una relación (MVE: «Iniciar»)."""
-from ..models import Capitulo, Ficha, Proyecto, Relacion
+"""Proyecto de muestra para quien se registra: un capítulo, dos fichas, una relación, un término del glosario y una nota (MVE: «Iniciar»)."""
+from ..models import Capitulo, Ficha, Nota, Proyecto, Relacion, Termino
 
 TEXTO = (
     "<p>Ana se detuvo en mitad del puente. Abajo, el río llevaba la niebla hacia la torre, y el viento olía a ceniza.</p>"
@@ -17,4 +17,8 @@ def crear_proyecto_de_muestra(usuario):
     lia = Ficha.objects.create(proyecto=proyecto, nombre="Lía", notas="Prudente. Siempre lleva un diario.")
     Relacion.objects.create(proyecto=proyecto, origen=ana, destino=lia, categoria=Relacion.Categoria.FAMILIA,
                             etiqueta="Hermanas", nota="Crecieron juntas en la torre")
+    Termino.objects.create(proyecto=proyecto, nombre="la torre", categoria="Lugar",
+                           definicion="Edificio antiguo junto al río. Dicen que está vacío, pero hay una luz en su ventana más alta.")
+    Nota.objects.create(proyecto=proyecto, contenido="¿Quién vive en la ventana más alta? Idea: es alguien de la familia de Ana.",
+                        ficha=ana, capitulo=capitulo, x=40, y=40)
     return capitulo

@@ -33,14 +33,29 @@
 
 <nav class="filtros" aria-label="Filtrar por tipo de relación">
   <a href="{% url 'relaciones' proyecto.pk %}" {% if not categoria %}aria-current="true"{% endif %}>Todas</a>
-  {% for clave, nombre in categorias %}<a href="?categoria={{ clave }}" {% if categoria == clave %}aria-current="true"{% endif %}>{{ nombre }}</a>{% endfor %}
+  {% for clave, nombre in categorias %}<a href="?categoria={{ clave }}{% if personaje %}&personaje={{ personaje }}{% endif %}" {% if categoria == clave %}aria-current="true"{% endif %}>{{ nombre }}</a>{% endfor %}
 </nav>
+<form method="get" class="filtro-personaje" role="search">
+  {% if categoria %}<input type="hidden" name="categoria" value="{{ categoria }}">{% endif %}
+  <label for="f-personaje">Ver solo las relaciones de</label>
+  <select id="f-personaje" name="personaje">
+    <option value="">Todos los personajes</option>
+    {% for f in fichas %}<option value="{{ f.pk }}" {% if personaje == f.pk|stringformat:"s" %}selected{% endif %}>{{ f.nombre }}</option>{% endfor %}
+  </select>
+  <button class="boton boton-borde boton-chico" type="submit">Filtrar</button>
+</form>
 
 {% if relaciones %}
 <div class="rel-vista">
   <figure class="mapa-relaciones" id="mapa-relaciones" data-sin-js="true">
     <svg id="mapa-svg" role="img" aria-label="Mapa de relaciones: cada ficha es un círculo y cada relación una línea con su nombre." viewBox="0 0 720 460"></svg>
-    <figcaption>Pulsa un personaje para abrir su ficha.</figcaption>
+    <figcaption>Pulsa un personaje para resaltar sus relaciones.</figcaption>
+    <ul class="leyenda-rel" aria-label="Tipos de línea">
+      <li><span class="muestra cat-familia"></span>Familia</li><li><span class="muestra cat-amistad"></span>Amistad</li>
+      <li><span class="muestra cat-alianza"></span>Alianza</li><li><span class="muestra cat-romance"></span>Romance</li>
+      <li><span class="muestra cat-enemistad"></span>Enemistad</li><li><span class="muestra cat-otra"></span>Otra</li>
+    </ul>
+    <div id="mapa-seleccion" class="mapa-seleccion" aria-live="polite" hidden></div>
   </figure>
   <ul class="rel-lista" aria-label="Todas las relaciones">
     {% for r in relaciones %}

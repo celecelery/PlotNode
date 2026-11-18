@@ -29,6 +29,9 @@ class NuevaContrasenaForm(SinDosPuntos, SetPasswordForm):
 
 class RegistroForm(SinDosPuntos, UserCreationForm):
     email = forms.EmailField(label="Correo electrónico", required=True)
+    privacidad = forms.BooleanField(
+        label="Entiendo y acepto el aviso de privacidad",
+        error_messages={"required": "Para crear tu cuenta, acepta el aviso de privacidad."})
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
@@ -288,10 +291,10 @@ class EventoTramaForm(SinDosPuntos, forms.ModelForm):
     class Meta:
         model = EventoTrama
         fields = ("titulo", "etapa", "descripcion", "capitulo", "participantes")
-        labels = {"titulo": "Qué pasa", "etapa": "Cuándo", "descripcion": "Descripción (opcional)",
+        labels = {"titulo": "Qué pasa", "etapa": "Cuándo (texto libre)", "descripcion": "Descripción (opcional)",
                   "capitulo": "Capítulo donde ocurre (opcional)", "participantes": "Quiénes participan"}
         widgets = {"titulo": forms.TextInput(attrs={"placeholder": "Cruzan el puente"}),
-                   "etapa": forms.TextInput(attrs={"placeholder": "Día 2, Semana 2, Antes de la historia…", "list": "etapas-existentes"}),
+                   "etapa": forms.TextInput(attrs={"placeholder": "Año 3, Hace una semana, Día 2…"}),
                    "descripcion": forms.Textarea(attrs={"rows": 3}),
                    "participantes": forms.CheckboxSelectMultiple}
 
@@ -318,12 +321,8 @@ class EventoTramaForm(SinDosPuntos, forms.ModelForm):
     def save(self, commit=True):
         evento = super().save(commit=False)
         evento.proyecto = self.proyecto
-        # Una etapa que ya existe conserva su posición; una nueva va al final.
-        previa = self.proyecto.eventos_trama.exclude(pk=evento.pk).filter(etapa__iexact=evento.etapa).first()
-        if previa:
-            evento.orden = previa.orden
-        else:
-            ultimo = self.proyecto.eventos_trama.exclude(pk=evento.pk).aggregate(m=models.Max("orden"))["m"]
+        if not evento.pk:       # un evento nuevo va al final; el orden se cambia a mano con subir y bajar
+            ultimo = self.proyecto.eventos_trama.aggregate(m=models.Max("orden"))["m"]
             evento.orden = (ultimo or 0) + 1
         if commit:
             evento.save()
@@ -334,14 +333,21 @@ class EventoTramaForm(SinDosPuntos, forms.ModelForm):
 class NotaForm(SinDosPuntos, forms.ModelForm):
     class Meta:
         model = Nota
-        fields = ("contenido", "ficha")
-        labels = {"contenido": "Tu idea", "ficha": "Ficha relacionada (opcional)"}
+        fields = ("contenido", "ficha", "capitulo", "color")
+        labels = {"contenido": "Tu idea", "ficha": "Ficha relacionada (opcional)",
+                  "capitulo": "Capítulo relacionado (opcional)", "color": "Color de la nota"}
         widgets = {"contenido": forms.Textarea(attrs={"rows": 4, "placeholder": "Una escena, una duda, un giro…"})}
 
     def __init__(self, *args, proyecto, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["ficha"].queryset = proyecto.fichas.all()
         self.fields["ficha"].empty_label = "Ninguna"
+        self.fields["capitulo"].queryset = proyecto.capitulos.all()
+        self.fields["capitulo"].empty_label = "Ninguno"
+        self.fields["color"].required = False
+
+    def clean_color(self):
+        return self.cleaned_data.get("color") or Nota.Color.LILA
 
     def clean_contenido(self):
         c = self.cleaned_data["contenido"].strip()
