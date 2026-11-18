@@ -4,34 +4,35 @@
 {% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}"><link rel="stylesheet" href="{% static 'core/css/herramientas.css' %}">{% endblock %}
 {% block contenido %}
 <header class="encabezado-pagina">
-  <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
-  <h1>Línea de tiempo de «{{ proyecto.titulo }}»</h1>
-  <p>Los eventos de tu historia, de arriba hacia abajo. El orden lo decides tú con «Subir» y «Bajar»; el momento en que ocurre es texto libre («Año 3», «Hace una semana»).</p>
+  <div>
+    <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
+    <h1>Línea de tiempo de «{{ proyecto.titulo }}»</h1>
+    <p>Los eventos de tu historia, de arriba hacia abajo. El orden lo decides tú con «Subir» y «Bajar».</p>
+  </div>
+  <button type="button" class="boton" data-abrir-dialogo="dlg-nuevo">+ Nuevo evento</button>
 </header>
 
+<dialog class="dialogo" id="dlg-nuevo" {% if form.errors %}data-abrir{% endif %}>
 <form method="post" class="form-ficha form-herramienta" novalidate>
   {% csrf_token %}
   <h2 class="form-titulo">Nuevo evento</h2>
   {% include "core/partials/evento_campos.html" %}
-  <div class="acciones"><button class="boton" type="submit">Agregar a la línea de tiempo</button></div>
+  <div class="acciones"><button class="boton" type="submit">Agregar a la línea de tiempo</button><button type="button" class="boton boton-borde" data-cerrar-dialogo>Cancelar</button></div>
 </form>
+</dialog>
 
 {% if total %}
-<form method="get" class="filtro-personaje" role="search">
-  <label for="f-personaje">Ver solo los eventos de</label>
-  <select id="f-personaje" name="personaje">
-    <option value="">Todos los personajes</option>
-    {% for f in fichas %}<option value="{{ f.pk }}" {% if personaje == f.pk|stringformat:"s" %}selected{% endif %}>{{ f.nombre }}</option>{% endfor %}
-  </select>
-  <button class="boton boton-borde boton-chico" type="submit">Filtrar</button>
-</form>
+<nav class="filtros filtros-personajes" aria-label="Ver los eventos de un personaje"><span class="filtros-etiqueta">Mostrar</span>
+  <a href="{% url 'linea_tiempo' proyecto.pk %}" {% if not personaje %}aria-current="true"{% endif %}>Todos</a>
+  {% for f in fichas %}<a href="?personaje={{ f.pk }}" {% if personaje == f.pk|stringformat:"s" %}aria-current="true"{% endif %}><span class="punto-color p-{{ f.color }}" aria-hidden="true"></span>{{ f.nombre }}</a>{% endfor %}
+</nav>
 {% endif %}
 
 {% if eventos %}
 <ol class="linea-vertical" aria-label="Eventos en orden">
   {% for ev in eventos %}
   <li class="evento-v" id="evento-{{ ev.pk }}">
-    <span class="evento-v-punto" aria-hidden="true"></span>
+    <span class="evento-v-punto{% with p=ev.participantes.all|first %}{% if p %} p-{{ p.color }}{% endif %}{% endwith %}" aria-hidden="true"></span>
     <article class="evento-trama">
       <p class="evento-cap">{{ ev.etapa }}</p>
       <h3>{{ ev.titulo }}</h3>

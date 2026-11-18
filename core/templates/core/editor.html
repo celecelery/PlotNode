@@ -26,21 +26,17 @@
     <a href="{% url 'capitulos_gestion' proyecto.pk %}">Gestionar capítulos</a>
     <a href="?tutorial=1">Ver tutorial</a>
   </div>
-  <div class="contador">
-    <span class="contador-etiqueta">En este capítulo</span>
-    <span class="contador-cifra"><strong id="palabras" data-palabras>{{ capitulo.palabras }}</strong> palabras</span>
-  </div>
 {% endblock %}
 
 {% block area %}
 <div class="area-editor" id="area-editor" data-reparto="abierto"{% if tutorial %} data-tutorial="{% url 'tutorial_terminar' %}"{% endif %}>
-  <main class="panel-texto" id="panel-texto" data-barra="visible">
+  <main class="panel-texto" id="panel-texto" data-barra="oculta">
     <div class="barra-hoja">
-      <button type="button" class="boton-barra" id="btn-barra" aria-pressed="true" aria-controls="barra-formato">
+      <button type="button" class="boton-barra" id="btn-barra" aria-pressed="false" aria-controls="barra-formato">
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         <span>Formato</span>
       </button>
-      <span class="estado-movil"><strong data-palabras>{{ capitulo.palabras }}</strong> palabras</span>
+      <span class="contador-barra"><strong id="palabras" data-palabras>{{ capitulo.palabras }}</strong> palabras</span>
       <span id="estado-guardado" class="guardado" data-estado="guardado" aria-live="polite">Guardado</span>
       <button type="button" class="boton-barra" id="btn-reparto" aria-expanded="true" aria-controls="reparto">
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5M16 6.5a2.6 2.6 0 0 1 0 5M17.5 14.7c1.7.5 2.8 1.9 3.2 4.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -123,10 +119,33 @@
           <p class="barra-aviso" id="tablon-aviso" role="status" aria-live="polite" hidden></p>
         </details>
       </div>
+    <div class="zona-escritura">
+      <div class="barra-rapida" id="barra-rapida" role="toolbar" aria-label="Formato rápido">
+        <button type="button" data-accion="undo" aria-label="Deshacer" title="Deshacer (Ctrl+Z)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg></button>
+        <button type="button" data-accion="redo" aria-label="Rehacer" title="Rehacer (Ctrl+Y)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></svg></button>
+        <span class="sep" aria-hidden="true"></span>
+        <label class="solo-lectores" for="rapida-estilo">Estilo de párrafo</label>
+        <select id="rapida-estilo" data-accion="header"><option value="">Párrafo</option><option value="2">Título</option><option value="3">Subtítulo</option></select>
+        <span class="sep" aria-hidden="true"></span>
+        <button type="button" data-formato="bold" aria-label="Negritas" title="Negritas (Ctrl+B)"><b>B</b></button>
+        <button type="button" data-formato="italic" aria-label="Cursiva" title="Cursiva (Ctrl+I)"><i>I</i></button>
+        <button type="button" data-formato="underline" aria-label="Subrayado" title="Subrayado (Ctrl+U)"><u>U</u></button>
+        <button type="button" data-formato="strike" aria-label="Tachado" title="Tachado"><s>S</s></button>
+        <span class="sep" aria-hidden="true"></span>
+        <button type="button" data-formato="list" data-valor="bullet" aria-label="Lista con viñetas" title="Lista con viñetas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg></button>
+        <button type="button" data-formato="list" data-valor="ordered" aria-label="Lista numerada" title="Lista numerada"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6h10M10 12h10M10 18h10"/><path d="M4 5l1.5-1v5M4 14h3l-3 3.5h3"/></svg></button>
+        <span class="sep" aria-hidden="true"></span>
+        <button type="button" data-accion="link" aria-label="Enlace" title="Enlace"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></svg></button>
+        <button type="button" data-accion="image" aria-label="Imagen por dirección web" title="Imagen por dirección web"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M20 16l-5-5-8 8"/></svg></button>
+        <button type="button" data-formato="blockquote" aria-label="Cita" title="Cita"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v5a4 4 0 01-4 4M15 7h4v5a4 4 0 01-4 4"/></svg></button>
+        <span class="sep" aria-hidden="true"></span>
+        <button type="button" data-accion="align" aria-label="Alineación: izquierda" title="Alineación"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h14"/></svg></button>
+      </div>
       <article class="hoja-texto">
         <h1 class="titulo-capitulo">{{ capitulo.titulo }}</h1>
         <div id="editor" data-url-guardar="{% url 'guardar_capitulo' capitulo.pk %}" data-version="{{ version }}"></div>
       </article>
+    </div>
     </div>
     {% csrf_token %}
     {{ capitulo.contenido|json_script:"contenido-inicial" }}
@@ -282,6 +301,7 @@
   <script src="{% static 'core/js/muletillas.js' %}"></script>
   <script src="{% static 'core/js/nombres.js' %}"></script>
   <script src="{% static 'core/js/enviar-tablon.js' %}"></script>
+  <script src="{% static 'core/js/barra-rapida.js' %}"></script>
   <script src="{% static 'core/js/buscar.js' %}"></script>
   <script src="{% static 'core/js/tutorial.js' %}"></script>
 {% endblock %}

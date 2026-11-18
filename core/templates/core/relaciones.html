@@ -4,12 +4,16 @@
 {% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}"><link rel="stylesheet" href="{% static 'core/css/herramientas.css' %}">{% endblock %}
 {% block contenido %}
 <header class="encabezado-pagina">
-  <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
-  <h1>Relaciones de «{{ proyecto.titulo }}»</h1>
-  <p>Quién se relaciona con quién. Cada relación se ve desde las dos fichas, y también en el panel del editor.</p>
+  <div>
+    <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
+    <h1>Relaciones de «{{ proyecto.titulo }}»</h1>
+    <p>Quién se relaciona con quién. Se llena desde cada ficha y se refleja aquí.</p>
+  </div>
+  {% if hay_fichas %}<button type="button" class="boton" data-abrir-dialogo="dlg-nuevo">+ Nueva relación</button>{% endif %}
 </header>
 
 {% if hay_fichas %}
+<dialog class="dialogo" id="dlg-nuevo" {% if form.errors %}data-abrir{% endif %}>
 <form method="post" class="form-ficha form-herramienta" novalidate>
   {% csrf_token %}
   <h2 class="form-titulo">Nueva relación</h2>
@@ -21,8 +25,9 @@
     <div class="campo"><label for="{{ form.etiqueta.id_for_label }}">{{ form.etiqueta.label }}</label>{{ form.etiqueta.errors }}{{ form.etiqueta }}</div>
     <div class="campo campo-ancho"><label for="{{ form.nota.id_for_label }}">{{ form.nota.label }}</label>{{ form.nota.errors }}{{ form.nota }}</div>
   </div>
-  <div class="acciones"><button class="boton" type="submit">Guardar relación</button></div>
+  <div class="acciones"><button class="boton" type="submit">Guardar relación</button><button type="button" class="boton boton-borde" data-cerrar-dialogo>Cancelar</button></div>
 </form>
+</dialog>
 {% else %}
 <div class="obra-vacia">
   <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
@@ -31,19 +36,16 @@
 </div>
 {% endif %}
 
-<nav class="filtros" aria-label="Filtrar por tipo de relación">
+<nav class="filtros" aria-label="Filtrar por tipo de relación"><span class="filtros-etiqueta">Tipo</span>
   <a href="{% url 'relaciones' proyecto.pk %}" {% if not categoria %}aria-current="true"{% endif %}>Todas</a>
   {% for clave, nombre in categorias %}<a href="?categoria={{ clave }}{% if personaje %}&personaje={{ personaje }}{% endif %}" {% if categoria == clave %}aria-current="true"{% endif %}>{{ nombre }}</a>{% endfor %}
 </nav>
-<form method="get" class="filtro-personaje" role="search">
-  {% if categoria %}<input type="hidden" name="categoria" value="{{ categoria }}">{% endif %}
-  <label for="f-personaje">Ver solo las relaciones de</label>
-  <select id="f-personaje" name="personaje">
-    <option value="">Todos los personajes</option>
-    {% for f in fichas %}<option value="{{ f.pk }}" {% if personaje == f.pk|stringformat:"s" %}selected{% endif %}>{{ f.nombre }}</option>{% endfor %}
-  </select>
-  <button class="boton boton-borde boton-chico" type="submit">Filtrar</button>
-</form>
+{% if fichas %}
+<nav class="filtros filtros-personajes" aria-label="Ver las relaciones de un personaje"><span class="filtros-etiqueta">Personaje</span>
+  <a href="?{% if categoria %}categoria={{ categoria }}{% endif %}" {% if not personaje %}aria-current="true"{% endif %}>Todos</a>
+  {% for f in fichas %}<a href="?personaje={{ f.pk }}{% if categoria %}&categoria={{ categoria }}{% endif %}" {% if personaje == f.pk|stringformat:"s" %}aria-current="true"{% endif %}><span class="punto-color p-{{ f.color }}" aria-hidden="true"></span>{{ f.nombre }}</a>{% endfor %}
+</nav>
+{% endif %}
 
 {% if relaciones %}
 <div class="rel-vista">
@@ -64,7 +66,7 @@
         <span class="rel-texto">{{ r.texto }}</span>
         <strong><span class="nombre nombre-{{ r.destino.color }}">{{ r.destino.nombre }}</span></strong></span>
       {% if r.nota %}<span class="rel-nota">{{ r.nota }}</span>{% endif %}
-      <span class="acciones-ficha"><a href="{% url 'relacion_editar' proyecto.pk r.pk %}">Editar</a><a class="enlace-coral" href="{% url 'relacion_eliminar' proyecto.pk r.pk %}">Eliminar</a></span>
+      <span class="acciones-ficha acciones-rel"><a href="{% url 'relacion_editar' proyecto.pk r.pk %}">Editar</a><a class="enlace-coral" href="{% url 'relacion_eliminar' proyecto.pk r.pk %}">Eliminar</a></span>
     </li>
     {% endfor %}
   </ul>
