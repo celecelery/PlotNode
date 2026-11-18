@@ -4,9 +4,12 @@
 {% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}">{% endblock %}
 {% block contenido %}
 <header class="encabezado-pagina">
-  <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
-  <h1>Glosario de «{{ proyecto.titulo }}»</h1>
-  <p>Los términos propios de tu mundo: hechizos, razas, lugares inventados. En el editor, selecciona una palabra y usa «Añadir al glosario» para ver su definición al pasar el cursor.</p>
+  <div>
+    <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
+    <h1>Glosario de «{{ proyecto.titulo }}»</h1>
+    <p>Los términos propios de tu mundo: hechizos, razas, lugares inventados. En el editor, selecciona una palabra y usa «Añadir al glosario» para ver su definición al pasar el cursor.</p>
+  </div>
+  <button type="button" class="boton" data-abrir-dialogo="dlg-nuevo">+ Nuevo término</button>
 </header>
 
 <form method="get" class="buscador-glosario" role="search">
@@ -14,9 +17,10 @@
     <label class="solo-lectores" for="q">Buscar en el glosario</label>
     <input type="search" id="q" name="q" value="{{ q }}" placeholder="Buscar un término o su definición">
   </div>
-  <button class="boton boton-borde boton-chico" type="submit">Buscar</button>
+  <button class="solo-lectores" type="submit">Buscar</button>
 </form>
 
+<dialog class="dialogo" id="dlg-nuevo" {% if form.errors %}data-abrir{% endif %}>
 <form method="post" class="form-ficha form-termino" novalidate>
   {% csrf_token %}
   <h2 class="form-titulo">Nuevo término</h2>
@@ -26,8 +30,9 @@
     <div class="campo"><label for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>{{ form.categoria.errors }}{{ form.categoria }}</div>
     <div class="campo campo-ancho"><label for="{{ form.definicion.id_for_label }}">{{ form.definicion.label }}</label>{{ form.definicion.errors }}{{ form.definicion }}</div>
   </div>
-  <div class="acciones"><button class="boton" type="submit">Agregar al glosario</button></div>
+  <div class="acciones"><button class="boton" type="submit">Agregar al glosario</button><button type="button" class="boton boton-borde" data-cerrar-dialogo>Cancelar</button></div>
 </form>
+</dialog>
 
 {% if terminos %}
 <ul class="lista-fichas mt-lista" aria-label="Términos del glosario">

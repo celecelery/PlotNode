@@ -38,7 +38,7 @@
     if (recordar) guardarLocal("barra", visible ? "visible" : "oculta");
   }
   botonBarra.addEventListener("click", () => fijarBarra(panelTexto.dataset.barra !== "visible", true));
-  if (leerLocal("barra") === "oculta") fijarBarra(false, false);
+  if (leerLocal("barra") !== "visible") fijarBarra(false, false);
 
   // =====================================================================================
   // Abrir, cerrar y ajustar el ancho del panel (HU-26)

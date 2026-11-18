@@ -10,10 +10,10 @@
 
 <form method="get" class="tablon-barra filtros-general" role="search">
   <div class="campo"><label for="g-proyecto">Historia</label>
-    <select id="g-proyecto" name="proyecto"><option value="">Todas las historias</option>
+    <select id="g-proyecto" name="proyecto" data-autoenviar><option value="">Todas las historias</option>
       {% for p in proyectos %}<option value="{{ p.pk }}" {% if proyecto_id == p.pk|stringformat:"s" %}selected{% endif %}>{{ p.titulo }}</option>{% endfor %}</select></div>
   <div class="campo"><label for="g-color">Color</label>
-    <select id="g-color" name="color"><option value="">Todos los colores</option>
+    <select id="g-color" name="color" data-autoenviar><option value="">Todos los colores</option>
       {% for clave, nombre in colores %}<option value="{{ clave }}" {% if color == clave %}selected{% endif %}>{{ nombre }}</option>{% endfor %}</select></div>
   <div class="campo"><label for="g-q">Buscar</label><input type="search" id="g-q" name="q" value="{{ q }}" placeholder="Buscar en las notas"></div>
   <button class="boton boton-borde boton-chico" type="submit">Filtrar</button>

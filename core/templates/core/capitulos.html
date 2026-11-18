@@ -4,9 +4,11 @@
 {% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}">{% endblock %}
 {% block contenido %}
 <header class="encabezado-pagina">
-  <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
-  <h1>Capítulos de «{{ proyecto.titulo }}»</h1>
-  <p>Cambia el nombre, el orden o elimina capítulos. El texto de cada uno se conserva al moverlo.</p>
+  <div>
+    <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
+    <h1>Capítulos de «{{ proyecto.titulo }}»</h1>
+    <p>Cambia el nombre, el orden o elimina capítulos. El texto de cada uno se conserva al moverlo.</p>
+  </div>
 </header>
 
 <ol class="lista-gestion" aria-label="Capítulos">
