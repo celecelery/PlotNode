@@ -10,7 +10,7 @@ Entorno de escritura web para escritores de ficción: une el manuscrito y las fi
 |---|---|---|---|
 | 1 | 2 – 4 nov | Cuenta, proyectos y editor con autoguardado | ✅ Hecha |
 | 2 | 5 – 11 nov | Ficha completa en panel deslizable, barra vertical, muletillas y glosario | En curso ([bitácora](docs/iteraciones/iteracion-2.md)) |
-| 3 | 12 – 18 nov | Auditor con IA, tutorial y pruebas con 6 escritores | Pendiente |
+| 3 | 12 – 18 nov | Relaciones entre personajes, línea de tiempo, tablón de ideas y tutorial de bienvenida | Hecha (el auditor con IA queda como trabajo futuro) |
 
 El backlog completo (`PlotNode - Product Backlog.xlsx`) vive en el Project del equipo, no en este repositorio.
 

@@ -1,0 +1,11 @@
+{% extends "app_base.html" %}
+{% block titulo %}Eliminar relación{% endblock %}
+{% block contenido %}
+<div class="hoja hoja-cuenta hoja-lateral">
+  <h1>¿Eliminar la relación entre «{{ relacion.origen.nombre }}» y «{{ relacion.destino.nombre }}»?</h1>
+  <p class="entrada">Las fichas no cambian; solo se quita el vínculo. <strong>No se puede deshacer.</strong></p>
+  <form method="post">{% csrf_token %}
+    <div class="acciones"><button class="boton boton-coral" type="submit">Sí, eliminar relación</button><a href="{% url 'relaciones' proyecto.pk %}">Cancelar</a></div>
+  </form>
+</div>
+{% endblock %}

@@ -13,7 +13,9 @@ class CuentasTests(TestCase):
             "username": "lia", "email": "lia@ejemplo.com",
             "password1": "una-clave-larga-42", "password2": "una-clave-larga-42",
         })
-        self.assertRedirects(r, reverse("proyectos"))
+        lia = User.objects.get(username="lia")
+        capitulo = lia.proyectos.get().capitulos.get()      # proyecto de muestra con su capítulo
+        self.assertRedirects(r, reverse("editor", args=[capitulo.pk]))
         self.assertTrue(User.objects.filter(username="lia").exists())
         self.assertEqual(int(self.client.session["_auth_user_id"]), User.objects.get(username="lia").pk)
 

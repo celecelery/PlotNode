@@ -1,4 +1,5 @@
 from django import forms
+from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm, SetPasswordForm,
                                        UserCreationForm)
@@ -245,3 +246,105 @@ AtributoFormSet = inlineformset_factory(
         "valor": forms.TextInput(attrs={"placeholder": "Ej. 17"}),
     },
 )
+
+
+# --- Iteración 3: relaciones, línea de tiempo y tablón ---------------------------------
+from .models import EventoTrama, Nota, Relacion  # noqa: E402
+
+
+class RelacionForm(SinDosPuntos, forms.ModelForm):
+    class Meta:
+        model = Relacion
+        fields = ("origen", "destino", "categoria", "etiqueta", "nota")
+        labels = {"origen": "Personaje o ficha", "destino": "Con quién", "categoria": "Tipo de relación",
+                  "etiqueta": "Cómo se llama (opcional)", "nota": "Nota (opcional)"}
+        widgets = {"etiqueta": forms.TextInput(attrs={"placeholder": "Hermanas, mentor de…"}),
+                   "nota": forms.TextInput(attrs={"placeholder": "Qué las une o las separa"})}
+
+    def __init__(self, *args, proyecto, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.proyecto = proyecto
+        fichas = proyecto.fichas.all()
+        self.fields["origen"].queryset = fichas
+        self.fields["destino"].queryset = fichas
+        self.fields["origen"].empty_label = "Elige una ficha"
+        self.fields["destino"].empty_label = "Elige una ficha"
+
+    def clean(self):
+        datos = super().clean()
+        o, d = datos.get("origen"), datos.get("destino")
+        if o and d:
+            if o.pk == d.pk:
+                raise forms.ValidationError("Una ficha no puede relacionarse consigo misma.")
+            repetida = self.proyecto.relaciones.exclude(pk=self.instance.pk).filter(
+                categoria=datos.get("categoria")).filter(
+                models.Q(origen=o, destino=d) | models.Q(origen=d, destino=o))
+            if repetida.exists():
+                raise forms.ValidationError("Esas dos fichas ya tienen una relación de ese tipo.")
+        return datos
+
+
+class EventoTramaForm(SinDosPuntos, forms.ModelForm):
+    class Meta:
+        model = EventoTrama
+        fields = ("titulo", "etapa", "descripcion", "capitulo", "participantes")
+        labels = {"titulo": "Qué pasa", "etapa": "Cuándo", "descripcion": "Descripción (opcional)",
+                  "capitulo": "Capítulo donde ocurre (opcional)", "participantes": "Quiénes participan"}
+        widgets = {"titulo": forms.TextInput(attrs={"placeholder": "Cruzan el puente"}),
+                   "etapa": forms.TextInput(attrs={"placeholder": "Día 2, Semana 2, Antes de la historia…", "list": "etapas-existentes"}),
+                   "descripcion": forms.Textarea(attrs={"rows": 3}),
+                   "participantes": forms.CheckboxSelectMultiple}
+
+    def __init__(self, *args, proyecto, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.proyecto = proyecto
+        self.fields["capitulo"].queryset = proyecto.capitulos.all()
+        self.fields["capitulo"].empty_label = "Ninguno"
+        self.fields["participantes"].queryset = proyecto.fichas.all()
+        self.fields["participantes"].required = False
+
+    def clean_titulo(self):
+        t = " ".join(self.cleaned_data["titulo"].split())
+        if not t:
+            raise forms.ValidationError("Escribe qué pasa en este evento.")
+        return t
+
+    def clean_etapa(self):
+        e = " ".join(self.cleaned_data["etapa"].split())
+        if not e:
+            raise forms.ValidationError("Indica cuándo ocurre.")
+        return e
+
+    def save(self, commit=True):
+        evento = super().save(commit=False)
+        evento.proyecto = self.proyecto
+        # Una etapa que ya existe conserva su posición; una nueva va al final.
+        previa = self.proyecto.eventos_trama.exclude(pk=evento.pk).filter(etapa__iexact=evento.etapa).first()
+        if previa:
+            evento.orden = previa.orden
+        else:
+            ultimo = self.proyecto.eventos_trama.exclude(pk=evento.pk).aggregate(m=models.Max("orden"))["m"]
+            evento.orden = (ultimo or 0) + 1
+        if commit:
+            evento.save()
+            self.save_m2m()
+        return evento
+
+
+class NotaForm(SinDosPuntos, forms.ModelForm):
+    class Meta:
+        model = Nota
+        fields = ("contenido", "ficha")
+        labels = {"contenido": "Tu idea", "ficha": "Ficha relacionada (opcional)"}
+        widgets = {"contenido": forms.Textarea(attrs={"rows": 4, "placeholder": "Una escena, una duda, un giro…"})}
+
+    def __init__(self, *args, proyecto, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["ficha"].queryset = proyecto.fichas.all()
+        self.fields["ficha"].empty_label = "Ninguna"
+
+    def clean_contenido(self):
+        c = self.cleaned_data["contenido"].strip()
+        if not c:
+            raise forms.ValidationError("Escribe algo en la nota.")
+        return c

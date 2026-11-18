@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Alerta, Atributo, Capitulo, EventoUso, Ficha, Perfil, Proyecto, Termino
+from .models import (Alerta, Atributo, Capitulo, EventoTrama, EventoUso, Ficha, Nota, Perfil, Proyecto, Relacion,
+                     Termino)
 
 
 class CapituloInline(admin.TabularInline):
@@ -66,3 +67,20 @@ class PerfilAdmin(admin.ModelAdmin):
 
 admin.site.site_header = "PlotNode · Administración"
 admin.site.site_title = "PlotNode"
+
+
+@admin.register(Relacion)
+class RelacionAdmin(admin.ModelAdmin):
+    list_display = ("origen", "destino", "categoria", "etiqueta", "proyecto")
+    list_filter = ("categoria",)
+
+
+@admin.register(EventoTrama)
+class EventoTramaAdmin(admin.ModelAdmin):
+    list_display = ("titulo", "etapa", "proyecto", "capitulo")
+
+
+@admin.register(Nota)
+class NotaAdmin(admin.ModelAdmin):
+    list_display = ("contenido", "tipo", "proyecto", "creada")
+    list_filter = ("tipo",)

@@ -373,6 +373,9 @@ Cada personaje se marca en el texto con subrayado ondulado de su color (lila, me
 ### Estado vacío
 Contenedor con borde punteado de 1.5px en Borde 2 y radio 16px, encabezado por tres puntos superpuestos (lila, durazno, menta) de 1.9rem con aro del color del panel, un título en Figtree 800 y una explicación en Texto 2 que dice qué pasará y cómo empezar.
 
+### Herramientas de la obra (iteración 3)
+Relaciones, línea de tiempo y tablón comparten el riel «Herramientas» (solo escritorio), un formulario de alta arriba y la vista debajo. El mapa de relaciones es un SVG con un nodo por personaje en su color y aristas rotuladas; la línea de tiempo es una cuadrícula de carriles (uno por personaje, más «Sin personaje») por etapas; el tablón es una pizarra de notas arrastrables que también se mueven con las flechas del teclado. El tutorial es una guía de pasos sobre un proyecto de muestra creado al registrarse, y se puede repetir desde «Ver tutorial».
+
 ### Named Rules
 **La regla del estado vacío honesto.** Lo que todavía no existe se dibuja con borde punteado y se explica en texto; nunca se simula con datos falsos ni con controles que no hacen nada.
 

@@ -1,0 +1,11 @@
+{% extends "app_base.html" %}
+{% block titulo %}Eliminar nota{% endblock %}
+{% block contenido %}
+<div class="hoja hoja-cuenta hoja-lateral">
+  <h1>¿Eliminar esta nota del tablón?</h1>
+  <p class="entrada">Si venía del texto, el pasaje original en tu capítulo no cambia. <strong>No se puede deshacer.</strong></p>
+  <form method="post">{% csrf_token %}
+    <div class="acciones"><button class="boton boton-coral" type="submit">Sí, eliminar nota</button><a href="{% url 'tablon' proyecto.pk %}">Cancelar</a></div>
+  </form>
+</div>
+{% endblock %}

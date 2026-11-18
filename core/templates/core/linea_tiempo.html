@@ -1,0 +1,65 @@
+{% extends "app_base.html" %}
+{% load static %}
+{% block titulo %}Línea de tiempo · {{ proyecto.titulo }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}"><link rel="stylesheet" href="{% static 'core/css/herramientas.css' %}">{% endblock %}
+{% block contenido %}
+<header class="encabezado-pagina">
+  <a class="volver" href="{{ proyecto.get_absolute_url }}">← Volver al editor</a>
+  <h1>Línea de tiempo de «{{ proyecto.titulo }}»</h1>
+  <p>Los eventos de la trama en orden, un carril por personaje. Si un evento tiene varios participantes, aparece en cada carril. Las etapas son tuyas («Día 2», «Semana 2»), no fechas de calendario.</p>
+</header>
+
+<form method="post" class="form-ficha form-herramienta" novalidate>
+  {% csrf_token %}
+  <h2 class="form-titulo">Nuevo evento</h2>
+  {% include "core/partials/evento_campos.html" %}
+  <div class="acciones"><button class="boton" type="submit">Agregar a la línea de tiempo</button></div>
+</form>
+
+{% if carriles %}
+<div class="filtros filtros-carriles" role="group" aria-label="Mostrar carriles">
+  {% for c in carriles %}{% if c.ficha %}
+  <label class="chip-carril"><input type="checkbox" checked data-carril="{{ c.ficha.pk }}"><span class="punto-color p-{{ c.ficha.color }}" aria-hidden="true"></span>{{ c.ficha.nombre }}</label>
+  {% endif %}{% endfor %}
+</div>
+<div class="linea-scroll" tabindex="0" role="region" aria-label="Línea de tiempo (desplázala hacia los lados si no cabe)">
+  <table class="linea" style="--cols: {{ ancho }}">
+    <thead>
+      <tr><th scope="col" class="linea-esquina"><span class="solo-lectores">Personaje</span></th>
+      {% for e in etapas %}<th scope="col">{{ e }}</th>{% endfor %}</tr>
+    </thead>
+    <tbody>
+      {% for c in carriles %}
+      <tr {% if c.ficha %}data-carril-fila="{{ c.ficha.pk }}"{% endif %}>
+        <th scope="row" class="linea-carril">{% if c.ficha %}<span class="inicial p-{{ c.ficha.color }}" aria-hidden="true">{{ c.ficha.inicial }}</span>{{ c.ficha.nombre }}{% else %}Sin personaje{% endif %}</th>
+        {% for e in etapas %}
+        <td>
+          {% for celda in c.celdas %}{% if celda.col == forloop.parentloop.counter0 %}
+          {% with ev=celda.evento %}
+          <article class="evento-trama">
+            <p class="evento-cap">{% if ev.capitulo %}{{ ev.capitulo.titulo }}{% else %}Sin capítulo{% endif %}</p>
+            <h3>{{ ev.titulo }}</h3>
+            {% if ev.descripcion %}<p class="evento-desc">{{ ev.descripcion }}</p>{% endif %}
+            <p class="acciones-ficha">
+              {% if ev.capitulo %}<a href="{{ ev.capitulo.get_absolute_url }}">Ir al capítulo</a>{% endif %}
+              <a href="{% url 'evento_editar' proyecto.pk ev.pk %}">Editar</a>
+              <a class="enlace-coral" href="{% url 'evento_eliminar' proyecto.pk ev.pk %}">Eliminar</a>
+            </p>
+          </article>
+          {% endwith %}
+          {% endif %}{% endfor %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script src="{% static 'core/js/linea.js' %}" defer></script>
+{% else %}
+<div class="obra-vacia mt-lista">
+  <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
+  <div><h2>Aún no hay eventos</h2><p>Agrega el primero arriba: qué pasa, cuándo y quiénes participan. Los carriles aparecen solos.</p></div>
+</div>
+{% endif %}
+{% endblock %}

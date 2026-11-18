@@ -13,6 +13,7 @@ urlpatterns = [
     path("cuentas/password_reset/done/", views.RecuperarContrasenaEnviadaView.as_view(), name="password_reset_done"),
     path("cuentas/reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(form_class=NuevaContrasenaForm),
          name="password_reset_confirm"),
+    path("cuentas/tutorial/terminar/", views.tutorial_terminar, name="tutorial_terminar"),
     path("cuentas/", include("django.contrib.auth.urls")),
     # Proyectos (HU-04)
     path("proyectos/", views.proyectos, name="proyectos"),
@@ -38,6 +39,18 @@ urlpatterns = [
     path("proyectos/<int:pk>/glosario/<int:termino_pk>/", views.termino_editar, name="termino_editar"),
     path("proyectos/<int:pk>/glosario/<int:termino_pk>/eliminar/", views.termino_eliminar, name="termino_eliminar"),
     path("proyectos/<int:pk>/glosario/<int:termino_pk>/borrar/", views.termino_api_eliminar, name="termino_api_eliminar"),
+    # Relaciones, línea de tiempo y tablón de ideas (iteración 3)
+    path("proyectos/<int:pk>/relaciones/", views.relaciones, name="relaciones"),
+    path("proyectos/<int:pk>/relaciones/<int:relacion_pk>/", views.relacion_editar, name="relacion_editar"),
+    path("proyectos/<int:pk>/relaciones/<int:relacion_pk>/eliminar/", views.relacion_eliminar, name="relacion_eliminar"),
+    path("proyectos/<int:pk>/linea-de-tiempo/", views.linea_tiempo, name="linea_tiempo"),
+    path("proyectos/<int:pk>/linea-de-tiempo/<int:evento_pk>/", views.evento_editar, name="evento_editar"),
+    path("proyectos/<int:pk>/linea-de-tiempo/<int:evento_pk>/eliminar/", views.evento_eliminar, name="evento_eliminar"),
+    path("proyectos/<int:pk>/tablon/", views.tablon, name="tablon"),
+    path("proyectos/<int:pk>/tablon/desde-texto/", views.nota_desde_texto, name="nota_desde_texto"),
+    path("proyectos/<int:pk>/tablon/<int:nota_pk>/", views.nota_editar, name="nota_editar"),
+    path("proyectos/<int:pk>/tablon/<int:nota_pk>/eliminar/", views.nota_eliminar, name="nota_eliminar"),
+    path("proyectos/<int:pk>/tablon/<int:nota_pk>/mover/", views.nota_mover, name="nota_mover"),
     # Editor (HU-06)
     path("capitulos/<int:pk>/", views.editor, name="editor"),
     path("capitulos/<int:pk>/guardar/", views.guardar_capitulo, name="guardar_capitulo"),

@@ -7,6 +7,15 @@ from ..fichas_schema import secciones_con_datos
 from ..utils import normalizar
 
 
+RELACIONES_PRECARGA = ("atributos", "relaciones_salientes__destino", "relaciones_entrantes__origen")
+
+
+def _relaciones_de(ficha):
+    lista = [(r, r.destino) for r in ficha.relaciones_salientes.all()] + [(r, r.origen) for r in ficha.relaciones_entrantes.all()]
+    return [{"id": r.pk, "con": otra.nombre, "con_id": otra.pk, "color": otra.color, "texto": r.texto, "nota": r.nota}
+            for r, otra in sorted(lista, key=lambda par: par[0].pk)]
+
+
 def ficha_a_dict(ficha):
     """Ficha -> dict listo para JSON. Usa los atributos precargados si los hay."""
     atributos = sorted(ficha.atributos.all(), key=lambda a: a.pk)
@@ -22,7 +31,9 @@ def ficha_a_dict(ficha):
         "color": ficha.color,
         "inicial": ficha.inicial,
         "atributos": [{"clave": a.clave, "valor": a.valor} for a in atributos],
+        "relaciones": _relaciones_de(ficha),
         "url_editar": reverse("ficha_editar", args=[ficha.proyecto_id, ficha.pk]),
+        "url_relaciones": reverse("relaciones", args=[ficha.proyecto_id]) + f"?de={ficha.pk}",
     }
 
 
@@ -44,7 +55,7 @@ def buscar_ficha(proyecto, texto):
     clave = _limpiar(texto)
     if not clave:
         return None
-    fichas = list(proyecto.fichas.prefetch_related("atributos"))
+    fichas = list(proyecto.fichas.prefetch_related(*RELACIONES_PRECARGA))
     for ficha in fichas:
         if ficha.coincide(clave):
             return ficha

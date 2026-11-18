@@ -200,6 +200,17 @@
       secciones.push(el("details", { class: "ficha-seccion" }, el("summary", { texto: "Otros atributos" }),
         el("dl", { class: "ficha-atributos" }, ...f.atributos.flatMap((a) => [el("dt", { texto: a.clave }), el("dd", { texto: a.valor })]))));
     }
+    const rels = f.relaciones || [];
+    const cajaRel = el("details", { class: "ficha-seccion" },
+      el("summary", { texto: "Relaciones" + (rels.length ? " (" + rels.length + ")" : "") }),
+      rels.length
+        ? el("ul", { class: "ficha-relaciones" }, ...rels.map((r) => el("li", {},
+            el("span", { class: "punto-color p-" + r.color, "aria-hidden": "true" }),
+            el("strong", { texto: r.con }), el("span", { class: "rel-tipo", texto: r.texto }))))
+        : el("p", { class: "reparto-nota", texto: "Aún sin relaciones." }),
+      el("a", { class: "enlace-relacion", href: f.url_relaciones, texto: "Añadir o ver relaciones →" }));
+    if (rels.length) cajaRel.open = true;
+    secciones.push(cajaRel);
     const sinDatos = !secciones.length && !f.notas
       ? el("p", { class: "reparto-nota", texto: "Esta ficha aún no tiene datos. Pulsa «Editar ficha» para completarla." }) : null;
     const editar = el("button", { type: "button", class: "boton boton-lila-borde boton-chico", texto: "Editar ficha" });

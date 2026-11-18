@@ -12,6 +12,16 @@
       <span class="riel-enlace-texto">Mis proyectos</span>
     </a>
     {% block riel_extra %}{% endblock %}
+    {% if proyecto and proyecto.pk %}
+    <p class="riel-titulo" id="riel-herramientas">Herramientas</p>
+    <ul class="riel-herramientas" aria-labelledby="riel-herramientas">
+      <li><a class="riel-enlace" href="{% url 'fichas_lista' proyecto.pk %}" {% if herramienta == "fichas" %}aria-current="page"{% endif %}><span class="riel-enlace-texto">Fichas</span></a></li>
+      <li><a class="riel-enlace" href="{% url 'glosario' proyecto.pk %}" {% if herramienta == "glosario" %}aria-current="page"{% endif %}><span class="riel-enlace-texto">Glosario</span></a></li>
+      <li><a class="riel-enlace" href="{% url 'relaciones' proyecto.pk %}" {% if herramienta == "relaciones" %}aria-current="page"{% endif %}><span class="riel-enlace-texto">Relaciones</span></a></li>
+      <li><a class="riel-enlace" href="{% url 'linea_tiempo' proyecto.pk %}" {% if herramienta == "linea" %}aria-current="page"{% endif %}><span class="riel-enlace-texto">Línea de tiempo</span></a></li>
+      <li><a class="riel-enlace" href="{% url 'tablon' proyecto.pk %}" {% if herramienta == "tablon" %}aria-current="page"{% endif %}><span class="riel-enlace-texto">Tablón de ideas</span></a></li>
+    </ul>
+    {% endif %}
     <div class="riel-cuenta">
       <span class="avatar" aria-hidden="true">{{ user.username|slice:":1" }}</span>
       <div class="riel-cuenta-datos">
