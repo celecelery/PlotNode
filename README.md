@@ -106,7 +106,7 @@ docs/            entregables, bitácoras, pruebas (guion, formulario, auditor) y
 
 ## Despliegue
 
-Pasos para PythonAnywhere (plan gratuito) en [`docs/despliegue-pythonanywhere.md`](docs/despliegue-pythonanywhere.md). Variables nuevas del `.env`: `GEMINI_API_KEY`, `MODELO_AUDITOR` (opcional) y `MAILERLITE_FORM_URL` (opcional).
+Pasos para PythonAnywhere (plan gratuito) en [`docs/despliegue-pythonanywhere.md`](docs/despliegue-pythonanywhere.md). Variables nuevas del `.env`: `GEMINI_API_KEY`, `MODELO_AUDITOR` (opcional) y `MAILERLITE_FORM_URL` (opcional). Tras actualizar: `python manage.py migrate`.
 
 ## Notas
 

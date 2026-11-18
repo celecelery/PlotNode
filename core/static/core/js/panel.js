@@ -108,9 +108,9 @@
   estrecho.addEventListener("change", function () { if (estrecho.matches) cerrar(); else if (leerLocal("reparto") !== "plegado") abrir(); });
 
   // =====================================================================================
-  // Pestañas: Fichas | Glosario | Muletillas
+  // Pestañas: Fichas | Glosario | Notas | Muletillas
   // =====================================================================================
-  const PESTANAS = ["fichas", "glosario", "muletillas"];
+  const PESTANAS = ["fichas", "glosario", "notas", "muletillas"];
   function activarPestana(nombre) {
     PESTANAS.forEach(function (n) {
       const activa = n === nombre;
@@ -178,6 +178,39 @@
     document.dispatchEvent(new CustomEvent("plotnode:fichas"));   // nombres.js vuelve a subrayar
   }
   P.obtenerFichas = function () { return fichas; };
+
+  // Personajes que aparecen en el capítulo actual (HU-11): nombre o alias como palabra completa.
+  const presentes = $("presentes");
+  const presentesLista = $("presentes-lista");
+  const esLetra = /[\p{L}\p{N}]/u;
+  function apareceEn(texto, nombre) {
+    const n = normalizar((nombre || "").trim());
+    if (n.length < 3) return false;
+    let desde = 0;
+    for (;;) {
+      const i = texto.indexOf(n, desde);
+      if (i < 0) return false;
+      desde = i + 1;
+      const fin = i + n.length;
+      if (i > 0 && esLetra.test(texto[i - 1])) continue;
+      if (fin < texto.length && esLetra.test(texto[fin])) continue;
+      return true;
+    }
+  }
+  function renderPresentes() {
+    const texto = normalizar(P.quill.getText());
+    const aparecen = fichas.filter((f) => f.tipo_clave === "personaje" && [f.nombre, ...(f.alias || [])].some((n) => apareceEn(texto, n)));
+    presentesLista.replaceChildren(...aparecen.map((f) => {
+      const boton = el("button", { type: "button", class: "ficha-chip" }, avatar(f), el("span", { texto: f.nombre }));
+      boton.addEventListener("click", () => abrirDesdeLista(f));
+      return el("li", {}, boton);
+    }));
+    presentes.hidden = aparecen.length === 0;
+  }
+  let temporizadorPresentes = null;
+  P.quill.on("text-change", function () { clearTimeout(temporizadorPresentes); temporizadorPresentes = setTimeout(renderPresentes, 600); });
+  document.addEventListener("plotnode:fichas", renderPresentes);
+  renderPresentes();
   buscador.addEventListener("input", renderLista);
   filtro.addEventListener("change", renderLista);
 

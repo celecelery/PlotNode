@@ -10,6 +10,8 @@ from django.db import transaction
 from django.db.models import Max
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Q
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
@@ -35,6 +37,7 @@ def registro(request):
     form = RegistroForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         usuario = form.save()
+        Perfil.objects.update_or_create(user=usuario, defaults={"acepto_privacidad": timezone.now()})
         login(request, usuario)
         messages.success(request, f"¡Bienvenida/o a PlotNode, {usuario.username}!")
         capitulo = crear_proyecto_de_muestra(usuario)   # algo con qué probar el panel desde el primer minuto
@@ -120,7 +123,17 @@ def editor(request, pk):
         "capitulos": capitulo.proyecto.capitulos.all(),
         "fichas": [ficha_a_dict(f) for f in capitulo.proyecto.fichas.prefetch_related(*RELACIONES_PRECARGA)],
         "terminos": [_termino_a_dict(t) for t in capitulo.proyecto.terminos.all()],
+        "notas": [_nota_a_dict(n) for n in capitulo.proyecto.notas.order_by("-pk")[:NOTAS_EN_PANEL]],
     })
+
+
+NOTAS_EN_PANEL = 8
+
+
+def _nota_a_dict(nota):
+    return {"id": nota.pk, "contenido": nota.contenido, "tipo": nota.tipo,
+            "tipo_texto": nota.get_tipo_display(),
+            "url": reverse("tablon", args=[nota.proyecto_id]) + f"#nota-{nota.pk}"}
 
 
 SESION_MINUTOS = 30  # una pausa mayor abre una sesión de escritura nueva
@@ -489,6 +502,11 @@ def relaciones(request, pk):
     lista = proyecto.relaciones.select_related("origen", "destino")
     if categoria in Relacion.Categoria.values:
         lista = lista.filter(categoria=categoria)
+    personaje = request.GET.get("personaje", "")
+    if personaje.isdigit():
+        lista = lista.filter(Q(origen_id=int(personaje)) | Q(destino_id=int(personaje)))
+    else:
+        personaje = ""
     lista = list(lista)
     nodos = {}
     for r in lista:
@@ -496,10 +514,12 @@ def relaciones(request, pk):
         nodos[r.destino_id] = r.destino
     mapa = {
         "nodos": [_ficha_json(f) for f in nodos.values()],
-        "aristas": [{"origen": r.origen_id, "destino": r.destino_id, "texto": r.texto} for r in lista],
+        "aristas": [{"origen": r.origen_id, "destino": r.destino_id, "texto": r.texto, "categoria": r.categoria,
+                     "categoria_texto": r.get_categoria_display()} for r in lista],
     }
     return render(request, "core/relaciones.html", {
         "proyecto": proyecto, "form": form, "relaciones": lista, "mapa": mapa, "categoria": categoria,
+        "personaje": personaje, "fichas": proyecto.fichas.all(),
         "categorias": Relacion.Categoria.choices, "herramienta": "relaciones", "hay_fichas": proyecto.fichas.count() >= 2,
     })
 
@@ -542,29 +562,33 @@ def linea_tiempo(request, pk):
         form.save()
         messages.success(request, "Evento agregado a la línea de tiempo.")
         return redirect("linea_tiempo", pk=proyecto.pk)
-    eventos = list(proyecto.eventos_trama.select_related("capitulo").prefetch_related("participantes"))
-    etapas = []
-    for e in eventos:
-        if e.etapa.lower() not in [x.lower() for x in etapas]:
-            etapas.append(e.etapa)
-    carriles = {}
-    sin_personaje = []
-    for e in eventos:
-        quienes = list(e.participantes.all())
-        for f in quienes:
-            carriles.setdefault(f.pk, {"ficha": f, "eventos": []})["eventos"].append(e)
-        if not quienes:
-            sin_personaje.append(e)
-    columnas = {e.pk: [x.lower() for x in etapas].index(e.etapa.lower()) for e in eventos}
-    lista_carriles = sorted(carriles.values(), key=lambda c: c["ficha"].nombre.lower())
-    for c in lista_carriles:
-        c["celdas"] = [{"evento": e, "col": columnas[e.pk]} for e in c["eventos"]]
-    if sin_personaje:
-        lista_carriles.append({"ficha": None, "celdas": [{"evento": e, "col": columnas[e.pk]} for e in sin_personaje]})
+    eventos = proyecto.eventos_trama.select_related("capitulo").prefetch_related("participantes")
+    personaje = request.GET.get("personaje", "")
+    if personaje.isdigit():
+        eventos = eventos.filter(participantes__pk=int(personaje))
+    else:
+        personaje = ""
     return render(request, "core/linea_tiempo.html", {
-        "proyecto": proyecto, "form": form, "etapas": etapas, "carriles": lista_carriles, "total": len(eventos),
-        "herramienta": "linea", "ancho": max(len(etapas), 1),
+        "proyecto": proyecto, "form": form, "eventos": list(eventos), "total": proyecto.eventos_trama.count(),
+        "personaje": personaje, "fichas": proyecto.fichas.all(), "herramienta": "linea",
     })
+
+
+@login_required
+@require_POST
+def evento_mover(request, pk, evento_pk):
+    """Sube o baja un evento una posición (HU-21: el orden se cambia a mano)."""
+    proyecto = _proyecto_del_usuario(request, pk)
+    evento = get_object_or_404(EventoTrama, pk=evento_pk, proyecto=proyecto)
+    lista = list(proyecto.eventos_trama.order_by("orden", "pk"))
+    i = next(k for k, e in enumerate(lista) if e.pk == evento.pk)
+    j = i - 1 if request.POST.get("direccion") == "arriba" else i + 1
+    if 0 <= j < len(lista):
+        lista[i], lista[j] = lista[j], lista[i]
+    for k, e in enumerate(lista, start=1):       # se renumera: no quedan posiciones repetidas
+        if e.orden != k:
+            EventoTrama.objects.filter(pk=e.pk).update(orden=k)
+    return redirect(f"{reverse('linea_tiempo', args=[proyecto.pk])}#evento-{evento.pk}")
 
 
 @login_required
@@ -578,8 +602,7 @@ def evento_editar(request, pk, evento_pk):
         messages.success(request, "Evento actualizado.")
         return redirect("linea_tiempo", pk=proyecto.pk)
     return render(request, "core/evento_form.html", {
-        "proyecto": proyecto, "form": form, "evento": evento, "herramienta": "linea",
-        "etapas": sorted({e.etapa for e in proyecto.eventos_trama.all()}, key=str.lower)})
+        "proyecto": proyecto, "form": form, "evento": evento, "herramienta": "linea"})
 
 
 @login_required
@@ -619,13 +642,48 @@ def tablon(request, pk):
     notas = proyecto.notas.select_related("ficha", "capitulo")
     if tipo in Nota.Tipo.values:
         notas = notas.filter(tipo=tipo)
+    color = request.GET.get("color", "")
+    if color in Nota.Color.values:
+        notas = notas.filter(color=color)
+    else:
+        color = ""
+    capitulo = request.GET.get("capitulo", "")
+    if capitulo.isdigit():
+        notas = notas.filter(capitulo_id=int(capitulo))
+    else:
+        capitulo = ""
     q = normalizar(request.GET.get("q", ""))
     notas = [n for n in notas if not q or q in normalizar(n.contenido)]
     return render(request, "core/tablon.html", {
         "proyecto": proyecto, "form": form, "notas": notas, "tipo": tipo, "q": request.GET.get("q", ""),
+        "color": color, "colores": Nota.Color.choices, "capitulo": capitulo, "capitulos": proyecto.capitulos.all(),
         "total": proyecto.notas.count(), "n_ideas": proyecto.notas.filter(tipo="idea").count(),
         "n_texto": proyecto.notas.filter(tipo="texto").count(), "herramienta": "tablon",
         "alto": max([n.y for n in notas] + [0]) + 260, "ancho": max([n.x for n in notas] + [0]) + 340,
+    })
+
+
+@login_required
+@require_GET
+def tablon_general(request):
+    """Tablón general: las notas de todas las historias de la escritora, para ver sus ideas juntas (HU-22)."""
+    notas = Nota.objects.filter(proyecto__dueno=request.user).select_related("proyecto", "ficha", "capitulo")
+    color = request.GET.get("color", "")
+    if color in Nota.Color.values:
+        notas = notas.filter(color=color)
+    else:
+        color = ""
+    proyecto_id = request.GET.get("proyecto", "")
+    if proyecto_id.isdigit():
+        notas = notas.filter(proyecto_id=int(proyecto_id))
+    else:
+        proyecto_id = ""
+    q = normalizar(request.GET.get("q", ""))
+    notas = [n for n in notas.order_by("-pk") if not q or q in normalizar(n.contenido)]
+    return render(request, "core/tablon_general.html", {
+        "seccion": "tablon_general", "notas": notas, "color": color, "colores": Nota.Color.choices,
+        "proyecto_id": proyecto_id, "proyectos": request.user.proyectos.all(), "q": request.GET.get("q", ""),
+        "hay_notas": Nota.objects.filter(proyecto__dueno=request.user).exists(),
     })
 
 
@@ -687,9 +745,10 @@ def nota_desde_texto(request, pk):
         capitulo = proyecto.capitulos.filter(pk=int(datos["capitulo"])).first()
     ficha = buscar_ficha(proyecto, texto) if len(texto.split()) <= 6 else None
     x, y = _posicion_libre(proyecto)
-    Nota.objects.create(proyecto=proyecto, tipo=Nota.Tipo.TEXTO, contenido=texto[:1000], capitulo=capitulo,
-                        ficha=ficha, x=x, y=y)
-    return JsonResponse({"ok": True, "total": proyecto.notas.count()})
+    tipo = Nota.Tipo.IDEA if datos.get("tipo") == "idea" else Nota.Tipo.TEXTO   # «idea» = nota escrita a mano en el panel
+    nota = Nota.objects.create(proyecto=proyecto, tipo=tipo, contenido=texto[:1000], capitulo=capitulo,
+                               ficha=ficha, x=x, y=y)
+    return JsonResponse({"ok": True, "total": proyecto.notas.count(), "nota": _nota_a_dict(nota)})
 
 
 @login_required

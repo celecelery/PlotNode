@@ -107,11 +107,18 @@
           </button>
         </details>
         <details class="barra-seccion" open>
+          <summary>Buscar</summary>
+          <button type="button" class="barra-boton-texto" id="btn-buscar" title="Buscar y reemplazar (Ctrl+H)">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 15l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span>Buscar y reemplazar</span>
+          </button>
+        </details>
+        <details class="barra-seccion" open>
           <summary>Tablón</summary>
           <button type="button" class="barra-boton-texto" id="btn-tablon" data-capitulo="{{ capitulo.pk }}"
                   data-url="{% url 'nota_desde_texto' proyecto.pk %}" title="Selecciona un pasaje del texto">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            <span>Enviar al tablón</span>
+            <span>Guardar como nota</span>
           </button>
           <p class="barra-aviso" id="tablon-aviso" role="status" aria-live="polite" hidden></p>
         </details>
@@ -125,6 +132,7 @@
     {{ capitulo.contenido|json_script:"contenido-inicial" }}
     {{ fichas|json_script:"fichas-inicial" }}
     {{ terminos|json_script:"terminos-inicial" }}
+    {{ notas|json_script:"notas-inicial" }}
   </main>
 
   <div class="reparto-fondo" id="reparto-fondo" aria-hidden="true"></div>
@@ -145,6 +153,7 @@
         <div class="reparto-tabs" role="tablist" aria-label="Herramientas del panel">
           <button type="button" role="tab" id="tab-btn-fichas" aria-controls="tab-fichas" aria-selected="true">Fichas</button>
           <button type="button" role="tab" id="tab-btn-glosario" aria-controls="tab-glosario" aria-selected="false" tabindex="-1">Glosario</button>
+          <button type="button" role="tab" id="tab-btn-notas" aria-controls="tab-notas" aria-selected="false" tabindex="-1">Notas</button>
           <button type="button" role="tab" id="tab-btn-muletillas" aria-controls="tab-muletillas" aria-selected="false" tabindex="-1">Muletillas</button>
         </div>
         <button type="button" class="reparto-plegar" id="reparto-plegar" aria-label="Ocultar el panel" title="Ocultar el panel">
@@ -168,6 +177,10 @@
               <option value="evento">Eventos</option>
             </select>
           </div>
+          <section class="presentes" id="presentes" aria-labelledby="presentes-titulo" hidden>
+            <h3 id="presentes-titulo">En este capítulo</h3>
+            <ul id="presentes-lista" class="reparto-lista" aria-label="Personajes que aparecen en el capítulo"></ul>
+          </section>
           <div id="reparto-detalle" aria-live="polite"></div>
           <ul id="reparto-lista" class="reparto-lista" aria-label="Fichas del proyecto"></ul>
           <p id="reparto-sin-resultados" class="reparto-nota" hidden>Ninguna ficha coincide con tu búsqueda.</p>
@@ -210,6 +223,21 @@
         </div>
       </section>
 
+      <section class="reparto-vista" id="tab-notas" role="tabpanel" aria-labelledby="tab-btn-notas" hidden>
+        <div class="reparto-cuerpo">
+          <p class="reparto-nota">Tus ideas más recientes. Selecciona un pasaje y pulsa «Guardar como nota» en la barra, o escribe una aquí.</p>
+          <form id="nota-rapida" class="form-ficha" novalidate>
+            <div class="campo"><label for="nota-rapida-texto">Nueva nota</label>
+              <textarea id="nota-rapida-texto" rows="2" maxlength="1000" placeholder="Una idea, una duda, un giro…"></textarea></div>
+            <p id="nota-rapida-aviso" class="reparto-nota" role="status" aria-live="polite" hidden></p>
+            <div class="acciones"><button class="boton boton-chico" type="submit">Guardar nota</button></div>
+          </form>
+          <ul id="notas-lista" class="reparto-lista reparto-lista-vertical" aria-label="Notas recientes"></ul>
+          <p id="notas-vacio" class="reparto-vacio-texto" hidden>Aún no hay notas.</p>
+          <a class="reparto-enlace" href="{% url 'tablon' proyecto.pk %}" target="_blank" rel="noopener">Abrir el tablón completo</a>
+        </div>
+      </section>
+
       <section class="reparto-vista" id="tab-muletillas" role="tabpanel" aria-labelledby="tab-btn-muletillas" hidden>
         <div class="reparto-cuerpo">
           <p class="reparto-nota">Las palabras que más se repiten en este capítulo. Elige una para verla resaltada y cambiarla.</p>
@@ -227,6 +255,20 @@
     </div>
   </aside>
 </div>
+<dialog id="dlg-buscar" class="dialogo-buscar" aria-labelledby="bus-titulo">
+  <h2 id="bus-titulo">Buscar y reemplazar</h2>
+  <div class="campo"><label for="bus-texto">Buscar</label><input type="text" id="bus-texto" autocomplete="off"></div>
+  <div class="campo"><label for="bus-reemplazo">Reemplazar con</label><input type="text" id="bus-reemplazo" autocomplete="off"></div>
+  <p class="campo-casilla"><label for="bus-mayusculas"><input type="checkbox" id="bus-mayusculas"> Coincidir mayúsculas y minúsculas</label></p>
+  <p class="reparto-nota" id="bus-cuenta" role="status" aria-live="polite"></p>
+  <p class="reparto-nota" id="bus-aviso" role="status" aria-live="polite"></p>
+  <div class="acciones">
+    <button type="button" class="boton boton-borde boton-chico" id="bus-siguiente">Siguiente</button>
+    <button type="button" class="boton boton-chico" id="bus-reemplazar">Reemplazar</button>
+    <button type="button" class="boton boton-chico" id="bus-todo">Reemplazar todas</button>
+    <button type="button" class="boton-texto" id="bus-cerrar">Cerrar</button>
+  </div>
+</dialog>
 <div id="tooltip-glosario" class="tooltip-glosario" role="tooltip" hidden></div>
 {% endblock %}
 
@@ -240,5 +282,6 @@
   <script src="{% static 'core/js/muletillas.js' %}"></script>
   <script src="{% static 'core/js/nombres.js' %}"></script>
   <script src="{% static 'core/js/enviar-tablon.js' %}"></script>
+  <script src="{% static 'core/js/buscar.js' %}"></script>
   <script src="{% static 'core/js/tutorial.js' %}"></script>
 {% endblock %}

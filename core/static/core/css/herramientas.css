@@ -66,3 +66,45 @@
 .ayuda-tablon { margin: .6rem 0 0; color: var(--texto-3); font-size: .88rem; }
 .nota .acciones-ficha a { cursor: pointer; }
 @media (max-width: 760px) { .rel-vista { grid-template-columns: minmax(0, 1fr); } }
+
+/* Tipos de relación: color y trazo (el trazo distingue aunque no se vea el color) */
+.mapa-relaciones .arista.cat-familia { stroke: var(--lila); }
+.mapa-relaciones .arista.cat-amistad { stroke: var(--menta); }
+.mapa-relaciones .arista.cat-alianza { stroke: var(--durazno); }
+.mapa-relaciones .arista.cat-romance { stroke: var(--lila-claro); stroke-dasharray: 2 6; stroke-linecap: round; stroke-width: 3; }
+.mapa-relaciones .arista.cat-enemistad { stroke: var(--texto-2); stroke-dasharray: 10 6; }
+.mapa-relaciones .arista.cat-otra { stroke: var(--campo-borde); }
+.mapa-relaciones .arista.tenue { opacity: .18; }
+.mapa-relaciones circle.elegido { stroke: var(--lila-claro); stroke-width: 3; }
+.leyenda-rel { display: flex; flex-wrap: wrap; gap: .4rem 1rem; list-style: none; margin: .6rem 0 0; padding: 0; font-size: .82rem; color: var(--texto-2); }
+.leyenda-rel .muestra { display: inline-block; width: 1.6rem; margin-right: .35rem; vertical-align: middle; border-top: 3px solid var(--campo-borde); }
+.leyenda-rel .cat-familia { border-color: var(--lila); } .leyenda-rel .cat-amistad { border-color: var(--menta); }
+.leyenda-rel .cat-alianza { border-color: var(--durazno); } .leyenda-rel .cat-romance { border-top: 3px dotted var(--lila-claro); }
+.leyenda-rel .cat-enemistad { border-top: 3px dashed var(--texto-2); }
+.mapa-seleccion { margin-top: .8rem; padding: .7rem .9rem; border-radius: 12px; background: var(--panel); }
+.mapa-seleccion ul { margin: .3rem 0; padding-left: 1.1rem; }
+.filtro-personaje { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: .8rem 0 0; }
+
+/* Color de cada nota del tablón (HU-22): borde superior + etiqueta con el color elegido */
+.nota { border-top-width: 4px; }
+.nota-color-lila { border-top-color: var(--lila); }
+.nota-color-menta { border-top-color: var(--menta); }
+.nota-color-durazno { border-top-color: var(--durazno); }
+
+/* Línea de tiempo vertical (HU-21) */
+.linea-vertical { list-style: none; margin: 1.2rem 0 0; padding: 0 0 0 1.6rem; border-left: 3px solid var(--borde-2); display: grid; gap: 1rem; }
+.evento-v { position: relative; }
+.evento-v-punto { position: absolute; left: -2.25rem; top: 1.1rem; width: 1rem; height: 1rem; border-radius: 50%; background: var(--lila); border: 3px solid var(--panel); }
+.linea-vertical .evento-trama { padding: .9rem 1.1rem; border-radius: var(--r-tarjeta); background: var(--panel-3); }
+.evento-enlaces { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0; }
+.chip-ficha { display: inline-flex; align-items: center; gap: .3rem; padding: .15rem .7rem; border: 1px solid var(--borde-2); border-radius: 999px; font-size: .85rem; color: var(--texto-2); text-decoration: none; }
+.chip-ficha:hover, .chip-ficha:focus-visible { border-color: var(--lila); color: var(--texto); }
+.evento-acciones { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; }
+.evento-acciones form { margin: 0; }
+.evento-acciones button:disabled { opacity: .35; cursor: not-allowed; }
+
+/* Tablón general (HU-22) */
+.filtros-general { display: flex; flex-wrap: wrap; gap: .8rem; align-items: end; margin: 1rem 0; }
+.notas-general { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: .9rem; }
+.nota-general { padding: .9rem 1rem; border-radius: var(--r-tarjeta); background: var(--panel-3); border: 1px solid var(--borde-2); border-top-width: 4px; }
+.nota-tag-linea { display: flex; justify-content: space-between; gap: .5rem; align-items: center; margin: 0; font-size: .85rem; }

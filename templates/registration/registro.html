@@ -7,7 +7,13 @@
   <form method="post" class="formulario" novalidate>
     {% csrf_token %}
     {{ form.non_field_errors }}
-    {{ form.as_p }}
+    {% for campo in form.visible_fields %}{% if campo.name != "privacidad" %}<p>{{ campo.errors }}{{ campo.label_tag }} {{ campo }}{% if campo.help_text %} <span class="helptext">{{ campo.help_text }}</span>{% endif %}</p>{% endif %}{% endfor %}
+    <div class="aviso-privacidad" role="note">
+      <h2>Tus textos son tuyos</h2>
+      <p>Tus obras son de tu propiedad. Se guardan en el servidor de PlotNode, en tu cuenta, y solo tú puedes verlas. El texto no se envía a servicios de terceros.</p>
+    </div>
+    {{ form.privacidad.errors }}
+    <p class="campo-casilla"><label for="{{ form.privacidad.id_for_label }}">{{ form.privacidad }} {{ form.privacidad.label }}</label></p>
     <div class="acciones"><button class="boton" type="submit">Crear cuenta</button></div>
   </form>
 </div>

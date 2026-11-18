@@ -1,0 +1,40 @@
+{% extends "app_base.html" %}
+{% load static %}
+{% block titulo %}Tablón general{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'core/css/gestion.css' %}"><link rel="stylesheet" href="{% static 'core/css/herramientas.css' %}">{% endblock %}
+{% block contenido %}
+<header class="encabezado-pagina">
+  <h1>Tablón general</h1>
+  <p>Las notas de todas tus historias en un solo lugar. Para moverlas o editarlas, ábrelas en el tablón de su historia.</p>
+</header>
+
+<form method="get" class="tablon-barra filtros-general" role="search">
+  <div class="campo"><label for="g-proyecto">Historia</label>
+    <select id="g-proyecto" name="proyecto"><option value="">Todas las historias</option>
+      {% for p in proyectos %}<option value="{{ p.pk }}" {% if proyecto_id == p.pk|stringformat:"s" %}selected{% endif %}>{{ p.titulo }}</option>{% endfor %}</select></div>
+  <div class="campo"><label for="g-color">Color</label>
+    <select id="g-color" name="color"><option value="">Todos los colores</option>
+      {% for clave, nombre in colores %}<option value="{{ clave }}" {% if color == clave %}selected{% endif %}>{{ nombre }}</option>{% endfor %}</select></div>
+  <div class="campo"><label for="g-q">Buscar</label><input type="search" id="g-q" name="q" value="{{ q }}" placeholder="Buscar en las notas"></div>
+  <button class="boton boton-borde boton-chico" type="submit">Filtrar</button>
+</form>
+
+{% if notas %}
+<ul class="notas-general" aria-label="Notas de todas tus historias">
+  {% for n in notas %}
+  <li class="nota-general nota-color-{{ n.color }}">
+    <p class="nota-tag-linea"><span class="nota-tag">{% if n.tipo == "texto" %}Del texto{% else %}Idea{% endif %}</span>
+      <a href="{% url 'tablon' n.proyecto.pk %}#nota-{{ n.pk }}">{{ n.proyecto.titulo }}</a></p>
+    <p class="nota-texto">{% if n.tipo == "texto" %}«{{ n.contenido }}»{% else %}{{ n.contenido }}{% endif %}</p>
+    {% if n.ficha or n.capitulo %}<p class="nota-ficha">{% if n.ficha %}{{ n.ficha.nombre }}{% endif %}{% if n.ficha and n.capitulo %} · {% endif %}{% if n.capitulo %}{{ n.capitulo.titulo }}{% endif %}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="obra-vacia mt-lista">
+  <span class="puntos" aria-hidden="true"><span class="p-lila"></span><span class="p-durazno"></span><span class="p-menta"></span></span>
+  <div><h2>{% if hay_notas %}Ninguna nota coincide{% else %}Aún no tienes notas{% endif %}</h2>
+  <p>{% if hay_notas %}Prueba con otros filtros.{% else %}Las ideas que escribas en el tablón de cada historia aparecerán aquí.{% endif %}</p></div>
+</div>
+{% endif %}
+{% endblock %}

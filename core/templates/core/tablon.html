@@ -16,6 +16,8 @@
   <div class="campos-grid">
     <div class="campo campo-ancho"><label for="{{ form.contenido.id_for_label }}">{{ form.contenido.label }}</label>{{ form.contenido.errors }}{{ form.contenido }}</div>
     <div class="campo"><label for="{{ form.ficha.id_for_label }}">{{ form.ficha.label }}</label>{{ form.ficha.errors }}{{ form.ficha }}</div>
+    <div class="campo"><label for="{{ form.capitulo.id_for_label }}">{{ form.capitulo.label }}</label>{{ form.capitulo.errors }}{{ form.capitulo }}</div>
+    <div class="campo"><label for="{{ form.color.id_for_label }}">{{ form.color.label }}</label>{{ form.color.errors }}{{ form.color }}</div>
   </div>
   <div class="acciones"><button class="boton" type="submit">Agregar al tablón</button></div>
 </form>
@@ -28,6 +30,12 @@
   </nav>
   <form method="get" class="buscador-glosario" role="search">
     {% if tipo %}<input type="hidden" name="tipo" value="{{ tipo }}">{% endif %}
+    <div class="campo"><label class="solo-lectores" for="f-color">Color</label>
+      <select id="f-color" name="color"><option value="">Todos los colores</option>
+        {% for clave, nombre in colores %}<option value="{{ clave }}" {% if color == clave %}selected{% endif %}>{{ nombre }}</option>{% endfor %}</select></div>
+    <div class="campo"><label class="solo-lectores" for="f-capitulo">Capítulo</label>
+      <select id="f-capitulo" name="capitulo"><option value="">Todos los capítulos</option>
+        {% for c in capitulos %}<option value="{{ c.pk }}" {% if capitulo == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.titulo }}</option>{% endfor %}</select></div>
     <div class="campo"><label class="solo-lectores" for="q">Buscar en el tablón</label>
     <input type="search" id="q" name="q" value="{{ q }}" placeholder="Buscar en el tablón"></div>
     <button class="boton boton-borde boton-chico" type="submit">Buscar</button>
@@ -38,7 +46,7 @@
 <div class="tablon-scroll">
   <div class="tablon" id="tablon" data-url-mover="{% url 'nota_mover' proyecto.pk 0 %}" style="min-width: {{ ancho }}px; min-height: {{ alto }}px">
     {% for n in notas %}
-    <article class="nota nota-{{ n.tipo }}" tabindex="0" data-id="{{ n.pk }}" data-x="{{ n.x }}" data-y="{{ n.y }}"
+    <article class="nota nota-{{ n.tipo }} nota-color-{{ n.color }}" id="nota-{{ n.pk }}" tabindex="0" data-id="{{ n.pk }}" data-x="{{ n.x }}" data-y="{{ n.y }}"
              style="left: {{ n.x }}px; top: {{ n.y }}px" aria-label="Nota: arrastra o usa las flechas para moverla">
       <div class="nota-cabeza">
         <span class="nota-tag">{% if n.tipo == "texto" %}Del texto{% if n.capitulo %} · {{ n.capitulo.titulo }}{% endif %}{% else %}Idea{% endif %}</span>

@@ -46,8 +46,8 @@ class RelacionesTests(Base):
         self.assertEqual(Relacion.objects.count(), 1)
 
     def test_etiqueta_vacia_usa_la_categoria(self):
-        self.crear(etiqueta="", categoria="rivalidad")
-        self.assertEqual(Relacion.objects.get().texto, "Rivalidad")
+        self.crear(etiqueta="", categoria="enemistad")
+        self.assertEqual(Relacion.objects.get().texto, "Enemistad")
 
     def test_no_acepta_fichas_de_otro_proyecto(self):
         q = Proyecto.objects.create(dueno=self.ana_u, titulo="Otra")
@@ -59,11 +59,11 @@ class RelacionesTests(Base):
         self.crear()
         r = Relacion.objects.get()
         url = reverse("relacion_editar", args=[self.p.pk, r.pk])
-        self.client.post(url, {"origen": self.ana.pk, "destino": self.lia.pk, "categoria": "pareja", "etiqueta": "", "nota": "x"})
+        self.client.post(url, {"origen": self.ana.pk, "destino": self.lia.pk, "categoria": "romance", "etiqueta": "", "nota": "x"})
         r.refresh_from_db()
-        self.assertEqual(r.categoria, "pareja")
+        self.assertEqual(r.categoria, "romance")
         self.assertNotContains(self.client.get(reverse("relaciones", args=[self.p.pk]) + "?categoria=familia"), "mapa-svg")
-        self.assertContains(self.client.get(reverse("relaciones", args=[self.p.pk]) + "?categoria=pareja"), "mapa-svg")
+        self.assertContains(self.client.get(reverse("relaciones", args=[self.p.pk]) + "?categoria=romance"), "mapa-svg")
         self.client.post(reverse("relacion_eliminar", args=[self.p.pk, r.pk]))
         self.assertEqual(Relacion.objects.count(), 0)
 
@@ -90,30 +90,52 @@ class RelacionesTests(Base):
 
 
 class LineaTiempoTests(Base):
-    def crear(self, titulo="Cruzan el puente", etapa="Día 2", participantes=()):
+    def crear(self, titulo="Cruzan el puente", etapa="Día 2", participantes=(), capitulo=""):
         return self.client.post(reverse("linea_tiempo", args=[self.p.pk]),
-                                {"titulo": titulo, "etapa": etapa, "descripcion": "", "participantes": list(participantes)})
+                                {"titulo": titulo, "etapa": etapa, "descripcion": "", "capitulo": capitulo,
+                                 "participantes": list(participantes)})
 
-    def test_crear_evento_con_participantes_en_varios_carriles(self):
-        self.crear(participantes=[self.ana.pk, self.lia.pk])
+    def test_crear_evento_con_varios_participantes_y_capitulo(self):
+        self.crear(participantes=[self.ana.pk, self.lia.pk], capitulo=self.cap.pk)
         e = EventoTrama.objects.get()
-        self.assertEqual(e.participantes.count(), 2)
+        self.assertEqual((e.participantes.count(), e.capitulo), (2, self.cap))
         r = self.client.get(reverse("linea_tiempo", args=[self.p.pk]))
-        self.assertContains(r, 'data-carril-fila="%d"' % self.ana.pk)
-        self.assertContains(r, 'data-carril-fila="%d"' % self.lia.pk)
+        self.assertContains(r, reverse("ficha_editar", args=[self.p.pk, self.ana.pk]))     # abre la ficha desde el evento
+        self.assertContains(r, self.cap.get_absolute_url())                                # y el capítulo
 
-    def test_orden_de_etapas_y_reuso(self):
-        self.crear("A", "Día 1")
-        self.crear("B", "Día 2")
-        self.crear("C", "día 1")                    # misma etapa (sin distinguir mayúsculas)
-        a, b, c = (EventoTrama.objects.get(titulo=t) for t in "ABC")
-        self.assertEqual((a.orden, b.orden, c.orden), (1, 2, 1))
+    def test_los_eventos_nuevos_van_al_final_y_la_etapa_es_texto_libre(self):
+        self.crear("A", "Año 3")
+        self.crear("B", "Hace una semana")
+        self.crear("C", "Año 3")
+        self.assertEqual([e.orden for e in EventoTrama.objects.order_by("pk")], [1, 2, 3])
         html = self.client.get(reverse("linea_tiempo", args=[self.p.pk])).content.decode()
-        self.assertLess(html.index(">Día 1<"), html.index(">Día 2<"))
+        self.assertLess(html.index(">A<"), html.index(">B<"))
+        self.assertLess(html.index(">B<"), html.index(">C<"))
 
-    def test_evento_sin_personaje_va_a_su_carril(self):
+    def test_subir_y_bajar_cambia_el_orden(self):
+        for t in "ABC":
+            self.crear(t, "Día 1")
+        a, b, c = (EventoTrama.objects.get(titulo=t) for t in "ABC")
+        self.client.post(reverse("evento_mover", args=[self.p.pk, c.pk]), {"direccion": "arriba"})
+        self.assertEqual([e.titulo for e in EventoTrama.objects.order_by("orden")], ["A", "C", "B"])
+        self.client.post(reverse("evento_mover", args=[self.p.pk, a.pk]), {"direccion": "arriba"})   # ya es el primero
+        self.assertEqual([e.titulo for e in EventoTrama.objects.order_by("orden")], ["A", "C", "B"])
+        self.client.post(reverse("evento_mover", args=[self.p.pk, a.pk]), {"direccion": "abajo"})
+        self.assertEqual([e.titulo for e in EventoTrama.objects.order_by("orden")], ["C", "A", "B"])
+
+    def test_mover_exige_post_y_ser_la_duena(self):
         self.crear()
-        self.assertContains(self.client.get(reverse("linea_tiempo", args=[self.p.pk])), "Sin personaje")
+        e = EventoTrama.objects.get()
+        url = reverse("evento_mover", args=[self.p.pk, e.pk])
+        self.assertEqual(self.client.get(url).status_code, 405)
+        self.client.force_login(self.otra)
+        self.assertEqual(self.client.post(url, {"direccion": "abajo"}).status_code, 404)
+
+    def test_filtrar_por_personaje(self):
+        self.crear("De Ana", participantes=[self.ana.pk])
+        self.crear("De Lía", participantes=[self.lia.pk])
+        r = self.client.get(reverse("linea_tiempo", args=[self.p.pk]) + f"?personaje={self.ana.pk}")
+        self.assertEqual([e.titulo for e in r.context["eventos"]], ["De Ana"])
 
     def test_validacion_editar_y_eliminar(self):
         self.assertContains(self.crear(titulo="  ", etapa="Día 1"), "obligatorio")
@@ -122,13 +144,12 @@ class LineaTiempoTests(Base):
         e = EventoTrama.objects.get()
         self.client.post(reverse("evento_editar", args=[self.p.pk, e.pk]), {"titulo": "Nuevo", "etapa": "Día 3", "descripcion": ""})
         e.refresh_from_db()
-        self.assertEqual((e.titulo, e.etapa), ("Nuevo", "Día 3"))
+        self.assertEqual((e.titulo, e.etapa, e.orden), ("Nuevo", "Día 3", 1))
         self.client.post(reverse("evento_eliminar", args=[self.p.pk, e.pk]))
         self.assertEqual(EventoTrama.objects.count(), 0)
 
     def test_capitulo_borrado_no_borra_el_evento(self):
-        self.client.post(reverse("linea_tiempo", args=[self.p.pk]),
-                         {"titulo": "X", "etapa": "Día 1", "descripcion": "", "capitulo": self.cap.pk})
+        self.crear(capitulo=self.cap.pk)
         self.cap.delete()
         self.assertEqual(EventoTrama.objects.get().capitulo, None)
 
@@ -196,7 +217,7 @@ class TutorialTests(Base):
     def test_registro_crea_proyecto_de_muestra_y_abre_el_tutorial(self):
         self.client.logout()
         r = self.client.post(reverse("registro"), {"username": "nueva", "email": "n@ejemplo.com",
-                                                   "password1": "una-clave-larga-42", "password2": "una-clave-larga-42"})
+                                                   "password1": "una-clave-larga-42", "password2": "una-clave-larga-42", "privacidad": "on"})
         u = User.objects.get(username="nueva")
         proyecto = u.proyectos.get()
         self.assertTrue(proyecto.es_plantilla)
@@ -223,4 +244,93 @@ class TutorialTests(Base):
         r = self.client.get(reverse("fichas_lista", args=[self.p.pk]))
         for nombre in ("relaciones", "linea_tiempo", "tablon"):
             self.assertContains(r, reverse(nombre, args=[self.p.pk]))
-        self.assertContains(self.client.get(reverse("editor", args=[self.cap.pk])), "Enviar al tablón")
+        self.assertContains(self.client.get(reverse("editor", args=[self.cap.pk])), "Guardar como nota")
+
+
+class CierreDeBrechasTests(Base):
+    """Historias del backlog que faltaban: HU-14, HU-16, HU-11, HU-22, HU-32 y tipos de HU-33."""
+
+    DATOS = {"username": "nueva2", "email": "n2@ejemplo.com",
+             "password1": "una-clave-larga-42", "password2": "una-clave-larga-42"}
+
+    def test_registro_exige_aceptar_la_privacidad_y_guarda_la_fecha(self):
+        self.client.logout()
+        r = self.client.post(reverse("registro"), self.DATOS)
+        self.assertContains(r, "acepta el aviso de privacidad")
+        self.assertFalse(User.objects.filter(username="nueva2").exists())
+        self.client.post(reverse("registro"), {**self.DATOS, "privacidad": "on"})
+        self.assertIsNotNone(Perfil.objects.get(user__username="nueva2").acepto_privacidad)
+
+    def test_el_aviso_de_privacidad_se_muestra_en_el_registro(self):
+        self.client.logout()
+        r = self.client.get(reverse("registro"))
+        self.assertContains(r, "no se envía a servicios de terceros")
+
+    def test_el_proyecto_de_muestra_trae_glosario_y_una_nota(self):
+        self.client.logout()
+        self.client.post(reverse("registro"), {**self.DATOS, "privacidad": "on"})
+        p = User.objects.get(username="nueva2").proyectos.get()
+        self.assertEqual(p.terminos.count(), 1)
+        self.assertEqual(p.notas.count(), 1)
+
+    def test_tipos_de_relacion_del_backlog(self):
+        for tipo in ("familia", "amistad", "alianza", "romance", "enemistad"):
+            self.assertIn(tipo, Relacion.Categoria.values)
+
+    def test_filtrar_relaciones_por_personaje(self):
+        zoe = Ficha.objects.create(proyecto=self.p, nombre="Zoe")
+        Relacion.objects.create(proyecto=self.p, origen=self.ana, destino=self.lia, categoria="amistad")
+        Relacion.objects.create(proyecto=self.p, origen=self.lia, destino=zoe, categoria="alianza")
+        r = self.client.get(reverse("relaciones", args=[self.p.pk]) + f"?personaje={self.ana.pk}")
+        self.assertEqual(len(r.context["relaciones"]), 1)
+        self.assertEqual(r.context["mapa"]["aristas"][0]["categoria"], "amistad")
+
+    def test_notas_con_color_y_filtro_por_color_y_capitulo(self):
+        self.client.post(reverse("tablon", args=[self.p.pk]),
+                         {"contenido": "verde", "ficha": "", "capitulo": self.cap.pk, "color": "menta"})
+        Nota.objects.create(proyecto=self.p, contenido="lila", color="lila")
+        n = Nota.objects.get(contenido="verde")
+        self.assertEqual((n.color, n.capitulo), ("menta", self.cap))
+        url = reverse("tablon", args=[self.p.pk])
+        self.assertEqual(len(self.client.get(url + "?color=menta").context["notas"]), 1)
+        self.assertEqual(len(self.client.get(url + f"?capitulo={self.cap.pk}").context["notas"]), 1)
+        self.assertEqual(len(self.client.get(url + "?color=nada").context["notas"]), 2)
+
+    def test_nota_en_blanco_desde_el_panel_y_lista_en_el_editor(self):
+        r = self.post_json("nota_desde_texto", [self.p.pk], {"texto": "Idea suelta", "capitulo": self.cap.pk, "tipo": "idea"})
+        self.assertEqual(r.json()["nota"]["tipo"], "idea")
+        self.assertEqual(Nota.objects.get().tipo, "idea")
+        html = self.client.get(reverse("editor", args=[self.cap.pk])).content.decode()
+        self.assertIn('id="tab-notas"', html)
+        self.assertIn("Idea suelta", html)
+        self.assertIn("Guardar como nota", html)
+
+    def test_el_editor_ofrece_la_lista_de_personajes_del_capitulo(self):
+        html = self.client.get(reverse("editor", args=[self.cap.pk])).content.decode()
+        self.assertIn('id="presentes-lista"', html)
+
+
+class TablonGeneralTests(Base):
+    def test_reune_las_notas_de_todas_las_historias_y_filtra(self):
+        q = Proyecto.objects.create(dueno=self.ana_u, titulo="Otra historia")
+        Nota.objects.create(proyecto=self.p, contenido="de la torre", color="lila")
+        Nota.objects.create(proyecto=q, contenido="de la otra", color="menta")
+        ajena = Proyecto.objects.create(dueno=self.otra, titulo="Ajena")
+        Nota.objects.create(proyecto=ajena, contenido="secreta")
+        url = reverse("tablon_general")
+        self.assertEqual(sorted(n.contenido for n in self.client.get(url).context["notas"]), ["de la otra", "de la torre"])
+        self.assertEqual([n.contenido for n in self.client.get(url + f"?proyecto={q.pk}").context["notas"]], ["de la otra"])
+        self.assertEqual([n.contenido for n in self.client.get(url + "?color=lila").context["notas"]], ["de la torre"])
+        self.assertContains(self.client.get(url + "?q=OTRA"), "de la otra")
+
+    def test_exige_sesion_y_aparece_en_el_menu(self):
+        self.assertContains(self.client.get(reverse("proyectos")), reverse("tablon_general"))
+        self.client.logout()
+        self.assertEqual(self.client.get(reverse("tablon_general")).status_code, 302)
+
+
+class BuscarYReemplazarTests(Base):
+    def test_el_editor_trae_el_dialogo_y_su_script(self):
+        html = self.client.get(reverse("editor", args=[self.cap.pk])).content.decode()
+        for fragmento in ('id="dlg-buscar"', 'id="bus-todo"', "core/js/buscar.js", "Buscar y reemplazar"):
+            self.assertIn(fragmento, html)

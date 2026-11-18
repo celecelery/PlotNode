@@ -13,6 +13,8 @@
   <div class="campos-grid">
     <div class="campo campo-ancho"><label for="{{ form.contenido.id_for_label }}">{{ form.contenido.label }}</label>{{ form.contenido.errors }}{{ form.contenido }}</div>
     <div class="campo"><label for="{{ form.ficha.id_for_label }}">{{ form.ficha.label }}</label>{{ form.ficha.errors }}{{ form.ficha }}</div>
+    <div class="campo"><label for="{{ form.capitulo.id_for_label }}">{{ form.capitulo.label }}</label>{{ form.capitulo.errors }}{{ form.capitulo }}</div>
+    <div class="campo"><label for="{{ form.color.id_for_label }}">{{ form.color.label }}</label>{{ form.color.errors }}{{ form.color }}</div>
   </div>
   <div class="acciones"><button class="boton" type="submit">Guardar cambios</button><a href="{% url 'tablon' proyecto.pk %}">Cancelar</a></div>
 </form>

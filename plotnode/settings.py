@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "core",
 ]
 
@@ -51,6 +56,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -67,6 +73,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context.cuentas",
             ],
         },
     },
@@ -126,3 +133,33 @@ MODELO_AUDITOR = os.getenv("MODELO_AUDITOR", "")
 
 # Formulario de lista de espera de MailerLite (HU-01). Vacío = no se muestra el botón.
 MAILERLITE_FORM_URL = os.getenv("MAILERLITE_FORM_URL", "")
+
+# --- Inicio de sesión con Google (HU-03, django-allauth) ---
+# El botón «Continuar con Google» solo aparece si GOOGLE_CLIENT_ID y GOOGLE_CLIENT_SECRET están definidos.
+# Los datos de la app se crean en https://console.cloud.google.com/ (URI de redirección:
+# <tu-dominio>/accounts/google/login/callback/). Nunca van en el repositorio.
+SITE_ID = 1
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APPS": [{"client_id": GOOGLE_CLIENT_ID, "secret": GOOGLE_CLIENT_SECRET, "key": ""}] if GOOGLE_CLIENT_ID else [],
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
+}
+SOCIALACCOUNT_ADAPTER = "core.allauth_adapters.AdaptadorSocial"
+ACCOUNT_ADAPTER = "core.allauth_adapters.AdaptadorCuenta"
+SOCIALACCOUNT_LOGIN_ON_GET = False
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True      # si el correo de Google ya tiene cuenta, entra a esa cuenta
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+
+# --- Resumen semanal por correo (HU-17, MailerLite) ---
+MAILERLITE_API_KEY = os.getenv("MAILERLITE_API_KEY", "")
